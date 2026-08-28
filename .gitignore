@@ -1,0 +1,9 @@
+node_modules
+.env
+.vercel
+uploads/
+logs
+chrome
+chrome-headless-shell
+# dist
+.tmp/

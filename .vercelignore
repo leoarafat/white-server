@@ -1,0 +1,14 @@
+# Ignore node_modules (installed on Vercel from package.json)
+
+node_modules/
+
+# Ignore build artifacts
+
+logs/
+chrome/
+chrome-headless-shell/
+
+# Ignore other unnecessary files
+
+_.logs
+_.cache

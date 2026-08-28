@@ -1,0 +1,290 @@
+import express from 'express';
+
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import { ClaimsController } from './claim-release.controller';
+import { requirePermission } from '../../../shared/subUserAccess';
+
+const router = express.Router();
+
+//! TikTok Claim Requests
+router.post(
+  '/tiktok-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/tikTok-claim-request'),
+  ClaimsController.addTikTokClaimRequest,
+);
+router.get(
+  '/tiktok-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/tikTok-claim-request'),
+  ClaimsController.getTikTokClaimRequest,
+);
+router.patch(
+  '/tiktok-claims/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/tikTok-claim-request'),
+  ClaimsController.updateTikTokClaimRequest,
+);
+
+//! Artist Channel Requests
+router.post(
+  '/artist-channel-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.addArtistChannelRequest,
+);
+router.get(
+  '/artist-channel-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.getArtistChannelRequest,
+);
+router.patch(
+  '/artist-channel-requests/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.updateArtistChannelRequest,
+);
+
+//! YouTube Manual Claims
+router.post(
+  '/youtube-manual-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-manual-claim'),
+  ClaimsController.addYoutubeManualClaim,
+);
+router.get(
+  '/youtube-manual-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-manual-claim'),
+  ClaimsController.getYoutubeManualClaim,
+);
+router.patch(
+  '/youtube-manual-claims/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-manual-claim'),
+  ClaimsController.updateYoutubeManualClaim,
+);
+
+//! YouTube Take Down Requests
+router.post(
+  '/youtube-take-downs',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.addYoutubeTakeDown,
+);
+router.get(
+  '/youtube-take-downs',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.getYoutubeTakeDown,
+);
+router.patch(
+  '/youtube-take-downs/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/artist-channel-request'),
+  ClaimsController.updateYoutubeTakeDown,
+);
+
+//! YouTube Claim Requests
+router.post(
+  '/youtube-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-claim-request'),
+  ClaimsController.addYoutubeClaimRequest,
+);
+router.get(
+  '/youtube-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-claim-request'),
+  ClaimsController.getYoutubeClaimRequest,
+);
+router.patch(
+  '/youtube-claims/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/youtube-claim-request'),
+  ClaimsController.updateYoutubeClaimRequest,
+);
+
+//! Facebook Whitelist Requests
+router.post(
+  '/facebook-whitelist-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-whiteList-request'),
+  ClaimsController.addFacebookWhitelistRequest,
+);
+router.get(
+  '/facebook-whitelist-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-whiteList-request'),
+  ClaimsController.getFacebookWhitelistRequest,
+);
+router.patch(
+  '/facebook-whitelist-requests/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-whiteList-request'),
+  ClaimsController.updateFacebookWhitelistRequest,
+);
+
+//! Facebook Claim Requests
+router.post(
+  '/facebook-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-claim-request'),
+  ClaimsController.addFacebookClaimRequest,
+);
+router.get(
+  '/facebook-claims',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-claim-request'),
+  ClaimsController.getFacebookClaimRequest,
+);
+router.patch(
+  '/facebook-claims/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/facebook-claim-request'),
+  ClaimsController.updateFacebookClaimRequest,
+);
+
+//! General Whitelist Requests
+router.post(
+  '/whitelist-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/whiteList-request'),
+  ClaimsController.addWhitelistRequest,
+);
+router.get(
+  '/whitelist-requests',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/whiteList-request'),
+  ClaimsController.getWhitelistRequest,
+);
+router.patch(
+  '/whitelist-requests/:id',
+  auth(
+    ENUM_USER_ROLE.USER,
+    ENUM_USER_ROLE.SUB_USER,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.SUPER_ADMIN,
+  ),
+  requirePermission('/whiteList-request'),
+  ClaimsController.updateWhitelistRequest,
+);
+
+export const ClaimRoutes = router;
