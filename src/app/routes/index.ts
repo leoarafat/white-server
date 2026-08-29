@@ -45,6 +45,9 @@ import { SmartLinkRoutes } from '../modules/smart-link/smart-link.routes';
 import { SecurityRoutes } from '../modules/security/security.routes';
 import { MasterReviewRoutes } from '../modules/master-review/master-review.routes';
 import { ReportConverterRoutes } from '../modules/report-converter/report-converter.routes';
+import { PartnerApiRoutes } from '../modules/partnerApi/partnerApi.routes';
+import { PartnerKeyAdminRoutes } from '../modules/partnerApi/key/partnerKey.admin.routes';
+import { PartnerActivityAdminRoutes } from '../modules/partnerApi/activity/partnerActivity.admin.routes';
 
 const router = express.Router();
 
@@ -234,6 +237,18 @@ const moduleRoutes = [
   {
     path: '/report-converter',
     route: ReportConverterRoutes,
+  },
+  {
+    path: '/partner',
+    route: PartnerApiRoutes,
+  },
+  {
+    path: '/partner-admin/keys',
+    route: PartnerKeyAdminRoutes,
+  },
+  {
+    path: '/partner-admin/activity',
+    route: PartnerActivityAdminRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));
