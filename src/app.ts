@@ -31,6 +31,12 @@ const devOrigins =
         'http://localhost:5321',
         'http://127.0.0.1:5320',
         'http://127.0.0.1:5321',
+        'https://white-user.vercel.app/auth/login',
+        'https://white-user.vercel.app',
+        'https://white-user.vercel.app/',
+        'https://white-admin.vercel.app/auth/login',
+        'https://white-admin.vercel.app/',
+        'https://white-admin.vercel.app',
       ];
 
 const allowedOrigins = new Set(
