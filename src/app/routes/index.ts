@@ -31,9 +31,7 @@ import { ChannelRoutes } from '../modules/vevo-channel/vevo-channel.routes';
 import { MessageRoutes } from '../modules/messages/message.routes';
 import { MonetizationRoutes } from '../modules/monitization/monitization.routes';
 import { ManageRoutes } from '../modules/privacy-policy/privacy-policy.routes';
-import { APIKeyRoutes } from '../modules/ApiKey/ApiKey.routes';
 import { noticeRoutes } from '../modules/notice/notice.routes';
-import { B2BRoutes } from '../modules/B2BSongs/B2BSongs.routes';
 import { ISRCRoutes } from '../modules/isrc/isrc.routes';
 import { ResumableUploadRoutes } from '../modules/videos/resumable.routes';
 import { TransferOwnershipRoutes } from '../modules/transfer-ownership/transfer-ownership.routes';
@@ -179,16 +177,8 @@ const moduleRoutes = [
     route: ManageRoutes,
   },
   {
-    path: '/apikeys',
-    route: APIKeyRoutes,
-  },
-  {
     path: '/notices',
     route: noticeRoutes,
-  },
-  {
-    path: '/b2b-songs',
-    route: B2BRoutes,
   },
   {
     path: '/isrc',

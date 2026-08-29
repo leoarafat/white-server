@@ -35,7 +35,7 @@ export const setWebhook = async (
       secret,
       secretRotated: true,
       note:
-        'Store this secret now — it is not shown again, and it is NOT your API key. Verify each delivery with HMAC-SHA256 over "<x-webhook-timestamp>.<body>" and compare to x-webhook-signature.',
+        'Store this secret now — it is not shown again, and it is NOT your API key. Verify each delivery with HMAC-SHA256 over "<x-arp-timestamp>.<body>" and compare to x-arp-signature.',
     };
   }
 
@@ -92,8 +92,8 @@ const attemptDelivery = async (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-webhook-timestamp': timestamp,
-        'x-webhook-signature': signature,
+        'x-arp-timestamp': timestamp,
+        'x-arp-signature': signature,
       },
       body: rawBody,
       signal: controller.signal,

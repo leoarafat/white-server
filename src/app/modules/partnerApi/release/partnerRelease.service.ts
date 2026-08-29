@@ -147,6 +147,49 @@ export const getReleaseById = async (ctx: PartnerAuthContext, id: string) => {
   return toPublicRelease(doc);
 };
 
+// A partner may only edit a release we've explicitly kicked back to them —
+// never one that's pending review, approved, or in any terminal state.
+export const updateReleaseNeedingFix = async (
+  ctx: PartnerAuthContext,
+  id: string,
+  body: Partial<CreateReleaseBody>,
+) => {
+  const idFilters: Record<string, unknown>[] = [{ externalId: id }];
+  if (mongoose.isValidObjectId(id)) idFilters.push({ _id: id });
+
+  const doc = await PartnerRelease.findOne({
+    $or: idFilters,
+    user: ctx.userId,
+    environment: ctx.environment,
+  });
+  if (!doc) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Release not found');
+  }
+  if (doc.status !== 'needs_fix') {
+    throw new ApiError(
+      httpStatus.CONFLICT,
+      `Only a release in needs_fix can be edited (current status: ${doc.status})`,
+    );
+  }
+
+  const fields: (keyof CreateReleaseBody)[] = [
+    'title', 'primaryArtist', 'featuringArtists', 'label', 'genre', 'language',
+    'isrc', 'channel', 'description', 'keywords', 'composer', 'producer',
+    'editor', 'musicDirector', 'copyrightYear', 'sourceVideoUrl', 'imageUrl',
+  ];
+  for (const field of fields) {
+    if (body[field] !== undefined) (doc as any)[field] = body[field];
+  }
+  if (body.releaseDate) doc.releaseDate = new Date(body.releaseDate);
+
+  doc.status = 'pending';
+  doc.statusDetail = 'Waiting for review.';
+  doc.reason = null;
+  await doc.save();
+
+  return toPublicRelease(doc);
+};
+
 const STATUS_DETAIL: Record<PartnerReleaseStatus, string> = {
   pending: 'Waiting for review.',
   needs_fix: 'Needs changes before it can be approved.',

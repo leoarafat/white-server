@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ARP Music Partner API</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --page:   #f4f4f2;
+    --card:   #ffffff;
+    --panel:  #fbfbfa;
+    --line:   #e3e3de;
+    --line-2: #d3d3cc;
+    --ink:    #1c1c1c;
+    --muted:  #6f6f6b;
+    --faint:  #8f8f8a;
+    --accent: #1f4d4a;
+    --get:    #1f4d4a;
+    --post:   #8c4a32;
+    --put:    #7d6420;
+    --patch:  #5a5a9c;
+    --code-bg: #f7f7f4;
+
+    --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono:  "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --page:   #14140f;
+      --card:   #1a1a16;
+      --panel:  #201f1a;
+      --line:   #33322b;
+      --line-2: #45443b;
+      --ink:    #eceae2;
+      --muted:  #a3a199;
+      --faint:  #837f76;
+      --accent: #7fbdb4;
+      --get:    #7fbdb4;
+      --post:   #d99b7a;
+      --put:    #cbb26a;
+      --patch:  #a3a3e0;
+      --code-bg: #201f1a;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --page:   #14140f;
+    --card:   #1a1a16;
+    --panel:  #201f1a;
+    --line:   #33322b;
+    --line-2: #45443b;
+    --ink:    #eceae2;
+    --muted:  #a3a199;
+    --faint:  #837f76;
+    --accent: #7fbdb4;
+    --get:    #7fbdb4;
+    --post:   #d99b7a;
+    --put:    #cbb26a;
+    --patch:  #a3a3e0;
+    --code-bg: #201f1a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.875em;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.1em 0.36em;
+  }
+
+  pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 16px 18px;
+    margin: 0;
+    overflow-x: auto;
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+  .c-key { color: var(--accent); }
+  .c-str { color: var(--post); }
+  .c-com { color: var(--faint); font-style: italic; }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 216px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  header.masthead { border-bottom: 1px solid var(--line); background: var(--card); }
+  .masthead-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 26px 24px 24px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .wordmark { font-family: var(--sans); font-weight: 600; font-size: 15px; letter-spacing: 3.4px; text-transform: uppercase; }
+  .wordmark span { font-weight: 400; color: var(--muted); }
+  .masthead-note { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+
+  .lede { grid-column: 1 / -1; max-width: 62ch; padding: 44px 0 8px; }
+  .lede h1 { font-family: var(--serif); font-weight: 600; font-size: 38px; line-height: 1.14; letter-spacing: -0.01em; margin: 0 0 14px; text-wrap: balance; }
+  .lede p { margin: 0; color: var(--muted); font-size: 16px; }
+
+  nav.toc { position: sticky; top: 28px; }
+  nav.toc h2 { font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--faint); margin: 0 0 12px; font-weight: 600; font-family: var(--sans); }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  nav.toc a { display: block; padding: 4px 0; color: var(--muted); text-decoration: none; font-size: 13.5px; border-left: 2px solid transparent; padding-left: 12px; margin-left: -14px; }
+  nav.toc a:hover { color: var(--ink); border-left-color: var(--line-2); }
+  nav.toc .sub { padding-left: 26px; font-size: 13px; }
+  nav.toc hr { border: 0; border-top: 1px solid var(--line); margin: 12px 0; }
+
+  main { min-width: 0; display: grid; gap: 44px; }
+  section { scroll-margin-top: 24px; }
+
+  h2.head { font-family: var(--serif); font-weight: 600; font-size: 25px; line-height: 1.25; letter-spacing: -0.008em; margin: 0 0 6px; display: flex; align-items: baseline; gap: 12px; }
+  .step { font-family: var(--mono); font-size: 12px; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; flex: none; position: relative; top: -2px; }
+  h3 { font-family: var(--sans); font-weight: 600; font-size: 15px; margin: 26px 0 10px; }
+  p { margin: 0 0 14px; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  .note { color: var(--muted); }
+
+  ul { margin: 0 0 14px; padding-left: 20px; max-width: 68ch; }
+  li { margin-bottom: 5px; }
+
+  .ep { border: 1px solid var(--line); background: var(--card); border-radius: 4px; overflow: hidden; margin: 16px 0; }
+  .ep-head { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-bottom: 1px solid var(--line); background: var(--panel); font-family: var(--mono); font-size: 13.5px; overflow-x: auto; white-space: nowrap; }
+  .verb { font-weight: 500; font-size: 11px; letter-spacing: 0.9px; border: 1px solid currentColor; border-radius: 3px; padding: 1px 7px; flex: none; }
+  .verb.get   { color: var(--get); }
+  .verb.post  { color: var(--post); }
+  .verb.put   { color: var(--put); }
+  .verb.patch { color: var(--patch); }
+  .ep-path { color: var(--ink); }
+  .ep-body { padding: 16px; display: grid; gap: 14px; }
+  .ep-body > pre { margin: 0; }
+  .ep-body > p { margin: 0; }
+
+  .two { display: grid; gap: 14px; }
+  @media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr; } }
+  .two .cap { font-size: 10.5px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--faint); margin: 0 0 6px; }
+
+  .call { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--panel); border-radius: 4px; padding: 14px 18px; margin: 16px 0; }
+  .call p { margin: 0; }
+  .call p + p { margin-top: 8px; }
+  .call .cap { font-size: 10.5px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 6px; }
+
+  .tw { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--card); }
+  th, td { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--panel); font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+  .pill { display: inline-block; font-family: var(--mono); font-size: 12px; border: 1px solid var(--line-2); border-radius: 3px; padding: 0 6px; white-space: nowrap; }
+
+  footer { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 22px; margin-top: 8px; color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 860px) {
+    .wrap { grid-template-columns: 1fr; gap: 32px; }
+    nav.toc { position: static; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+    nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); display: grid; }
+    .lede h1 { font-size: 30px; }
+  }
+</style>
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="wordmark">ARP<span>MUSIC</span></div>
+    <div class="masthead-note">Partner API &middot; v1</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="lede">
+    <h1>Deliver to ARP Music from your own system</h1>
+    <p>Push releases, follow every status change, and request VEVO channels &mdash; without anybody logging into a dashboard. Written for the engineer doing the integration; you should be sending your first release inside an hour.</p>
+    <p style="margin-top:12px"><strong>This version delivers music videos.</strong> Every release carries a video file and can carry a VEVO channel. If you need audio-only releases too, tell your account contact.</p>
+  </div>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#start">Getting started</a></li>
+      <li><a href="#test">Test first &amp; sandbox</a></li>
+      <hr>
+      <li><a href="#upload">1 &nbsp;Send the file</a></li>
+      <li><a href="#create">2 &nbsp;Create the release</a></li>
+      <li><a href="#edit">2b &nbsp;Fix and resubmit</a></li>
+      <li><a href="#follow">3 &nbsp;Follow it</a></li>
+      <li><a href="#webhooks" class="sub">Webhooks</a></li>
+      <li><a href="#channels" class="sub">VEVO channels</a></li>
+      <hr>
+      <li><a href="#keys">Keys &amp; scopes</a></li>
+      <li><a href="#limits">Rate limits</a></li>
+      <li><a href="#errors">Errors</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section id="start">
+      <h2 class="head">Getting started</h2>
+      <p>Every request goes to <code>https://api.arpmusic.com/partner</code> and carries your key in the <code>x-api-key</code> header.</p>
+
+      <pre><code>curl https://api.arpmusic.com/partner/me \
+  -H <span class="c-str">"x-api-key: pk_live_4f2c…"</span></code></pre>
+
+      <pre><code>{
+  <span class="c-key">"company"</span>:       <span class="c-str">"Your Company Ltd"</span>,
+  <span class="c-key">"environment"</span>:   <span class="c-str">"live"</span>,          <span class="c-com">// or "test"</span>
+  <span class="c-key">"scopes"</span>:        [<span class="c-str">"release:write"</span>, <span class="c-str">"release:read"</span>],
+  <span class="c-key">"linkedAccount"</span>: { <span class="c-key">"id"</span>: <span class="c-str">"66e7…"</span>, <span class="c-key">"name"</span>: <span class="c-str">"Your Company Ltd"</span> },
+  <span class="c-key">"webhookUrl"</span>:    <span class="c-str">"https://your-system.example.com/arp/webhook"</span>
+}</code></pre>
+
+      <p class="note">Everything you create belongs to your ARP Music account. You never see, and can never reach, anybody else&rsquo;s.</p>
+    </section>
+
+    <section id="test">
+      <h2 class="head">Test first</h2>
+      <p>Ask your account contact for a <strong>test key</strong>. You will get one that starts <code>pk_test_</code>, alongside your live key.</p>
+      <p>It is the same API, the same base URL, the same everything &mdash; the only difference is where what you write ends up.</p>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>With a test key</th><th>Live</th><th>Test</th></tr></thead>
+          <tbody>
+            <tr><td>Uploads reach storage</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Releases are created and readable by you</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Webhooks fire, signed the same way</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Reviewed by ARP Music before going further</td><td>Yes</td><td>&mdash;</td></tr>
+            <tr><td>Ever visible in a real catalogue or report</td><td>Yes</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">Test rows are hidden at the database level rather than filtered out by each screen, so there is no query anywhere that can accidentally include them. Nothing you do with a test key needs cleaning up, and nothing you do with it can be seen by anybody at ARP Music.</p>
+
+      <div class="call">
+        <p class="cap">The environment is in the key</p>
+        <p>A key pasted into the wrong config is visible on sight &mdash; <code>pk_test_…</code> against <code>pk_live_…</code> &mdash; rather than discovered later when rehearsal uploads turn up somewhere real. <code>GET /partner/me</code> also tells you which one you are holding.</p>
+      </div>
+
+      <h3>Every webhook event, on demand</h3>
+      <p>Approvals and rejections happen when a reviewer here gets to them, which is no use when you are testing a handler on a Tuesday afternoon. So move your own test release and watch your endpoint receive it.</p>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/releases/REL-2026-0412/simulate</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"status"</span>: <span class="c-str">"approved"</span> }</code></pre>
+          <p>
+            <span class="pill">pending</span>
+            <span class="pill">needs_fix</span>
+            <span class="pill">approved</span>
+            <span class="pill">delivered</span>
+            <span class="pill">rejected</span>
+            <span class="pill">taken_down</span>
+          </p>
+          <p class="note">Each fires the same webhook a real change does, signed the same way. Add a <code>reason</code> on <code>rejected</code> or <code>needs_fix</code> to test how you render one.</p>
+          <p class="note">Test keys only, and only on your own test releases. A live key gets a 403 &mdash; live releases move when a reviewer moves them.</p>
+        </div>
+      </div>
+
+      <h3>Before you go live</h3>
+      <p>Worth having done at least once against the test key:</p>
+      <ul>
+        <li>A multipart upload with one part deliberately retried.</li>
+        <li>A repeated <code>POST /partner/releases</code> with the same <code>externalId</code> &mdash; confirm you get the same release back rather than a second one.</li>
+        <li>A webhook with a deliberately wrong signature &mdash; confirm you reject it.</li>
+        <li>A webhook replayed several minutes later &mdash; confirm the timestamp check rejects it.</li>
+        <li><code>?updatedSince=</code> after leaving your endpoint down for a while &mdash; confirm you catch up.</li>
+        <li>A <code>429</code>, by exceeding a limit on purpose &mdash; confirm you wait rather than hammer.</li>
+      </ul>
+      <p class="note">Then send us one real release on the live key before switching the rest across.</p>
+    </section>
+
+    <section id="upload">
+      <h2 class="head"><span class="step">1</span> Send us the file</h2>
+      <p>You can skip this section entirely if you host your own media: send us the URL in step&nbsp;2. Both are supported and always will be.</p>
+
+      <h3>Small files, under 50 MB, with a known size</h3>
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/uploads</span>
+        </div>
+        <div class="ep-body">
+          <div class="two">
+            <div>
+              <p class="cap">Request</p>
+              <pre><code>{
+  <span class="c-key">"fileName"</span>:    <span class="c-str">"cover.jpg"</span>,
+  <span class="c-key">"contentType"</span>: <span class="c-str">"image/jpeg"</span>,
+  <span class="c-key">"category"</span>:    <span class="c-str">"image"</span>,
+  <span class="c-key">"size"</span>:        204800
+}</code></pre>
+            </div>
+            <div>
+              <p class="cap">Response</p>
+              <pre><code>{
+  <span class="c-key">"mode"</span>:      <span class="c-str">"single"</span>,
+  <span class="c-key">"uploadUrl"</span>: <span class="c-str">"https://…"</span>,
+  <span class="c-key">"fileUrl"</span>:   <span class="c-str">"https://…"</span>
+}</code></pre>
+            </div>
+          </div>
+          <p class="note">PUT the bytes to <code>uploadUrl</code>. Use <code>fileUrl</code> in step&nbsp;2. The URL expires after 15 minutes.</p>
+        </div>
+      </div>
+
+      <h3>Large files</h3>
+      <p>Anything 50&nbsp;MB or larger comes back as a multipart upload, in 10&nbsp;MB parts. So does anything sent without a <code>size</code>: an unknown size is treated as large, because guessing small and being wrong fails at the end of a long upload rather than at the start.</p>
+      <p class="note"><code>fileName</code> is the only required field.</p>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/uploads</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{
+  <span class="c-key">"mode"</span>:     <span class="c-str">"multipart"</span>,
+  <span class="c-key">"key"</span>:      <span class="c-str">"partner-uploads/…"</span>,
+  <span class="c-key">"uploadId"</span>: <span class="c-str">"…"</span>,
+  <span class="c-key">"partSize"</span>: 10485760,
+  <span class="c-key">"fileUrl"</span>:  <span class="c-str">"https://…"</span>
+}</code></pre>
+          <p>Split the file into <code>partSize</code> chunks.</p>
+        </div>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/uploads/parts</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"key"</span>: <span class="c-str">"…"</span>, <span class="c-key">"uploadId"</span>: <span class="c-str">"…"</span>, <span class="c-key">"partNumbers"</span>: [1, 2, 3] }</code></pre>
+          <p>Ask a block at a time rather than all at once &mdash; a URL signed too long before it is reached will have expired. PUT each chunk and keep the <code>ETag</code> from the response header.</p>
+        </div>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/uploads/complete</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{
+  <span class="c-key">"key"</span>: <span class="c-str">"…"</span>, <span class="c-key">"uploadId"</span>: <span class="c-str">"…"</span>,
+  <span class="c-key">"parts"</span>: [{ <span class="c-key">"partNumber"</span>: 1, <span class="c-key">"eTag"</span>: <span class="c-str">"…"</span> }]
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="create">
+      <h2 class="head"><span class="step">2</span> Create the release</h2>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/releases</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{
+  <span class="c-key">"externalId"</span>:       <span class="c-str">"REL-2026-0412"</span>,
+  <span class="c-key">"title"</span>:            <span class="c-str">"AKASHE BATASE"</span>,
+  <span class="c-key">"primaryArtist"</span>:    [<span class="c-str">"Moriom Islam"</span>],
+  <span class="c-key">"featuringArtists"</span>: [<span class="c-str">"Moon"</span>],
+  <span class="c-key">"label"</span>:            <span class="c-str">"TEC Music"</span>,
+  <span class="c-key">"genre"</span>:            [<span class="c-str">"Country Pop"</span>],
+  <span class="c-key">"language"</span>:         <span class="c-str">"Bengali"</span>,
+  <span class="c-key">"releaseDate"</span>:      <span class="c-str">"2026-08-25T12:00:00Z"</span>,
+  <span class="c-key">"channel"</span>:          <span class="c-str">"ArtistNameVEVO"</span>,
+  <span class="c-key">"videoUrl"</span>:         <span class="c-str">"https://…"</span>,
+  <span class="c-key">"imageUrl"</span>:         <span class="c-str">"https://…"</span>
+}</code></pre>
+        </div>
+      </div>
+
+      <h3>Every field</h3>
+      <p>Three are required. Everything else is optional and simply absent from the release if you leave it out.</p>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>title</code></td><td>string</td><td><strong>Yes</strong></td><td>The release title. Trimmed.</td></tr>
+            <tr><td><code>primaryArtist</code></td><td>string[]</td><td><strong>Yes</strong></td><td>At least one name. A comma-separated string works too.</td></tr>
+            <tr><td><code>videoUrl</code></td><td>url</td><td><strong>Yes</strong></td><td>A URL you host, or the <code>fileUrl</code> from step&nbsp;1. <code>video</code> is accepted as an alias.</td></tr>
+            <tr><td><code>externalId</code></td><td>string</td><td>No</td><td>Your own id. See idempotency below.</td></tr>
+            <tr><td><code>imageUrl</code></td><td>url</td><td>No</td><td>Cover art. <code>image</code> and <code>thumbnail</code> are accepted as aliases.</td></tr>
+            <tr><td><code>featuringArtists</code></td><td>string[]</td><td>No</td><td>Comma-separated string also accepted.</td></tr>
+            <tr><td><code>label</code></td><td>string</td><td>No</td><td></td></tr>
+            <tr><td><code>genre</code></td><td>string[]</td><td>No</td><td>Comma-separated string also accepted.</td></tr>
+            <tr><td><code>language</code></td><td>string</td><td>No</td><td></td></tr>
+            <tr><td><code>releaseDate</code></td><td>ISO 8601</td><td>No</td><td>Must carry a timezone &mdash; see below.</td></tr>
+            <tr><td><code>isrc</code></td><td>string</td><td>No</td><td>Send your own if you have one; otherwise leave it blank.</td></tr>
+            <tr><td><code>channel</code></td><td>string</td><td>No</td><td>The VEVO channel name it should go to.</td></tr>
+            <tr><td><code>description</code></td><td>string</td><td>No</td><td></td></tr>
+            <tr><td><code>keywords</code></td><td>string[]</td><td>No</td><td>Comma-separated string also accepted.</td></tr>
+            <tr><td><code>composer</code>, <code>producer</code>, <code>editor</code>, <code>musicDirector</code></td><td>string</td><td>No</td><td></td></tr>
+            <tr><td><code>copyrightYear</code></td><td>number</td><td>No</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="call">
+        <p class="cap">Anything else in the body is ignored</p>
+        <p>Deliberately: <code>status</code> and which environment a release belongs to are ours. A release always arrives <code>pending</code>, and which environment it lands in comes from the key, never from the body.</p>
+      </div>
+
+      <h3>Send it twice on purpose</h3>
+      <p><code>externalId</code> is your own id, and sending it buys you two things: a repeated call returns the release you already made &mdash; same id, <code>200</code> and <span class="pill">Already created</span> rather than <code>201</code> &mdash; instead of creating a second one, and you can look anything up by your id rather than storing ours.</p>
+      <p class="note">Without it, a retried request after a timeout creates a second release. With it, retrying is safe.</p>
+
+      <div class="call">
+        <p class="cap">releaseDate must carry a timezone</p>
+        <p><code>2026-08-25T12:00:00Z</code> or <code>2026-08-25T18:00:00+06:00</code>. A date with no zone is rejected outright, rather than silently read as UTC.</p>
+      </div>
+    </section>
+
+    <section id="edit">
+      <h2 class="head"><span class="step">2b</span> Fix and resubmit</h2>
+      <p>If a reviewer sends a release back with <code>needs_fix</code>, correct it and it returns to review automatically.</p>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb patch">PATCH</span>
+          <span class="ep-path">/partner/releases/REL-2026-0412</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"primaryArtist"</span>: [<span class="c-str">"Corrected Name"</span>] }</code></pre>
+          <p>Send only the fields that changed &mdash; anything else on the release is left untouched. This only works while the release is in <code>needs_fix</code>; any other status returns <code>409</code>. On success the release goes back to <code>pending</code> and <code>reason</code> is cleared.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="follow">
+      <h2 class="head"><span class="step">3</span> Follow what happens</h2>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb get">GET</span>
+          <span class="ep-path">/partner/releases?updatedSince=2026-08-19T00:00:00Z</span>
+        </div>
+        <div class="ep-body">
+          <p><code>updatedSince</code> is how a dashboard catches up after being offline: everything that changed, nothing that did not. Also filter by <code>isrc</code> or <code>externalId</code>, and page with <code>page</code>/<code>limit</code> (max 100).</p>
+        </div>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb get">GET</span>
+          <span class="ep-path">/partner/releases/REL-2026-0412</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{
+  <span class="c-key">"id"</span>:                     <span class="c-str">"66e7…"</span>,
+  <span class="c-key">"externalId"</span>:             <span class="c-str">"REL-2026-0412"</span>,
+  <span class="c-key">"isrc"</span>:                   <span class="c-str">"QT6X62690001"</span>,
+  <span class="c-key">"isrcAssignedByPlatform"</span>: false,
+  <span class="c-key">"status"</span>:                 <span class="c-str">"approved"</span>,
+  <span class="c-key">"statusDetail"</span>:           <span class="c-str">"Approved."</span>,
+  <span class="c-key">"reason"</span>:                 null,
+  <span class="c-key">"videoUrl"</span>:                null
+}</code></pre>
+          <p class="note">Our id or yours &mdash; both work in the path, and so does the <code>reference</code> we return.</p>
+        </div>
+      </div>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>id</code></td><td>string</td><td>Ours. Stable forever.</td></tr>
+            <tr><td><code>reference</code></td><td>string</td><td>A short number for quoting in an email.</td></tr>
+            <tr><td><code>externalId</code></td><td>string | null</td><td>Yours, if you sent one.</td></tr>
+            <tr><td><code>isrc</code></td><td>string | null</td><td>Null unless you supplied one.</td></tr>
+            <tr><td><code>status</code></td><td>enum</td><td>One of the six below.</td></tr>
+            <tr><td><code>statusDetail</code></td><td>string</td><td>The same thing in a sentence.</td></tr>
+            <tr><td><code>reason</code></td><td>string | null</td><td>Set on <code>needs_fix</code> and <code>rejected</code>.</td></tr>
+            <tr><td><code>videoUrl</code></td><td>url | null</td><td>The live link, present once delivered &mdash; not the file you sent.</td></tr>
+            <tr><td><code>createdAt</code> / <code>updatedAt</code></td><td>ISO 8601</td><td><code>updatedAt</code> is what <code>updatedSince</code> compares against.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>Status</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">pending</span></td><td>With us for review</td></tr>
+            <tr><td><span class="pill">needs_fix</span></td><td><code>reason</code> says what. <a href="#edit">Edit and resubmit</a></td></tr>
+            <tr><td><span class="pill">approved</span></td><td>Accepted</td></tr>
+            <tr><td><span class="pill">delivered</span></td><td>Live</td></tr>
+            <tr><td><span class="pill">rejected</span></td><td><code>reason</code> says why. Terminal</td></tr>
+            <tr><td><span class="pill">taken_down</span></td><td>Removed after being live</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="webhooks">
+      <h2 class="head">Or be told</h2>
+      <p>Set a webhook once and we call you whenever any of that changes &mdash; including when a reviewer here approves something, which is the case you cannot poll for usefully.</p>
+
+      <div class="call">
+        <p class="cap">Your webhook key is its own key</p>
+        <p>Managing a webhook uses a key with only the <code>webhook:manage</code> scope &mdash; never bundled with a release/upload/channel key. Ask your account contact for one specifically. It cannot create or read releases, and your release key cannot touch the webhook.</p>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb put">PUT</span>
+          <span class="ep-path">/partner/webhook</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"url"</span>: <span class="c-str">"https://your-system.example.com/arp/webhook"</span> }</code></pre>
+          <p>The response carries a signing secret. <strong>It is shown once, and it is NOT your API key</strong> &mdash; a different credential, used only to verify deliveries. The URL must be <code>https</code>.</p>
+        </div>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/webhook/test</span>
+        </div>
+        <div class="ep-body">
+          <p>Fires one signed test event immediately and reports back exactly what happened &mdash; use this before relying on any real event.</p>
+          <pre><code>{
+  <span class="c-key">"delivered"</span>: false,
+  <span class="c-key">"responseStatus"</span>: 404,
+  <span class="c-key">"error"</span>: <span class="c-str">"Your endpoint answered 404."</span>
+}</code></pre>
+        </div>
+      </div>
+
+      <p class="note">Lost the secret? Call <code>PUT /partner/webhook</code> again with <code>{"rotateSecret": true}</code> &mdash; both the old and new secret verify for 24 hours so nothing breaks mid-rotation.</p>
+
+      <h3>Events</h3>
+      <p>
+        <span class="pill">release.needs_fix</span>
+        <span class="pill">release.approved</span>
+        <span class="pill">release.delivered</span>
+        <span class="pill">release.rejected</span>
+        <span class="pill">release.taken_down</span>
+        <span class="pill">channel.approved</span>
+        <span class="pill">channel.rejected</span>
+      </p>
+      <p class="note">Every delivery has the same envelope:</p>
+      <pre><code>{
+  <span class="c-key">"event"</span>:       <span class="c-str">"release.approved"</span>,
+  <span class="c-key">"environment"</span>: <span class="c-str">"live"</span>,
+  <span class="c-key">"sentAt"</span>:      <span class="c-str">"2026-08-25T12:00:03.000Z"</span>,
+  <span class="c-key">"data"</span>:        { <span class="c-com">// same shape as GET /partner/releases/:id</span> }
+}</code></pre>
+
+      <h3>Verify every delivery</h3>
+      <pre><code><span class="c-com">// Headers: x-arp-timestamp, x-arp-signature: v1=&lt;hex&gt;</span>
+<span class="c-key">const</span> expected = <span class="c-str">'v1='</span> + crypto
+  .createHmac(<span class="c-str">'sha256'</span>, SECRET)
+  .update(<span class="c-str">`${req.headers['x-arp-timestamp']}.${rawBody}`</span>)
+  .digest(<span class="c-str">'hex'</span>);
+
+<span class="c-com">// Constant-time, and refuse a timestamp older than five minutes.</span>
+<span class="c-key">if</span> (!crypto.timingSafeEqual(
+      Buffer.from(expected), Buffer.from(signature))) <span class="c-key">return</span> 401;</code></pre>
+      <p class="note">Use the raw request body bytes, not a re-serialized copy &mdash; re-serializing can reorder keys and silently break every signature.</p>
+
+      <p>Reply <code>2xx</code> quickly and do the work afterwards. We retry up to four times over about a minute, then stop &mdash; and nothing is lost, because everything a webhook carries is also readable from the API.</p>
+    </section>
+
+    <section id="channels">
+      <h2 class="head">VEVO channels</h2>
+      <p>A channel is requested, not created: we review it and set it up with VEVO. You see <code>pending</code>, then <code>approved</code> with the live details, or <code>rejected</code>.</p>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/channels</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"channelName"</span>: <span class="c-str">"ArtistNameVEVO"</span>, <span class="c-key">"artistName"</span>: <span class="c-str">"Moriom Islam"</span> }</code></pre>
+          <p class="note"><code>channelName</code> is required; <code>artistName</code> is optional but tells the reviewer who it is for. Requesting the same name again while a prior request is <code>pending</code> or <code>approved</code> returns <code>409</code>; a <code>rejected</code> name can be resubmitted.</p>
+        </div>
+      </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb get">GET</span>
+          <span class="ep-path">/partner/channels</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="keys">
+      <h2 class="head">Keys and scopes</h2>
+      <p>A key carries only what it needs. Tell us which of these you use and we will issue it accordingly.</p>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>Scope</th><th>Allows</th></tr></thead>
+          <tbody>
+            <tr><td><code>release:write</code></td><td>Create and edit releases</td></tr>
+            <tr><td><code>release:read</code></td><td>Read status, ISRC, reasons</td></tr>
+            <tr><td><code>upload:write</code></td><td>Get upload URLs</td></tr>
+            <tr><td><code>channel:write</code></td><td>Request channels</td></tr>
+            <tr><td><code>channel:read</code></td><td>Read channels</td></tr>
+            <tr><td><code>webhook:manage</code></td><td>Set the webhook &mdash; issued on its own key only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="call">
+        <p class="cap">Keep the key server-side</p>
+        <p>It is a bearer credential: whoever holds it is you. Never put one in a browser, a mobile app, or a repository.</p>
+        <p>If a key is exposed, tell us. We issue a replacement and revoke the old one.</p>
+      </div>
+    </section>
+
+    <section id="limits">
+      <h2 class="head">Rate limits</h2>
+      <p>Counted per key, per minute.</p>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th>Call</th><th class="num">Per minute</th></tr></thead>
+          <tbody>
+            <tr><td>Create or edit a release</td><td class="num">120</td></tr>
+            <tr><td>List releases</td><td class="num">300</td></tr>
+            <tr><td>Read one release</td><td class="num">600</td></tr>
+            <tr><td>Start an upload</td><td class="num">120</td></tr>
+            <tr><td>Sign upload parts</td><td class="num">600</td></tr>
+            <tr><td>Request a channel</td><td class="num">30</td></tr>
+            <tr><td>List channels</td><td class="num">120</td></tr>
+            <tr><td>Read the webhook</td><td class="num">60</td></tr>
+            <tr><td>Set the webhook</td><td class="num">20</td></tr>
+            <tr><td>Simulate a status (test keys)</td><td class="num">60</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">A <code>429</code> carries <code>RateLimit-Reset</code>. Wait for it rather than retrying immediately.</p>
+    </section>
+
+    <section id="errors">
+      <h2 class="head">Errors</h2>
+      <p>Every failure is JSON with a sentence meant to be read, not a code to look up.</p>
+
+      <pre><code>{
+  <span class="c-key">"success"</span>: false,
+  <span class="c-key">"message"</span>: <span class="c-str">"videoUrl is required"</span>,
+  <span class="c-key">"errorMessages"</span>: [
+    { <span class="c-key">"path"</span>: <span class="c-str">"videoUrl"</span>, <span class="c-key">"message"</span>: <span class="c-str">"videoUrl is required"</span> }
+  ]
+}</code></pre>
+
+      <div class="tw">
+        <table>
+          <thead><tr><th class="num">Code</th><th>Means</th></tr></thead>
+          <tbody>
+            <tr><td class="num">400</td><td>Something in the request. The message says what</td></tr>
+            <tr><td class="num">401</td><td>Key missing, wrong, or revoked</td></tr>
+            <tr><td class="num">403</td><td>Key lacks the scope, or is a live key on a test-only route</td></tr>
+            <tr><td class="num">404</td><td>Not yours, or not there</td></tr>
+            <tr><td class="num">409</td><td>Conflict &mdash; a duplicate channel request, or editing a release that isn't in <code>needs_fix</code></td></tr>
+            <tr><td class="num">429</td><td>Too fast</td></tr>
+            <tr><td class="num">500</td><td>Ours, not yours. Safe to retry &mdash; a create is idempotent on <code>externalId</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      Questions or a test key &mdash; talk to your ARP Music account contact.
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

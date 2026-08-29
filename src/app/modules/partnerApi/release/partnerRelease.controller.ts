@@ -23,6 +23,15 @@ export const getById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, { statusCode: 200, success: true, message: 'OK', data });
 });
 
+export const update = catchAsync(async (req: Request, res: Response) => {
+  const data = await PartnerReleaseService.updateReleaseNeedingFix(
+    req.partnerKey!,
+    req.params.id,
+    req.body,
+  );
+  sendResponse(res, { statusCode: 200, success: true, message: 'Release updated and returned to review', data });
+});
+
 export const simulate = catchAsync(async (req: Request, res: Response) => {
   const data = await PartnerReleaseService.simulateReleaseTransition(
     req.partnerKey!,

@@ -59,6 +59,40 @@ export const createReleaseSchema = z
     path: ['videoUrl'],
   });
 
+// Same fields as create, all optional — a partner fixing a `needs_fix`
+// release sends only what changed. §2.4: needs_fix is "editable, returns to
+// review", which this endpoint is what makes true.
+export const updateReleaseSchema = z
+  .object({
+    title: z.string().min(1).optional(),
+    primaryArtist: stringArray().optional(),
+    videoUrl: z.string().url().optional(),
+    video: z.string().url().optional(),
+
+    imageUrl: z.string().url().optional(),
+    image: z.string().url().optional(),
+    thumbnail: z.string().url().optional(),
+    featuringArtists: stringArray().optional(),
+    label: z.string().optional(),
+    genre: stringArray().optional(),
+    language: z.string().optional(),
+    releaseDate: isoDateWithTimezone.optional(),
+    isrc: z.string().optional(),
+    channel: z.string().optional(),
+    description: z.string().optional(),
+    keywords: stringArray().optional(),
+    composer: z.string().optional(),
+    producer: z.string().optional(),
+    editor: z.string().optional(),
+    musicDirector: z.string().optional(),
+    copyrightYear: z.coerce.number().int().optional(),
+  })
+  .transform(body => {
+    const sourceVideoUrl = body.videoUrl || body.video;
+    const imageUrl = body.imageUrl || body.image || body.thumbnail;
+    return { ...body, sourceVideoUrl, imageUrl };
+  });
+
 export const simulateReleaseSchema = z
   .object({
     status: z.enum(['pending', 'needs_fix', 'approved', 'delivered', 'rejected', 'taken_down']),

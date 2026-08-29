@@ -6,6 +6,7 @@ import {
   createReleaseSchema,
   listReleaseQuerySchema,
   simulateReleaseSchema,
+  updateReleaseSchema,
 } from './partnerRelease.validation';
 import * as PartnerReleaseController from './partnerRelease.controller';
 
@@ -34,6 +35,14 @@ router.get(
   requirePartnerScope('release:read'),
   partnerRateLimit('releaseRead'),
   PartnerReleaseController.getById,
+);
+
+router.patch(
+  '/:id',
+  requirePartnerScope('release:write'),
+  partnerRateLimit('releaseCreate'),
+  validatePartnerBody(updateReleaseSchema),
+  PartnerReleaseController.update,
 );
 
 router.post(

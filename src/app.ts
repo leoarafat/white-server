@@ -74,6 +74,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50000mb' }));
 app.use(bodyParser.json());
 app.use(csrfGuard);
 app.use(express.static('uploads'));
+app.use('/docs', express.static('public/docs'));
 cleanupOrphanedVevoTempFiles();
 // Public Smart Link pages live at the app root (/l/:slug) — mounted before the
 // module router so the raw-HTML responses aren't wrapped by the API layer.

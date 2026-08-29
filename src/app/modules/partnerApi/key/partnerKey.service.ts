@@ -33,6 +33,22 @@ export const createPartnerKey = async (input: CreateKeyInput) => {
     throw new ApiError(httpStatus.BAD_REQUEST, `Unknown scope: ${invalidScope}`);
   }
 
+  if (input.scopes.length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'At least one scope is required');
+  }
+
+  // Webhook management is kept on its own, single-purpose key — never bundled
+  // with release/upload/channel scopes. This is the same least-privilege
+  // pattern the reference integration confirmed a real provider uses for
+  // exactly this credential, made mandatory here rather than left as an
+  // admin convention.
+  if (input.scopes.includes('webhook:manage') && input.scopes.length > 1) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'webhook:manage must be issued on its own key, not combined with other scopes',
+    );
+  }
+
   const { plaintext, hash, prefix } = generatePartnerKey(input.environment);
 
   const created = await PartnerKey.create({
