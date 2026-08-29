@@ -37,7 +37,7 @@ const approveOrReject = async (payload: any) => {
           sendEmail({
             email: isExistUser.email,
             subject:
-              'Welcome To ANS Music! Your Registration Has Been Approved',
+              'Welcome To ARP Music! Your Registration Has Been Approved',
             html: approvedEmailBody(data),
           });
         } catch (error: any) {

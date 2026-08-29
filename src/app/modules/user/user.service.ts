@@ -51,7 +51,7 @@ const registrationUser = async (payload: IRegistration) => {
   try {
     sendEmail({
       email: user.email,
-      subject: ' [Urgent] Please active your ANS Music account.',
+      subject: ' [Urgent] Please active your ARP Music account.',
       html: registrationSuccessEmailBody(data),
     });
   } catch (error: any) {
@@ -664,7 +664,10 @@ const givePermission = async (req: Request) => {
   if (masterShareRate !== undefined) {
     const rate = Number(masterShareRate);
     if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
-      throw new ApiError(400, 'Revenue share must be a number between 0 and 100');
+      throw new ApiError(
+        400,
+        'Revenue share must be a number between 0 and 100',
+      );
     }
     findUser.masterShareRate = String(rate);
   }
@@ -678,7 +681,10 @@ const givePermission = async (req: Request) => {
   if (revenueRate !== undefined) {
     const rate = Number(revenueRate);
     if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
-      throw new ApiError(400, 'Revenue rate must be a number between 0 and 100');
+      throw new ApiError(
+        400,
+        'Revenue rate must be a number between 0 and 100',
+      );
     }
     findUser.revenueRate = String(rate);
   }

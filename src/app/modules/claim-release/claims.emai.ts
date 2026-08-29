@@ -36,7 +36,7 @@ export const claimRequestEmailBody = () => `
   <body>
     <div class="container">
       <h1>A New Claims Request Has Arrived</h1>
-      <p>Thank you,<br>ANS Music Team</p>
+      <p>Thank you,<br>ARP Music Team</p>
     </div>
   </body>
   </html>

@@ -122,7 +122,7 @@ export const renderPublicLinkPage = (view: PublicLinkView) => {
     <div class="dsp-list">
       ${dspButtons}
     </div>
-    <p class="brand">Powered by <a href="/">ANS Music</a></p>
+    <p class="brand">Powered by <a href="/">ARP Music</a></p>
   </div>
 </body>
 </html>`;

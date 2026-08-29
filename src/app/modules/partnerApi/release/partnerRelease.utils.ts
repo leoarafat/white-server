@@ -6,7 +6,10 @@ export const generateReleaseReference = (): string =>
 export const toPublicRelease = (doc: any) => ({
   id: doc._id,
   reference: doc.reference,
-  externalId: doc.externalId,
+  // Stored as truly absent (never `null`) so the sparse uniqueness index
+  // only applies to releases that actually have one — coerce to `null` only
+  // here, for the response contract.
+  externalId: doc.externalId ?? null,
   title: doc.title,
   isrc: doc.isrc,
   isrcAssignedByPlatform: doc.isrcAssignedByPlatform,

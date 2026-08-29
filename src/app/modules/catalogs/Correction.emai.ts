@@ -65,11 +65,11 @@ export const correctionEmailBody = (user: any, content, message: string) => {
 <tr><td height="26" style="height:26px;line-height:26px;font-size:0;">&nbsp;</td></tr>
 <tr><td class="om-pad" style="padding:0 32px;font-family:Helvetica, Arial, 'Helvetica Neue', sans-serif;font-size:15px;line-height:24px;mso-line-height-rule:exactly;color:#1c1c1c;color:#6f6f6b;font-size:14px;line-height:22px;">Questions? Reply to this email or write to <a href="mailto:support@ansmusic.io" style="color:#1c1c1c;text-decoration:underline;">support@ansmusic.io</a>.</td></tr>
 <tr><td height="22" style="height:22px;line-height:22px;font-size:0;">&nbsp;</td></tr>
-<tr><td class="om-pad" style="padding:0 32px;font-family:Helvetica, Arial, 'Helvetica Neue', sans-serif;font-size:15px;line-height:24px;mso-line-height-rule:exactly;color:#1c1c1c;">Thanks and regards,<br><span style="color:#6f6f6b;">ANS Music Content Management Team</span></td></tr>
+<tr><td class="om-pad" style="padding:0 32px;font-family:Helvetica, Arial, 'Helvetica Neue', sans-serif;font-size:15px;line-height:24px;mso-line-height-rule:exactly;color:#1c1c1c;">Thanks and regards,<br><span style="color:#6f6f6b;">ARP Music Content Management Team</span></td></tr>
 <tr><td height="36" style="height:36px;line-height:36px;font-size:0;">&nbsp;</td></tr>
 <tr><td style="padding:0 32px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:collapse;"><tbody><tr><td height="1" style="height:1px;line-height:1px;font-size:0;background-color:#e3e3de;">&nbsp;</td></tr></tbody></table></td></tr>
   <tr><td class="om-pad" style="padding:22px 32px 26px 32px;font-family:Helvetica, Arial, 'Helvetica Neue', sans-serif;font-size:12px;line-height:19px;mso-line-height-rule:exactly;color:#6f6f6b;">
-    ANS Music · <a href="mailto:support@ansmusic.io" style="color:#6f6f6b;text-decoration:underline;">support@ansmusic.io</a><br>
+    ARP Music · <a href="mailto:support@ansmusic.io" style="color:#6f6f6b;text-decoration:underline;">support@ansmusic.io</a><br>
     30 N Gould St Ste R, Sheridan, WY 82801, USA<br>
     <a href="https://app.ansbackstage.com/preferences" style="color:#6f6f6b;text-decoration:underline;">Email preferences</a> · <a href="https://app.ansbackstage.com/unsubscribe" style="color:#6f6f6b;text-decoration:underline;">Unsubscribe</a>
   </td></tr>

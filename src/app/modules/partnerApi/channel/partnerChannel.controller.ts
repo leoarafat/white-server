@@ -12,3 +12,12 @@ export const list = catchAsync(async (req: Request, res: Response) => {
   const data = await PartnerChannelService.listChannels(req.partnerKey!);
   sendResponse(res, { statusCode: 200, success: true, message: 'OK', data });
 });
+
+export const simulate = catchAsync(async (req: Request, res: Response) => {
+  const data = await PartnerChannelService.simulateChannelTransition(
+    req.partnerKey!,
+    req.params.id,
+    req.body,
+  );
+  sendResponse(res, { statusCode: 200, success: true, message: 'Simulated transition applied', data });
+});

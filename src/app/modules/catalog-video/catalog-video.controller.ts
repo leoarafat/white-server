@@ -21,6 +21,15 @@ const pendingSongs = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const inReviewSongs = catchAsync(async (req: Request, res: Response) => {
+  const result = await catalogVideoService.inReviewSongs(req.query);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
 const correctionSongs = catchAsync(async (req: Request, res: Response) => {
   const result = await catalogVideoService.correctionSongs(req.query);
   sendResponse(res, {
@@ -50,6 +59,15 @@ const songInspection = catchAsync(async (req: Request, res: Response) => {
 });
 const distributeMusic = catchAsync(async (req: Request, res: Response) => {
   const result = await catalogVideoService.distributeMusic(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
+const moveToInReview = catchAsync(async (req: Request, res: Response) => {
+  const result = await catalogVideoService.moveToInReview(req);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -141,10 +159,12 @@ const correctionData = catchAsync(async (req: Request, res: Response) => {
 export const catalogVideoController = {
   releaseSongs,
   pendingSongs,
+  inReviewSongs,
   correctionSongs,
   takeDownSongs,
   songInspection,
   distributeMusic,
+  moveToInReview,
   editMusic,
   makeTakeDown,
   removeTakeDown,

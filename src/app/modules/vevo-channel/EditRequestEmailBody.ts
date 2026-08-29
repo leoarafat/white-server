@@ -45,7 +45,7 @@ export const EditRequestEmailBody = (channelData: any) => `
             <tr>
               <td align="center" valign="top" style="padding: 40px 0 30px 0;">
                 <a href="https://www.ansmusiclimited.com" target="_blank">
-                  <img src="https://res.cloudinary.com/arafatleo/image/upload/v1732420546/ans_music_logo_cslzpg.png" alt="ANS Music Limited Logo" width="200" style="display: block;" border="0" />
+                  <img src="https://res.cloudinary.com/arafatleo/image/upload/v1732420546/ans_music_logo_cslzpg.png" alt="ARP Music Limited Logo" width="200" style="display: block;" border="0" />
                 </a>
               </td>
             </tr>
@@ -93,7 +93,7 @@ export const EditRequestEmailBody = (channelData: any) => `
                       <p>Feel free to reach out to our support team if you have any questions or need further assistance.</p>
                       <p>Email Us: <a href="mailto:support@ansmusiclimited.com" style="color:#3f51b5; text-decoration:underline;">support@ansmusiclimited.com</a></p>
                       <p>Thank you for being a valued partner!</p>
-                      <p>Best Regards,<br/>ANS Music Team</p>
+                      <p>Best Regards,<br/>ARP Music Team</p>
                     </td>
                   </tr>
                   
@@ -119,7 +119,7 @@ export const EditRequestEmailBody = (channelData: any) => `
           <table border="0" cellpadding="0" cellspacing="0" width="600" class="responsive-table">
             <tr>
               <td align="center" style="font-family: Arial, sans-serif; font-size:12px; color:#888888;">
-                &copy; ${new Date().getFullYear()} ANS Music Limited. All rights reserved.<br/>
+                &copy; ${new Date().getFullYear()} ARP Music Limited. All rights reserved.<br/>
                 <a href="mailto:support@ansmusiclimited.com" target="_blank" style="color:#3f51b5; text-decoration:underline;">Contact Support</a>
               </td>
             </tr>

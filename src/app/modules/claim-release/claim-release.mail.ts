@@ -45,7 +45,7 @@ export const youtubeRequestEmailBody = (data: any) => `
     <p>You can view more details and process the ${data.type} by logging into your account.</p>
     <a href="https://app.ansbackstage.com" class="button">Log In to Your Account</a>
     <p>If you have any questions or concerns, please don't hesitate to contact us.</p>
-    <p>Thank you,<br>ANS Music Team</p>
+    <p>Thank you,<br>ARP Music Team</p>
   </div>
 </body>
 </html>

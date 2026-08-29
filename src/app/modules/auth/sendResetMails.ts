@@ -15,7 +15,7 @@ export async function sendEmail(to: string, html: string) {
   const sendSmtpEmail = {
     to: [{ email: to }],
     sender: {
-      name: config.smtp.NAME || 'ANS Music',
+      name: config.smtp.NAME || 'ARP Music',
       email: config.brevo.SENDER_EMAIL || 'no-reply@ans.digital',
     },
     subject: 'Reset Password Link',

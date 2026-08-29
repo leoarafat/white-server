@@ -372,7 +372,7 @@
 
 //     videoResource
 //       .ele('CourtesyLine', { IsDefault: 'true' })
-//       .txt(`A ${video.label || 'ANS Music'} release.`)
+//       .txt(`A ${video.label || 'ARP Music'} release.`)
 //       .up();
 //     videoResource.ele('Duration').txt(durationIso).up();
 //     videoResource
@@ -490,7 +490,7 @@
 
 //     imageResource
 //       .ele('CourtesyLine', { IsDefault: 'true' })
-//       .txt(`A ${video.label || 'ANS Music'} release.`)
+//       .txt(`A ${video.label || 'ARP Music'} release.`)
 //       .up();
 //     imageResource
 //       .ele('ParentalWarningType', { IsDefault: 'true' })
@@ -639,7 +639,7 @@
 
 //     mainRelease
 //       .ele('CourtesyLine', { IsDefault: 'true' })
-//       .txt(`A ${video.label || 'ANS Music'} release.`)
+//       .txt(`A ${video.label || 'ARP Music'} release.`)
 //       .up();
 //     mainRelease.ele('Duration').txt('PT4M17S').up(); // Note: Different from video duration to match sample
 //     mainRelease

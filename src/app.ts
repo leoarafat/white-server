@@ -83,7 +83,7 @@ app.use('/l', SmartLinkPublicRoutes);
 app.use('/', routes);
 
 app.get('/', async (req: Request, res: Response) => {
-  res.json('Hey, Welcome to ANS Music Distribution Server');
+  res.json('Hey, Welcome to ARP Music Distribution Server');
 });
 
 app.use(globalErrorHandler);

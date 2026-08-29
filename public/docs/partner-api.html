@@ -639,6 +639,17 @@
           <span class="ep-path">/partner/channels</span>
         </div>
       </div>
+
+      <div class="ep">
+        <div class="ep-head">
+          <span class="verb post">POST</span>
+          <span class="ep-path">/partner/channels/:id/simulate</span>
+        </div>
+        <div class="ep-body">
+          <pre><code>{ <span class="c-key">"status"</span>: <span class="c-str">"approved"</span> }</code></pre>
+          <p class="note">Test keys only, on your own test channel requests &mdash; a live key gets <code>403</code>. Fires the same webhook a real approval/rejection would.</p>
+        </div>
+      </div>
     </section>
 
     <section id="keys">

@@ -356,7 +356,7 @@ export const generateDdexXml = async (video: IVideos): Promise<any> => {
 
     videoResource
       .ele('CourtesyLine', { IsDefault: 'true' })
-      .txt(`A ${video.label || 'ANS Music'} release.`)
+      .txt(`A ${video.label || 'ARP Music'} release.`)
       .up();
     videoResource.ele('Duration').txt(durationIso).up();
     videoResource
@@ -480,7 +480,7 @@ export const generateDdexXml = async (video: IVideos): Promise<any> => {
 
     imageResource
       .ele('CourtesyLine', { IsDefault: 'true' })
-      .txt(`A ${video.label || 'ANS Music'} release.`)
+      .txt(`A ${video.label || 'ARP Music'} release.`)
       .up();
     imageResource
       .ele('ParentalWarningType', { IsDefault: 'true' })
@@ -635,7 +635,7 @@ export const generateDdexXml = async (video: IVideos): Promise<any> => {
 
     mainRelease
       .ele('CourtesyLine', { IsDefault: 'true' })
-      .txt(`A ${video.label || 'ANS Music'} release.`)
+      .txt(`A ${video.label || 'ARP Music'} release.`)
       .up();
     mainRelease.ele('Duration').txt(durationIso).up();
     mainRelease

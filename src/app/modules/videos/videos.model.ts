@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { IVideos } from './videos.interface';
 import { attachStatusChangeHook } from '../notifications/notification.hooks';
+import { attachPartnerReleaseCatalogSync } from '../partnerApi/release/partnerRelease.catalogSync';
 
 const videosSchema = new Schema<IVideos>(
   {
@@ -197,7 +198,7 @@ const videosSchema = new Schema<IVideos>(
     },
     isApproved: {
       type: String,
-      enum: ['approved', 'rejected', 'pending'],
+      enum: ['approved', 'rejected', 'pending', 'in_review'],
       default: 'pending',
     },
     videoStatus: {
@@ -240,5 +241,6 @@ attachStatusChangeHook(videosSchema, 'video', {
   secondaryStatusField: 'videoStatus',
   secondaryTakeDownValue: 'take-down',
 });
+attachPartnerReleaseCatalogSync(videosSchema);
 
 export const Video = model<IVideos>('Video', videosSchema);

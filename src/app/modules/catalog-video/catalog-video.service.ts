@@ -171,6 +171,43 @@ const pendingSongs = async (query: Record<string, unknown>) => {
   };
 };
 //!
+const inReviewSongs = async (query: Record<string, unknown>) => {
+  const searchTerm = query?.searchTerm as string;
+  let matchedUserIds: Types.ObjectId[] = [];
+
+  if (searchTerm) {
+    const matchedUsers = await User.find({
+      $or: [
+        { email: { $regex: searchTerm, $options: 'i' } },
+        { name: { $regex: searchTerm, $options: 'i' } },
+      ],
+    }).select('_id');
+
+    matchedUserIds = matchedUsers.map(u => u._id as unknown as Types.ObjectId);
+  }
+  const videosQuery = new QueryBuilder(
+    Video.find({ isApproved: 'in_review' })
+      .populate('user')
+      .lean(),
+    query,
+  )
+    .search(
+      ['title', 'videoId', 'isrc', 'audioIsrc', 'upc', 'repertoireOwner', 'videoLink'],
+      matchedUserIds.length > 0 ? [{ user: { $in: matchedUserIds } }] : [],
+    )
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const videos = await videosQuery.modelQuery;
+  const meta = await videosQuery.countTotal();
+  return {
+    meta,
+    data: videos,
+  };
+};
+//!
 const correctionSongs = async (query: Record<string, unknown>) => {
   const searchTerm = query?.searchTerm as string;
   let matchedUserIds: Types.ObjectId[] = [];
@@ -292,6 +329,23 @@ const distributeMusic = async (req: Request) => {
       { new: true },
     );
   }
+};
+//!
+const moveToInReview = async (req: Request) => {
+  const { id } = req.params;
+  const admin = await Admin.findById(req.user?.userId);
+  if (!admin) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Only Admin Can Move To Review');
+  }
+  const video = await Video.findById(id);
+  if (!video) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+  }
+  return await Video.findOneAndUpdate(
+    { _id: id },
+    { isApproved: 'in_review' },
+    { new: true },
+  );
 };
 //!
 const editMusic = async (req: Request) => {
@@ -693,10 +747,12 @@ const transferToVevo = async (req: Request, res: Response) => {
 export const catalogVideoService = {
   releaseSongs,
   pendingSongs,
+  inReviewSongs,
   correctionSongs,
   takeDownSongs,
   songInspection,
   distributeMusic,
+  moveToInReview,
   editMusic,
   makeTakeDown,
   correctionContent,

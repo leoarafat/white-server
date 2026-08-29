@@ -95,11 +95,22 @@ export const updateReleaseSchema = z
 
 export const simulateReleaseSchema = z
   .object({
-    status: z.enum(['pending', 'needs_fix', 'approved', 'delivered', 'rejected', 'taken_down']),
+    status: z.enum(['pending', 'in_review', 'needs_fix', 'approved', 'delivered', 'rejected', 'taken_down']),
     reason: z.string().min(1).optional(),
   })
   .refine(body => !['needs_fix', 'rejected'].includes(body.status) || !!body.reason, {
     message: 'reason is required when simulating needs_fix or rejected',
+    path: ['reason'],
+  });
+
+export const adminUpdateReleaseStatusSchema = z
+  .object({
+    status: z.enum(['pending', 'in_review', 'needs_fix', 'approved', 'delivered', 'rejected', 'taken_down']),
+    reason: z.string().min(1).optional(),
+    videoUrl: z.string().url().optional(),
+  })
+  .refine(body => !['needs_fix', 'rejected'].includes(body.status) || !!body.reason, {
+    message: 'reason is required when setting needs_fix or rejected',
     path: ['reason'],
   });
 

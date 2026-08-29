@@ -39,7 +39,7 @@ export const labelApproveEmailBody = (labelData: any) => `
       <p>Label Name: ${labelData?.labelName}</p>
       <p>If you have any questions, please don't hesitate to reach out to our support team.
   Email Us: support@ansmusiclimited.com</p>
-      <p>Thanks and regards,<br>ANS Music Team</p>
+      <p>Thanks and regards,<br>ARP Music Team</p>
     </div>
   </body>
   </html>

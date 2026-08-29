@@ -46,6 +46,8 @@ import { ReportConverterRoutes } from '../modules/report-converter/report-conver
 import { PartnerApiRoutes } from '../modules/partnerApi/partnerApi.routes';
 import { PartnerKeyAdminRoutes } from '../modules/partnerApi/key/partnerKey.admin.routes';
 import { PartnerActivityAdminRoutes } from '../modules/partnerApi/activity/partnerActivity.admin.routes';
+import { PartnerReleaseAdminRoutes } from '../modules/partnerApi/release/partnerRelease.admin.routes';
+import { PartnerChannelAdminRoutes } from '../modules/partnerApi/channel/partnerChannel.admin.routes';
 
 const router = express.Router();
 
@@ -239,6 +241,14 @@ const moduleRoutes = [
   {
     path: '/partner-admin/activity',
     route: PartnerActivityAdminRoutes,
+  },
+  {
+    path: '/partner-admin/releases',
+    route: PartnerReleaseAdminRoutes,
+  },
+  {
+    path: '/partner-admin/channels',
+    route: PartnerChannelAdminRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

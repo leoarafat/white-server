@@ -6,6 +6,7 @@ import { generateReleaseReference, toPublicRelease } from './partnerRelease.util
 import { PartnerAuthContext } from '../../../middlewares/partnerAuth';
 import { dispatchWebhookEvent } from '../webhook/partnerWebhook.service';
 import { PartnerReleaseStatus } from './partnerRelease.model';
+import { Video } from '../../videos/videos.model';
 
 type CreateReleaseBody = {
   title: string;
@@ -59,7 +60,7 @@ const createWithUniqueReference = async (ctx: PartnerAuthContext, body: CreateRe
         partnerKey: ctx.keyId,
         environment: ctx.environment,
         reference: generateReleaseReference(),
-        externalId: body.externalId || null,
+        externalId: body.externalId || undefined,
         title: body.title,
         primaryArtist: body.primaryArtist,
         featuringArtists: body.featuringArtists || [],
@@ -187,11 +188,38 @@ export const updateReleaseNeedingFix = async (
   doc.reason = null;
   await doc.save();
 
+  // Already synced into the real catalogue (a live release past intake) —
+  // mirror the fix there too and drop it back into Pending Video, so the
+  // reviewer who sent the correction sees the resubmission in the same
+  // screen, not a stale "in Corrections" card.
+  if (doc.catalogVideoId) {
+    await Video.findOneAndUpdate(
+      { _id: doc.catalogVideoId },
+      {
+        title: doc.title,
+        primaryArtist: doc.primaryArtist,
+        featuringArtists: doc.featuringArtists,
+        label: doc.label || undefined,
+        genre: doc.genre.join(', ') || 'Unspecified',
+        language: doc.language || undefined,
+        isrc: doc.isrc || undefined,
+        vevoChannel: doc.channel || undefined,
+        description: doc.description || undefined,
+        keywords: doc.keywords,
+        video: doc.sourceVideoUrl,
+        image: doc.imageUrl || undefined,
+        isCorrection: false,
+        isApproved: 'pending',
+      },
+    );
+  }
+
   return toPublicRelease(doc);
 };
 
 const STATUS_DETAIL: Record<PartnerReleaseStatus, string> = {
   pending: 'Waiting for review.',
+  in_review: 'Being reviewed by ARP Music.',
   needs_fix: 'Needs changes before it can be approved.',
   approved: 'Approved.',
   delivered: 'Live.',
@@ -200,6 +228,7 @@ const STATUS_DETAIL: Record<PartnerReleaseStatus, string> = {
 };
 
 const STATUS_EVENT: Partial<Record<PartnerReleaseStatus, string>> = {
+  in_review: 'release.in_review',
   needs_fix: 'release.needs_fix',
   approved: 'release.approved',
   delivered: 'release.delivered',

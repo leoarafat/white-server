@@ -36,7 +36,7 @@ export const videoSongApproveEmailBody = () => `
   <body>
     <div class="container">
       <h1>Dear Admin, <br> You have received a new video song request for approval.</h1>
-      <p>Thanks and regards,<br>ANS Music Team</p>
+      <p>Thanks and regards,<br>ARP Music Team</p>
     </div>
   </body>
   </html>

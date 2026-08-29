@@ -2,11 +2,7 @@
 import { JwtPayload } from 'jsonwebtoken';
 import config from '../../../config';
 import bcrypt from 'bcrypt';
-import {
-  IChangePassword,
-  ILoginUser,
-  ILoginResult,
-} from './auth.interface';
+import { IChangePassword, ILoginUser, ILoginResult } from './auth.interface';
 import User from '../user/user.model';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import ApiError from '../../../errors/ApiError';
@@ -22,7 +18,7 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginResult> => {
   if (isUserExist?.accountStatus === 'lock') {
     throw new ApiError(
       400,
-      'Your account is locked! Please contact with ANS Music Help Center',
+      'Your account is locked! Please contact with ARP Music Help Center',
     );
   }
   const newUser = await User.findOne({ email });
@@ -49,7 +45,10 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginResult> => {
 const resolveUserForRefresh = async (subjectId: string) => {
   const user = await User.findById(subjectId).lean();
   if (!user) return null;
-  return { role: user.role, extraAccessClaims: { isVerified: user.isVerified } };
+  return {
+    role: user.role,
+    extraAccessClaims: { isVerified: user.isVerified },
+  };
 };
 
 const changePassword = async (

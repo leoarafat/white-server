@@ -14,6 +14,11 @@ export interface IPartnerChannel {
   status: PartnerChannelStatus;
   channelUrl: string | null;
   youtubeChannelId: string | null;
+  // Set once a *live* channel request is accepted — the id of the Channel
+  // document created in the existing VEVO-channel catalog so it flows
+  // through the same "Manage Channels" review screen every other channel
+  // request already does. Always null for test-environment requests.
+  catalogChannelId: mongoose.Types.ObjectId | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,6 +33,7 @@ const PartnerChannelSchema = new Schema<IPartnerChannel>(
     status: { type: String, enum: PARTNER_CHANNEL_STATUSES, default: 'pending', index: true },
     channelUrl: { type: String, default: null },
     youtubeChannelId: { type: String, default: null },
+    catalogChannelId: { type: Schema.Types.ObjectId, ref: 'Channel', default: null },
   },
   { timestamps: true },
 );

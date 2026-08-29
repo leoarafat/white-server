@@ -72,7 +72,7 @@ export type IVideos = {
   vevoTransferError?: string | null;
   vevoTransferStartedAt?: Date | null;
   vevoTransferredAt?: Date | null;
-  isApproved: 'approved' | 'rejected' | 'pending';
+  isApproved: 'approved' | 'rejected' | 'pending' | 'in_review';
   videoStatus: 'take-down' | 'distribute' | 'none';
   updatedTime?: Date;
 };

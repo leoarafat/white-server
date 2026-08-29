@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { IChannel } from './vevo-channel.interface';
 import { attachStatusChangeHook } from '../notifications/notification.hooks';
+import { attachPartnerChannelCatalogSync } from '../partnerApi/channel/partnerChannel.catalogSync';
 
 const channelSchema = new Schema<IChannel>(
   {
@@ -73,5 +74,6 @@ attachStatusChangeHook(channelSchema, 'vevo-channel', {
   statusField: 'isApproved',
   titleField: 'channelName',
 });
+attachPartnerChannelCatalogSync(channelSchema);
 
 export const Channel = model('Channel', channelSchema);

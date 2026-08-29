@@ -59,7 +59,7 @@ export const paymentRequestEmailBody = ({
     <p>Thank you for using our services.</p>
     <div class="footer">
       <p>Best Regards,</p>
-      <p>The ANS Music Team</p>
+      <p>The ARP Music Team</p>
     </div>
   </div>
 </body>

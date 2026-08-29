@@ -72,7 +72,7 @@ Congratulations on your successful registration! We are thrilled to inform you t
       </p>
       <p>Once again, welcome to our community! We look forward to seeing your contributions and watching your profile thrive.</p>
       <p>Best regards,</p>
-      <p>ANS Music Team</p>
+      <p>ARP Music Team</p>
     </div>
   </body>
 </html>

@@ -33,7 +33,7 @@ const sendEmail = async (options: IEmailOptions): Promise<void> => {
   const sendSmtpEmail: ISendSmtpEmail = {
     to: [{ email }],
     sender: {
-      name: config.smtp.NAME || 'ANS Music Limited',
+      name: config.smtp.NAME || 'ARP Music Limited',
       email: config.brevo.SENDER_EMAIL || 'info@ans.digital',
     },
     replyTo: {

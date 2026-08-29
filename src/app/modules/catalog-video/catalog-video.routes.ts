@@ -18,6 +18,11 @@ router.get(
   catalogVideoController.pendingSongs,
 );
 router.get(
+  '/in-review-songs',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  catalogVideoController.inReviewSongs,
+);
+router.get(
   '/take-down-songs',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   catalogVideoController.takeDownSongs,
@@ -53,6 +58,11 @@ router.patch(
   '/distribute/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   catalogVideoController.distributeMusic,
+);
+router.patch(
+  '/move-to-review/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  catalogVideoController.moveToInReview,
 );
 router.patch(
   '/edit-release/:id',

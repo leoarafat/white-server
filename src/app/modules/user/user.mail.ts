@@ -50,9 +50,9 @@ export const registrationSuccessEmailBody = (userData: any) => `
     </head>
     <body>
       <div class="container">
-        <h1>Welcome to ANS Music Distribution</h1>
+        <h1>Welcome to ARP Music Distribution</h1>
         <p>Hello ${userData?.user?.name},</p>
-        <p>Thank you for registering with ANS Music Distribution. To activate your account, please use the following activation code:</p>
+        <p>Thank you for registering with ARP Music Distribution. To activate your account, please use the following activation code:</p>
         <h1>${userData?.activationCode}</h1>
         <p>Please enter this code on the activation page within the next 5 minutes.</p>
         <p>If you didn't register for Music Distribution, please ignore this email.</p>

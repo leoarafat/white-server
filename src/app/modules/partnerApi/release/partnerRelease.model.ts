@@ -3,6 +3,7 @@ import { PartnerEnvironment } from '../partnerApi.constants';
 
 export const PARTNER_RELEASE_STATUSES = [
   'pending',
+  'in_review',
   'needs_fix',
   'approved',
   'delivered',
@@ -18,7 +19,7 @@ export interface IPartnerRelease {
   partnerKey: mongoose.Types.ObjectId;
   environment: PartnerEnvironment;
   reference: string;
-  externalId: string | null;
+  externalId: string | undefined;
 
   title: string;
   primaryArtist: string[];
@@ -48,6 +49,12 @@ export interface IPartnerRelease {
   statusDetail: string | null;
   reason: string | null;
 
+  // Set once a *live* release is approved — the id of the Video document
+  // created in the existing internal catalog so it flows through the same
+  // admin catalogue, VEVO-transfer, and reporting tools every other video
+  // already does. Always null for test-environment releases.
+  catalogVideoId: mongoose.Types.ObjectId | null;
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -58,7 +65,12 @@ const PartnerReleaseSchema = new Schema<IPartnerRelease>(
     partnerKey: { type: Schema.Types.ObjectId, ref: 'PartnerKey', required: true },
     environment: { type: String, enum: ['live', 'test'], required: true, index: true },
     reference: { type: String, required: true, unique: true },
-    externalId: { type: String, default: null },
+    // Deliberately no `default: null` — a sparse index still counts an
+    // explicit `null` as a real value, so every no-externalId release would
+    // collide with every other one for the same user. Leaving the field
+    // truly absent is what makes the sparse index only apply to releases
+    // that actually have an externalId.
+    externalId: { type: String },
 
     title: { type: String, required: true, trim: true },
     primaryArtist: { type: [String], required: true },
@@ -90,13 +102,21 @@ const PartnerReleaseSchema = new Schema<IPartnerRelease>(
     },
     statusDetail: { type: String, default: 'Waiting for review.' },
     reason: { type: String, default: null },
+    catalogVideoId: { type: Schema.Types.ObjectId, ref: 'Video', default: null },
   },
   { timestamps: true },
 );
 
 // Idempotency (§2.3/§5): a given account can never create two releases with
-// the same externalId. Sparse because externalId is optional.
-PartnerReleaseSchema.index({ user: 1, externalId: 1 }, { unique: true, sparse: true });
+// the same externalId. A *partial* index, not `sparse` — a compound sparse
+// index only excludes a document when EVERY indexed field is absent, and
+// `user` is always present here, so a plain `sparse: true` would still index
+// every externalId-less release as `externalId: null` and collide with the
+// first one (mirrors the ISRC partial-index pattern in videos.model.ts).
+PartnerReleaseSchema.index(
+  { user: 1, externalId: 1 },
+  { unique: true, partialFilterExpression: { externalId: { $exists: true } } },
+);
 // Environment isolation must be enforceable at the query level on every list
 // call — this compound index is what makes that cheap, not just correct.
 PartnerReleaseSchema.index({ user: 1, environment: 1, updatedAt: -1 });
