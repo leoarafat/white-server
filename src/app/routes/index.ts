@@ -44,6 +44,7 @@ import { TicketRoutes } from '../modules/tickets/ticket.routes';
 import { SmartLinkRoutes } from '../modules/smart-link/smart-link.routes';
 import { SecurityRoutes } from '../modules/security/security.routes';
 import { MasterReviewRoutes } from '../modules/master-review/master-review.routes';
+import { ReportConverterRoutes } from '../modules/report-converter/report-converter.routes';
 
 const router = express.Router();
 
@@ -229,6 +230,10 @@ const moduleRoutes = [
   {
     path: '/master-review',
     route: MasterReviewRoutes,
+  },
+  {
+    path: '/report-converter',
+    route: ReportConverterRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

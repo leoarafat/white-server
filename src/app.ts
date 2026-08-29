@@ -26,6 +26,11 @@ const devOrigins =
         'http://localhost:5175',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:5174',
+        // dashboard-for-sale admin/user dev ports (.claude/launch.json)
+        'http://localhost:5320',
+        'http://localhost:5321',
+        'http://127.0.0.1:5320',
+        'http://127.0.0.1:5321',
       ];
 
 const allowedOrigins = new Set(
