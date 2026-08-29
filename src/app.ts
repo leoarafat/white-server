@@ -31,13 +31,15 @@ const devOrigins =
         'http://localhost:5321',
         'http://127.0.0.1:5320',
         'http://127.0.0.1:5321',
-        'https://white-user.vercel.app/auth/login',
-        'https://white-user.vercel.app',
-        'https://white-user.vercel.app/',
-        'https://white-admin.vercel.app/auth/login',
-        'https://white-admin.vercel.app/',
-        'https://white-admin.vercel.app',
       ];
+
+// Interim Vercel-hosted frontends (white-user / white-admin) — allowed in every
+// env until CLIENT_URL/ADMIN_URL cut over to the custom domains. An Origin
+// header is always scheme+host+port, never a path, so no /auth/login variants.
+const vercelOrigins = [
+  'https://white-user.vercel.app',
+  'https://white-admin.vercel.app',
+];
 
 const allowedOrigins = new Set(
   [
@@ -48,6 +50,7 @@ const allowedOrigins = new Set(
       ? config.extra_cors_origins.split(',').map(o => o.trim())
       : []),
     ...devOrigins,
+    ...vercelOrigins,
   ]
     .filter(Boolean)
     .map(o => (o as string).replace(/\/$/, '')),
