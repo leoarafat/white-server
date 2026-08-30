@@ -3,6 +3,25 @@ import { Secret } from 'jsonwebtoken';
 import config from '../config';
 import { jwtHelpers } from '../helpers/jwtHelpers';
 import { logger } from '../shared/logger';
+import { getCookieNames } from '../helpers/authTokens';
+
+// Minimal `name=value; name2=value2` cookie-header parser — avoids pulling
+// in a typed dependency just for this one read. Not for setting cookies.
+const parseCookieHeader = (header: string): Record<string, string> => {
+  const out: Record<string, string> = {};
+  header.split(';').forEach(part => {
+    const idx = part.indexOf('=');
+    if (idx === -1) return;
+    const key = part.slice(0, idx).trim();
+    if (!key) return;
+    try {
+      out[key] = decodeURIComponent(part.slice(idx + 1).trim());
+    } catch {
+      out[key] = part.slice(idx + 1).trim();
+    }
+  });
+  return out;
+};
 
 export let io: Server;
 
@@ -28,21 +47,45 @@ const initializeSocketIO = (server: any) => {
 
   io.use((socket: AuthedSocket, next) => {
     try {
-      const token =
-        socket.handshake.auth?.token ||
-        (socket.handshake.headers.authorization || '').replace(
-          'Bearer ',
-          '',
-        );
+      // The access token now lives in an httpOnly cookie (not readable by
+      // client JS — see helpers/authTokens.ts), so the handshake's own
+      // `auth.token` / Authorization header are usually empty. Parse the
+      // raw cookie header the socket.io-client sends when connected with
+      // `withCredentials: true` and try both the user and admin cookie
+      // names, same as the HTTP `auth` middleware's collectTokens().
+      const rawCookieHeader = socket.handshake.headers.cookie || '';
+      const cookies = rawCookieHeader ? parseCookieHeader(rawCookieHeader) : {};
+      const userCookie = cookies[getCookieNames('user').access];
+      const adminCookie = cookies[getCookieNames('admin').access];
 
-      if (!token) {
+      const candidates = [
+        socket.handshake.auth?.token,
+        (socket.handshake.headers.authorization || '').replace('Bearer ', ''),
+        userCookie,
+        adminCookie,
+      ].filter(Boolean) as string[];
+
+      if (!candidates.length) {
         return next(new Error('Unauthorized: missing token'));
       }
 
-      const verified = jwtHelpers.verifyToken(
-        token,
-        config.jwt.secret as Secret,
-      );
+      let verified: { userId: string; role: string } | null = null;
+      for (const candidate of candidates) {
+        try {
+          verified = jwtHelpers.verifyToken(
+            candidate,
+            config.jwt.secret as Secret,
+          ) as { userId: string; role: string };
+          break;
+        } catch {
+          // Try the next candidate — an expired/invalid one shouldn't block
+          // a still-valid cookie from authenticating the connection.
+        }
+      }
+
+      if (!verified) {
+        return next(new Error('Unauthorized: invalid token'));
+      }
 
       socket.authUserId = verified.userId;
       socket.authRole = verified.role;
