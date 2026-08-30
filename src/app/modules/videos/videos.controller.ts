@@ -111,6 +111,55 @@ const topUploaders = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const uploadVideoDraft = catchAsync(async (req: Request, res: Response) => {
+  const result = await VideoService.uploadVideoDraft(req as any);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Video Draft Saved Successful',
+    data: result,
+  });
+});
+const myVideoDrafts = catchAsync(async (req: Request, res: Response) => {
+  const result = await VideoService.myVideoDrafts(
+    req.user as any,
+    req.query,
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Video Drafts Retrieved Successful',
+    data: result,
+  });
+});
+const singleVideoDraft = catchAsync(async (req: Request, res: Response) => {
+  const result = await VideoService.singleVideoDraft(
+    req.params.id,
+    req.user as any,
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Video Draft Retrieved Successful',
+    data: result,
+  });
+});
+const deleteVideoDraft = catchAsync(async (req: Request, res: Response) => {
+  const result = await VideoService.deleteVideoDraft(
+    req.params.id,
+    req.user as any,
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Video Draft Deleted Successful',
+    data: result,
+  });
+});
 export const VideoController = {
   uploadVideo,
   uploadVideoAsset,
@@ -121,4 +170,8 @@ export const VideoController = {
   downloadImage,
   updateVideo,
   topUploaders,
+  uploadVideoDraft,
+  myVideoDrafts,
+  singleVideoDraft,
+  deleteVideoDraft,
 };

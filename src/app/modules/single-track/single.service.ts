@@ -55,7 +55,7 @@ const resolveLabelName = async (value: unknown): Promise<string> => {
 const uploadSingle = async (req: Request) => {
   const { files } = req;
 
-  const { primaryArtist, ...data } = req.body;
+  const { primaryArtist, draftId, ...data } = req.body;
 
   const user = req?.user?.userId;
   const isSubUserUpload = req?.user?.role === 'sub-user';
@@ -131,12 +131,19 @@ const uploadSingle = async (req: Request) => {
     }).catch(() => undefined);
   }
 
+  // A finalized draft is no longer a draft — best-effort cleanup, scoped to
+  // this user so it can never touch someone else's draft. A failure here
+  // must never fail the upload that already succeeded.
+  if (draftId) {
+    SingleDraft.deleteOne({ _id: draftId, user }).catch(() => undefined);
+  }
+
   return result;
 };
 const uploadDrafts = async (req: Request) => {
   const { files } = req;
 
-  const { primaryArtist, ...data } = req.body;
+  const { primaryArtist, draftId, ...data } = req.body;
 
   const user = req?.user?.userId;
   const primaryArtistArray = await resolveArtistNames(primaryArtist);
@@ -150,32 +157,60 @@ const uploadDrafts = async (req: Request) => {
     throw new ApiError(404, 'User not found');
   }
 
-  data.releaseId = generateArtistId();
-
-  let audioFile = undefined;
+  let audioFile: string | undefined;
   //@ts-ignore
   if (files?.audio) {
     //@ts-ignore
     audioFile = `${files.audio[0].location}`;
   }
-  //@ts-ignore
 
-  let imageFile = undefined;
+  let imageFile: string | undefined;
   //@ts-ignore
   if (files?.image) {
     //@ts-ignore
     imageFile = `${files.image[0].location}`;
   }
 
-  const result = await SingleDraft.create({
-    ...data,
-    user,
-    audio: audioFile,
-    image: imageFile,
-    primaryArtist: primaryArtistArray,
+  // A draft bypasses the strict Zod schema on purpose, so unlike final
+  // submit, unfilled fields routinely arrive as "". Enum fields (e.g.
+  // primaryTrackType, instrumental) reject "" as an invalid value — strip
+  // blanks so an in-progress draft never fails Mongoose validation.
+  Object.keys(data).forEach(key => {
+    if (data[key] === '') delete data[key];
   });
 
+  const payload: Record<string, unknown> = {
+    ...data,
+    user,
+    primaryArtist: primaryArtistArray,
+  };
+  if (audioFile) payload.audio = audioFile;
+  if (imageFile) payload.image = imageFile;
+
+  if (draftId) {
+    const existing = await SingleDraft.findOne({ _id: draftId, user });
+    if (!existing) {
+      throw new ApiError(404, 'Draft not found');
+    }
+    const result = await SingleDraft.findByIdAndUpdate(draftId, payload, {
+      new: true,
+      runValidators: true,
+    });
+    return result;
+  }
+
+  payload.releaseId = generateArtistId();
+
+  const result = await SingleDraft.create(payload);
+
   return result;
+};
+const deleteDraft = async (id: string, user: any) => {
+  const existing = await SingleDraft.findOne({ _id: id, user });
+  if (!existing) {
+    throw new ApiError(404, 'Draft not found');
+  }
+  return SingleDraft.findByIdAndDelete(id);
 };
 const draftsSong = async (user: any, query: Record<string, unknown>) => {
   const songQuery = new QueryBuilder(
@@ -235,11 +270,15 @@ const singleMusic = async (id: string) => {
     return album;
   }
 };
-const singleDraftsMusic = async (id: string) => {
-  const result = await SingleDraft.findById(id)
+const singleDraftsMusic = async (id: string, user: any) => {
+  const result = await SingleDraft.findOne({ _id: id, user: user?.userId })
     .populate('label')
     .populate('primaryArtist')
     .lean();
+
+  if (!result) {
+    throw new ApiError(404, 'Draft not found');
+  }
 
   return result;
 };
@@ -357,5 +396,6 @@ export const SingleMusicService = {
   uploadDrafts,
   draftsSong,
   singleDraftsMusic,
+  deleteDraft,
   updateBannerAndAudio,
 };

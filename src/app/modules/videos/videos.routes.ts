@@ -27,6 +27,33 @@ router.post(
   uploadFile,
   VideoController.uploadVideoAsset,
 );
+
+// Save/update an in-progress video release as a draft — bypasses the strict
+// Zod schema on purpose, mirroring /single-music/upload-drafts.
+router.post(
+  '/upload-drafts',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  requirePermission('/release-video'),
+  VideoController.uploadVideoDraft,
+);
+router.get(
+  '/drafts',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  requirePermission('/release-video'),
+  VideoController.myVideoDrafts,
+);
+router.get(
+  '/drafts/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  requirePermission('/release-video'),
+  VideoController.singleVideoDraft,
+);
+router.delete(
+  '/drafts/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  requirePermission('/release-video'),
+  VideoController.deleteVideoDraft,
+);
 router.patch(
   '/update-video',
   auth(

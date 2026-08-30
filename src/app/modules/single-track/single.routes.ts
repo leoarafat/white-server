@@ -55,6 +55,12 @@ router.get(
   requirePermission('/single'),
   SingleMusicController.singleDraftsMusic,
 );
+router.delete(
+  '/drafts/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  requirePermission('/single'),
+  SingleMusicController.deleteDraft,
+);
 router.get(
   '/:id',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),

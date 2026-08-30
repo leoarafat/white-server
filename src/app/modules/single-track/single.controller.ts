@@ -82,12 +82,28 @@ const singleMusic = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const singleDraftsMusic = catchAsync(async (req: Request, res: Response) => {
-  const result = await SingleMusicService.singleDraftsMusic(req.params.id);
+  const result = await SingleMusicService.singleDraftsMusic(
+    req.params.id,
+    req.user,
+  );
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Music Retrieved Successful',
+    data: result,
+  });
+});
+const deleteDraft = catchAsync(async (req: Request, res: Response) => {
+  const result = await SingleMusicService.deleteDraft(
+    req.params.id,
+    req.user,
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Draft Deleted Successful',
     data: result,
   });
 });
@@ -133,5 +149,6 @@ export const SingleMusicController = {
   uploadDrafts,
   draftsSong,
   singleDraftsMusic,
+  deleteDraft,
   updateBannerAndAudio,
 };

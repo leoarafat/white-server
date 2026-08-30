@@ -7,7 +7,9 @@ import User from '../user/user.model';
 import QueryBuilder from '../../../builder/QueryBuilder';
 import { CustomRequest } from '../../../interfaces/common';
 import { Video } from './videos.model';
+import { VideoDraft } from './videos.drafts.model';
 import { Request, Response } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 import { IVideos } from './videos.interface';
 import { stripProtectedVideoFields } from './videos.utils';
 import { notifyAdminsOfSubmission } from '../notifications/notification.hooks';
@@ -21,6 +23,7 @@ const uploadVideo = async (req: CustomRequest) => {
     primaryArtist,
     primaryArtists, // stepper name (plural)
     featuringArtists,
+    draftId,
     ...rawVideoData
   } = req.body;
   // Never trust client payloads with status/distribution flags (isVevo etc.)
@@ -115,7 +118,137 @@ const uploadVideo = async (req: CustomRequest) => {
     }).catch(() => undefined);
   }
 
+  // A finalized draft is no longer a draft — best-effort cleanup, scoped to
+  // this user so it can never touch someone else's draft. A failure here
+  // must never fail the upload that already succeeded.
+  if (draftId) {
+    VideoDraft.deleteOne({ _id: draftId, user }).catch(() => undefined);
+  }
+
   return result;
+};
+//!
+
+// Draft save is a plain metadata JSON POST (the stepper already uploads the
+// video/thumbnail files immediately via /video/upload-asset and only keeps
+// their URLs in form state), so — unlike audio — there are never raw files
+// to handle here.
+const uploadVideoDraft = async (req: CustomRequest) => {
+  let {
+    primaryArtist,
+    primaryArtists,
+    featuringArtists,
+    draftId,
+    ...rawVideoData
+  } = req.body;
+
+  const parseList = (value: unknown): string[] => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string' && value) {
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : value.split(',');
+      } catch {
+        return value.split(',');
+      }
+    }
+    return [];
+  };
+
+  const primaryArtistArray = parseList(primaryArtist ?? primaryArtists);
+  const featuringArtistArray = parseList(featuringArtists);
+
+  const videoData = stripProtectedVideoFields(rawVideoData);
+  // Enum fields (explicit, isKids, ...) reject "" as invalid — a draft
+  // routinely has unfilled fields, so strip blanks before saving.
+  Object.keys(videoData).forEach(key => {
+    if (videoData[key] === '') delete videoData[key];
+  });
+
+  const user = req?.user?.userId;
+  const checkUser = await User.findById(user);
+  if (!checkUser) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  const videoFile = videoData.videoUrl || videoData.video;
+  const imageFile = videoData.thumbnailUrl || videoData.image;
+  const title = videoData.title || videoData.videoTitle;
+  const repertoireOwner =
+    videoData.repertoireOwner ||
+    videoData.reportingOwner ||
+    (checkUser as any).channelName ||
+    videoData.label;
+  const version = videoData.version || videoData.videoVersion;
+
+  delete videoData.videoUrl;
+  delete videoData.thumbnailUrl;
+  delete videoData.videoTitle;
+  delete videoData.reportingOwner;
+  delete videoData.videoVersion;
+
+  const payload: Record<string, unknown> = {
+    ...videoData,
+    user,
+    primaryArtist: primaryArtistArray,
+    featuringArtists: featuringArtistArray,
+  };
+  if (title) payload.title = title;
+  if (repertoireOwner) payload.repertoireOwner = repertoireOwner;
+  if (version) payload.version = version;
+  if (videoFile) payload.video = videoFile;
+  if (imageFile) payload.image = imageFile;
+
+  if (draftId) {
+    const existing = await VideoDraft.findOne({ _id: draftId, user });
+    if (!existing) {
+      throw new ApiError(404, 'Draft not found');
+    }
+    return VideoDraft.findByIdAndUpdate(draftId, payload, {
+      new: true,
+      runValidators: true,
+    });
+  }
+
+  return VideoDraft.create(payload);
+};
+
+const myVideoDrafts = async (user: JwtPayload, query: Record<string, unknown>) => {
+  const draftQuery = new QueryBuilder(
+    VideoDraft.find({ user: user?.userId }).lean(),
+    query,
+  )
+    .search(['title'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await draftQuery.modelQuery;
+  const meta = await draftQuery.countTotal();
+
+  return { meta, data: result };
+};
+
+const singleVideoDraft = async (id: string, user: JwtPayload) => {
+  const result = await VideoDraft.findOne({
+    _id: id,
+    user: user?.userId,
+  }).lean();
+
+  if (!result) {
+    throw new ApiError(404, 'Draft not found');
+  }
+
+  return result;
+};
+
+const deleteVideoDraft = async (id: string, user: JwtPayload) => {
+  const existing = await VideoDraft.findOne({ _id: id, user: user?.userId });
+  if (!existing) {
+    throw new ApiError(404, 'Draft not found');
+  }
+  return VideoDraft.findByIdAndDelete(id);
 };
 //!
 
@@ -273,4 +406,8 @@ export const VideoService = {
   downloadImage,
   updateVideo,
   topUploaders,
+  uploadVideoDraft,
+  myVideoDrafts,
+  singleVideoDraft,
+  deleteVideoDraft,
 };
