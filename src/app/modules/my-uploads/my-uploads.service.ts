@@ -536,15 +536,75 @@ const exportPendingVideoSongs = async (user: IReqUser) => {
     return res;
   }
 };
+const inReviewSongs = async (
+  user: JwtPayload,
+  query: Record<string, unknown>,
+) => {
+  const singleSongsQuery = new QueryBuilder(
+    SingleTrack.find({
+      $and: [{ user: user?.userId }, { isApproved: 'in_review' }],
+    })
+      .lean()
+      .populate('user')
+      .populate('label')
+      .populate('primaryArtist'),
+    query,
+  )
+    .search(['title', 'label'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await singleSongsQuery.modelQuery;
+  const meta = await singleSongsQuery.countTotal();
+
+  return {
+    meta,
+    data: result,
+  };
+};
+
+const inReviewVideos = async (
+  user: JwtPayload,
+  query: Record<string, unknown>,
+) => {
+  const videoQuery = new QueryBuilder(
+    Video.find({
+      $and: [{ user: user?.userId }, { isApproved: 'in_review' }],
+    })
+      .lean()
+      .populate('user')
+      .populate('label')
+      .populate('primaryArtist'),
+    query,
+  )
+    .search(['title', 'label'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await videoQuery.modelQuery;
+  const meta = await videoQuery.countTotal();
+
+  return {
+    meta,
+    data: result,
+  };
+};
+
 export const MyUploadService = {
   pendingSongs,
   successReleaseSongs,
   correctionSongs,
   takeDownSongs,
+  inReviewSongs,
   pendingVideos,
   successReleaseVideos,
   correctionVideos,
   takeDownVideos,
+  inReviewVideos,
   allSongs,
   exportAudioSongs,
   exportVideoSongs,

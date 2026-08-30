@@ -206,7 +206,7 @@ const uploadDrafts = async (req: Request) => {
   return result;
 };
 const deleteDraft = async (id: string, user: any) => {
-  const existing = await SingleDraft.findOne({ _id: id, user });
+  const existing = await SingleDraft.findOne({ _id: id, user: user?.userId });
   if (!existing) {
     throw new ApiError(404, 'Draft not found');
   }

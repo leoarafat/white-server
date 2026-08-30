@@ -105,5 +105,17 @@ router.get(
   requirePermission('/my-uploads'),
   MyUploadsController.takeDownVideos,
 );
+router.get(
+  '/in-review-songs',
+  auth(ENUM_USER_ROLE.SUB_USER, ENUM_USER_ROLE.USER),
+  requirePermission('/my-uploads'),
+  MyUploadsController.inReviewSongs,
+);
+router.get(
+  '/in-review-videos',
+  auth(ENUM_USER_ROLE.SUB_USER, ENUM_USER_ROLE.USER),
+  requirePermission('/my-uploads'),
+  MyUploadsController.inReviewVideos,
+);
 
 export const MyUploadsRoutes = router;

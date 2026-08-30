@@ -40,6 +40,11 @@ router.get(
   catalogMusicController.correctionSongs,
 );
 router.get(
+  '/in-review-songs',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  catalogMusicController.inReviewSongs,
+);
+router.get(
   '/correction-data/:id',
   auth(
     ENUM_USER_ROLE.ADMIN,
@@ -65,6 +70,16 @@ router.patch(
   '/distribute/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   catalogMusicController.distributeMusic,
+);
+router.patch(
+  '/move-to-review/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  catalogMusicController.moveToInReview,
+);
+router.delete(
+  '/delete/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  catalogMusicController.deleteSong,
 );
 router.patch(
   '/distribute-without-pdl/:id',

@@ -52,7 +52,7 @@ export type ISingleTrack = {
   advancePurchaseDate: string;
   lyrics: string;
   status: boolean;
-  isApproved: 'approved' | 'rejected' | 'pending';
+  isApproved: 'approved' | 'rejected' | 'pending' | 'in_review';
   songStatus: 'take-down' | 'distribute' | 'none';
   user: Types.ObjectId | IUser;
   releaseId: string;

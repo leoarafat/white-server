@@ -39,6 +39,33 @@ const takeDownSongs = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const inReviewSongs = catchAsync(async (req: Request, res: Response) => {
+  const result = await catalogMusicService.inReviewSongs(req.query);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
+const moveToInReview = catchAsync(async (req: Request, res: Response) => {
+  const result = await catalogMusicService.moveToInReview(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
+const deleteSong = catchAsync(async (req: Request, res: Response) => {
+  const result = await catalogMusicService.deleteSong(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Deleted Successful',
+    data: result,
+  });
+});
 const songInspection = catchAsync(async (req: Request, res: Response) => {
   const result = await catalogMusicService.songInspection(req.params.id);
   sendResponse(res, {
@@ -127,6 +154,9 @@ export const catalogMusicController = {
   pendingSongs,
   correctionSongs,
   takeDownSongs,
+  inReviewSongs,
+  moveToInReview,
+  deleteSong,
   songInspection,
   distributeMusic,
   editMusic,

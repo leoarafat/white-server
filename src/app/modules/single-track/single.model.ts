@@ -166,7 +166,7 @@ const singleMusicSchema = new Schema<ISingleTrack>(
     },
     isApproved: {
       type: String,
-      enum: ['approved', 'rejected', 'pending'],
+      enum: ['approved', 'rejected', 'pending', 'in_review'],
       default: 'pending',
     },
     songStatus: {

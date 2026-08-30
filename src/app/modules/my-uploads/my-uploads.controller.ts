@@ -121,6 +121,32 @@ const takeDownVideos = catchAsync(async (req: Request, res: Response) => {
     meta: result.meta,
   });
 });
+const inReviewSongs = catchAsync(async (req: Request, res: Response) => {
+  const result = await MyUploadService.inReviewSongs(
+    req.user as JwtPayload,
+    req.query,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Music Retrieved Successful',
+    data: result.data,
+    meta: result.meta,
+  });
+});
+const inReviewVideos = catchAsync(async (req: Request, res: Response) => {
+  const result = await MyUploadService.inReviewVideos(
+    req.user as JwtPayload,
+    req.query,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Music Retrieved Successful',
+    data: result.data,
+    meta: result.meta,
+  });
+});
 const exportAudioSongs = catchAsync(async (req: Request, res: Response) => {
   const result = await MyUploadService.exportAudioSongs(req.user as any);
   sendResponse(res, {
@@ -174,6 +200,8 @@ export const MyUploadsController = {
   correctionVideos,
   takeDownSongs,
   takeDownVideos,
+  inReviewSongs,
+  inReviewVideos,
   allSongs,
   exportAudioSongs,
   exportVideoSongs,

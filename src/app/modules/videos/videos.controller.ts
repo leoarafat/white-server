@@ -127,11 +127,15 @@ const myVideoDrafts = catchAsync(async (req: Request, res: Response) => {
     req.query,
   );
 
+  // data/meta as siblings — matches every other paginated list endpoint and
+  // what the frontend's `active?.data?.data?.data` / `.meta` extraction
+  // expects (see the matching fix in single.controller.ts draftsSong).
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Video Drafts Retrieved Successful',
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 const singleVideoDraft = catchAsync(async (req: Request, res: Response) => {

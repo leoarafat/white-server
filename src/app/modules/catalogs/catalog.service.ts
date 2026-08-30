@@ -225,6 +225,74 @@ const takeDownSongs = async (query: Record<string, unknown>) => {
   };
 };
 //!
+const inReviewSongs = async (query: Record<string, unknown>) => {
+  const singleSongs = new QueryBuilder(
+    SingleTrack.find({ isApproved: 'in_review' })
+      .lean()
+      .populate('user')
+      .populate('label')
+      .populate('primaryArtist')
+      .lean(),
+    query,
+  )
+    .search([
+      'releaseTitle',
+      'title',
+      'subtitle',
+      'pLine',
+      'cLine',
+      'composer',
+      'isrc',
+      'upc',
+    ])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const singleTracks = await singleSongs.modelQuery;
+  const meta = await singleSongs.countTotal();
+  return {
+    meta,
+    data: singleTracks,
+  };
+};
+//!
+// Mirrors catalog-video.service.ts moveToInReview — flags a pending release
+// for a closer look without approving or rejecting it outright.
+const moveToInReview = async (req: Request) => {
+  const { id } = req.params;
+  const admin = await Admin.findById(req.user?.userId);
+  if (!admin) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Only Admin Can Move To Review');
+  }
+  const singleTrack = await SingleTrack.findById(id);
+  if (!singleTrack) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Release not found');
+  }
+  return await SingleTrack.findOneAndUpdate(
+    { _id: id },
+    { isApproved: 'in_review' },
+    { new: true },
+  );
+};
+//!
+// Admin-scoped delete — the existing SingleMusicService.deleteSingleMusic
+// (single-track/single.service.ts) is only reachable by the uploading USER,
+// not by admins, so the catalog tables need their own delete path.
+const deleteSong = async (req: Request) => {
+  const { id } = req.params;
+  const admin = await Admin.findById(req.user?.userId);
+  if (!admin) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Only Admin Can Delete');
+  }
+  const singleTrack = await SingleTrack.findById(id);
+  if (!singleTrack) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Release not found');
+  }
+  return await SingleTrack.findByIdAndDelete(id);
+};
+//!
 const songInspection = async (id: string) => {
   const song = await SingleTrack.findById(id)
 
@@ -388,11 +456,20 @@ const editMusic = async (req: Request) => {
     updateData.primaryArtist = primaryArtist
       .map((artist: { value: string }) => artist.value)
       .filter((artistId: string | undefined) => artistId !== undefined);
-  }
-  if (primaryArtist && primaryArtist[0]?._id && Array.isArray(primaryArtist)) {
+  } else if (
+    primaryArtist &&
+    primaryArtist[0]?._id &&
+    Array.isArray(primaryArtist)
+  ) {
     updateData.primaryArtist = primaryArtist
       .map((artist: { _id: string }) => artist._id)
       .filter((artistId: string | undefined) => artistId !== undefined);
+  } else if (Array.isArray(primaryArtist)) {
+    // The upload stepper (now reused for editing) sends plain artist name
+    // strings — same shape the video flow already stores.
+    updateData.primaryArtist = primaryArtist.filter(
+      (v: unknown) => typeof v === 'string' && v.trim(),
+    );
   }
 
   const singleTrack = await SingleTrack.findById(id);
@@ -635,6 +712,9 @@ export const catalogMusicService = {
   pendingSongs,
   correctionSongs,
   takeDownSongs,
+  inReviewSongs,
+  moveToInReview,
+  deleteSong,
   songInspection,
   distributeMusic,
   editMusic,

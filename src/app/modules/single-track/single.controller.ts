@@ -64,11 +64,15 @@ const myAllMusic = catchAsync(async (req: Request, res: Response) => {
 const draftsSong = catchAsync(async (req: Request, res: Response) => {
   const result = await SingleMusicService.draftsSong(req.user, req.query);
 
+  // data/meta as siblings — matches every other paginated list endpoint
+  // (e.g. MyUploadsController.pendingSongs) and what the frontend's
+  // `active?.data?.data?.data` / `.meta` extraction expects.
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Music Retrieved Successful',
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 const singleMusic = catchAsync(async (req: Request, res: Response) => {
