@@ -3,6 +3,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { uploadFile } from '../../middlewares/fileUpload';
 import { chatController } from './chat.controller';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ChatZodSchema } from './chat.validations';
 
 const router = express.Router();
 
@@ -19,6 +21,7 @@ router.post(
   '/send',
   auth(...USER_ROLES),
   uploadFile,
+  validateRequest(ChatZodSchema.sendMessageSchema),
   chatController.sendMessage,
 );
 router.patch(
@@ -42,6 +45,7 @@ router.post(
   '/conversations/:userId/send',
   auth(...ADMIN_ROLES),
   uploadFile,
+  validateRequest(ChatZodSchema.sendMessageSchema),
   chatController.sendMessage,
 );
 router.patch(

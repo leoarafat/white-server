@@ -44,6 +44,40 @@ const uploadSingleSchema = z.object({
   ),
 });
 
+// PATCH /single-music/update/:id — a loose partial edit of the track,
+// mirroring single.model.ts. primaryArtist/label/featuringArtists arrive as
+// names/ids that the service resolves itself, so they're only checked for
+// shape here.
+const updateSingleMusicSchema = z.object({
+  body: z.object({
+    releaseTitle: z.string().trim().min(1).optional(),
+    title: z.string().trim().min(1).optional(),
+    subtitle: z.string().trim().optional(),
+    pLine: z.string().trim().min(1).optional(),
+    cLine: z.string().trim().min(1).optional(),
+    writer: z.string().trim().optional(),
+    author: z.string().trim().min(1).optional(),
+    composer: z.string().trim().min(1).optional(),
+    arranger: z.string().trim().optional(),
+    producer: z.string().trim().optional(),
+    genre: z.string().trim().min(1).optional(),
+    subGenre: z.string().trim().optional(),
+    productionYear: z.string().trim().optional(),
+    trackTitleLanguage: z.string().trim().optional(),
+    lyricsLanguage: z.string().trim().optional(),
+    releaseDate: z.string().trim().optional(),
+    lyrics: z.string().trim().optional(),
+    format: z.enum(['Single', 'Album', 'EP']).optional(),
+    parentalAdvisory: z.enum(['Explicit', 'Not Explicit']).optional(),
+    instrumental: z.enum(['Yes', 'No']).optional(),
+    primaryArtist: z.union([z.string(), z.array(z.any())]).optional(),
+    label: z.string().trim().optional(),
+    musicDirector: z.array(z.string()).optional(),
+    featuringArtists: z.union([z.string(), z.array(z.any())]).optional(),
+  }),
+});
+
 export const SingleTrackZodSchema = {
   uploadSingleSchema,
+  updateSingleMusicSchema,
 };

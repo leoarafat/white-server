@@ -1,85 +1,125 @@
 import { z } from 'zod';
+import { objectId, requiredString } from '../../../shared/zodCommon';
 
-const create = z.object({
+const registrationUserSchema = z.object({
   body: z.object({
-    name: z.object({
-      firstName: z.string({
-        required_error: 'First name is required',
-      }),
-      lastName: z.string({
-        required_error: 'Last name is required',
-      }),
-    }),
-    phoneNumber: z.string({
-      required_error: 'Phone number is required',
-    }),
-    email: z.string({
-      required_error: 'Email  is required',
-    }),
-    password: z.string({
-      required_error: 'Password is required',
-    }),
-    address: z.string({
-      required_error: 'Address is required',
-    }),
-    role: z.string({
-      required_error: 'Role is required',
-    }),
+    name: requiredString('Name'),
+    email: requiredString('Email').email('A valid email is required'),
+    password: requiredString('Password').min(
+      6,
+      'Password must be at least 6 characters',
+    ),
+    phoneNumber: z.string().trim().optional(),
   }),
 });
-const updateUserZodSchema = z.object({
+
+const createSubUserSchema = z.object({
   body: z.object({
-    data: z.object({
-      phoneNumber: z.string({}).optional(),
-      address: z.string({}).optional(),
-      country: z.string({}).optional(),
-      state: z.string({}).optional(),
-      city: z.string({}).optional(),
-      postCode: z.string({}).optional(),
-      channelName: z.string({}).optional(),
-      channelUrl: z.string({}).optional(),
-      subscribeCount: z.number({}).int().optional(),
-      videosCount: z.number({}).int().optional(),
-    }),
-  }),
-  files: z.object({
-    image: z.array(
-      z.object({}).refine(() => true, {
-        message: 'Image is required',
-      }),
+    name: requiredString('Name'),
+    email: requiredString('Email').email('A valid email is required'),
+    password: requiredString('Password').min(
+      6,
+      'Password must be at least 6 characters',
     ),
-    nidFront: z.array(
-      z.object({}).refine(() => true, {
-        message: 'nidFront is required',
-      }),
-    ),
-    nidBack: z.array(
-      z.object({}).refine(() => true, {
-        message: 'nidBack is required',
-      }),
-    ),
+    phoneNumber: z.string().trim().optional(),
   }),
 });
-const loginZodSchema = z.object({
+
+const activateUserSchema = z.object({
   body: z.object({
-    email: z.string({
-      required_error: 'Email is required',
-    }),
-    password: z.string({
-      required_error: 'Password is required',
-    }),
+    activation_code: requiredString('activation_code'),
+    activation_token: requiredString('activation_token'),
   }),
 });
-const refreshTokenZodSchema = z.object({
-  cookies: z.object({
-    refreshToken: z.string({
-      required_error: 'Refresh Token is required',
-    }),
+
+const loginSchema = z.object({
+  body: z.object({
+    email: requiredString('Email').email('A valid email is required'),
+    password: requiredString('Password'),
   }),
 });
-export const UserValidation = {
-  create,
-  updateUserZodSchema,
-  loginZodSchema,
-  refreshTokenZodSchema,
+
+const loginFromAdminSchema = z.object({
+  body: z.object({
+    id: objectId(),
+  }),
+});
+
+const exchangeImpersonationCodeSchema = z.object({
+  body: z.object({
+    code: requiredString('code'),
+  }),
+});
+
+const changePasswordSchema = z.object({
+  body: z.object({
+    oldPassword: requiredString('oldPassword'),
+    newPassword: requiredString('newPassword').min(
+      6,
+      'Password must be at least 6 characters',
+    ),
+    confirmPassword: requiredString('confirmPassword'),
+  }),
+});
+
+// Identity/KYC fields — kept USER-only (not opened to SUB_USER), see
+// user.routes.ts.
+const profileVerificationSchema = z.object({
+  body: z.object({
+    name: z.string().trim().optional(),
+    phoneNumber: z.string().trim().optional(),
+    nidNumber: z.string().trim().optional(),
+  }),
+});
+
+const labelVerificationSchema = z.object({
+  body: z.object({
+    channelUrl: z.string().trim().optional(),
+    channelName: z.string().trim().optional(),
+    currentDistributor: z.string().trim().optional(),
+    howHereUs: z.string().trim().optional(),
+  }),
+});
+
+const addressVerifySchema = z.object({
+  body: z.object({
+    address: z.string().trim().optional(),
+    country: z.string().trim().optional(),
+    state: z.string().trim().optional(),
+    city: z.string().trim().optional(),
+    postCode: z.string().trim().optional(),
+  }),
+});
+
+const addClientImageSchema = z.object({
+  body: z.object({
+    id: objectId(),
+  }),
+});
+
+const givePermissionSchema = z.object({
+  body: z.object({
+    selectedUserId: objectId('selectedUserId'),
+    selectedPermissions: z.array(z.string()).optional(),
+    assignedLabels: z.array(z.string()).optional(),
+    assignedArtists: z.array(z.string()).optional(),
+    assignedChannels: z.array(z.string()).optional(),
+    masterShareRate: z.string().trim().optional(),
+    revenueRate: z.string().trim().optional(),
+  }),
+});
+
+export const UserZodSchema = {
+  registrationUserSchema,
+  createSubUserSchema,
+  activateUserSchema,
+  loginSchema,
+  loginFromAdminSchema,
+  exchangeImpersonationCodeSchema,
+  changePasswordSchema,
+  profileVerificationSchema,
+  labelVerificationSchema,
+  addressVerifySchema,
+  addClientImageSchema,
+  givePermissionSchema,
 };

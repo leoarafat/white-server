@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { ClientController } from './clients.controller';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ClientZodSchema } from './clients.validations';
 
 const router = Router();
 
@@ -33,22 +35,26 @@ router.post(
 router.post(
   '/approve-reject',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ClientZodSchema.approveOrRejectSchema),
   ClientController.approveOrReject,
 );
 
 router.post(
   '/ad-revenue',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ClientZodSchema.addRevenuePercentSchema),
   ClientController.addRevenuePercent,
 );
 router.post(
   '/lock-user',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ClientZodSchema.lockUnlockUserSchema),
   ClientController.lockUserAccount,
 );
 router.post(
   '/un-lock-user',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ClientZodSchema.lockUnlockUserSchema),
   ClientController.UnlockUserAccount,
 );
 router.get(

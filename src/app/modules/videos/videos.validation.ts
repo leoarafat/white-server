@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { objectId } from '../../../shared/zodCommon';
 
 // Server-side guard for the video upload (POST /video/upload). The stepper
 // client sends a JSON body whose asset URLs live in `videoUrl` / `thumbnailUrl`
@@ -60,6 +61,15 @@ const uploadVideoSchema = z.object({
     ),
 });
 
+// PATCH /update-video swaps the video/image file on an existing release —
+// the target id travels in the body (there's no :id in the route).
+const updateVideoFileSchema = z.object({
+  body: z.object({
+    id: objectId(),
+  }),
+});
+
 export const VideoZodSchema = {
   uploadVideoSchema,
+  updateVideoFileSchema,
 };

@@ -2,6 +2,8 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { notificationController } from './notification.controller';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { NotificationZodSchema } from './notification.validations';
 
 const router = express.Router();
 
@@ -26,6 +28,7 @@ router.patch(
 router.patch(
   '/:id/read',
   auth(...ALL_ROLES),
+  validateRequest(NotificationZodSchema.markAsReadSchema),
   notificationController.markAsRead,
 );
 

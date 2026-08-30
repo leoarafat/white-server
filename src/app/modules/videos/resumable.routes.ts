@@ -3,6 +3,8 @@ import express from 'express';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { ResumableUploadController } from './resumable-upload.controller';
 import auth from '../../middlewares/auth';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ResumableUploadZodSchema } from './resumable-upload.validations';
 
 const router = express.Router();
 
@@ -10,6 +12,7 @@ const router = express.Router();
 router.post(
   '/initiate',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  validateRequest(ResumableUploadZodSchema.initiateUploadSchema),
   ResumableUploadController.initiateUpload,
 );
 
@@ -17,6 +20,7 @@ router.post(
 router.post(
   '/presign-part',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  validateRequest(ResumableUploadZodSchema.presignPartSchema),
   ResumableUploadController.getPresignedUrl,
 );
 
@@ -24,6 +28,7 @@ router.post(
 router.post(
   '/complete',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  validateRequest(ResumableUploadZodSchema.completeUploadSchema),
   ResumableUploadController.completeUpload,
 );
 
@@ -31,6 +36,7 @@ router.post(
 router.post(
   '/abort',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
+  validateRequest(ResumableUploadZodSchema.abortUploadSchema),
   ResumableUploadController.abortUpload,
 );
 

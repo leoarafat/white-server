@@ -3,6 +3,8 @@ import multer from 'multer';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { ReportConverterController } from './report-converter.controller';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ReportConverterZodSchema } from './report-converter.validations';
 
 const router = Router();
 
@@ -23,6 +25,7 @@ router.post(
 router.post(
   '/convert',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ReportConverterZodSchema.convertSchema),
   ReportConverterController.convert,
 );
 
@@ -47,6 +50,7 @@ router.get(
 router.post(
   '/templates',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(ReportConverterZodSchema.saveTemplateSchema),
   ReportConverterController.saveTemplate,
 );
 

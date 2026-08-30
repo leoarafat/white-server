@@ -4,6 +4,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { ClaimsController } from './claim-release.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ClaimReleaseZodSchema } from './claim-release.validations';
 
 const router = express.Router();
 
@@ -17,6 +19,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/tikTok-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.addTikTokClaimSchema),
   ClaimsController.addTikTokClaimRequest,
 );
 router.get(
@@ -39,6 +42,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/tikTok-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateTikTokClaimRequest,
 );
 
@@ -52,6 +56,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/artist-channel-request'),
+  validateRequest(ClaimReleaseZodSchema.addArtistChannelRequestSchema),
   ClaimsController.addArtistChannelRequest,
 );
 router.get(
@@ -74,6 +79,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/artist-channel-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateArtistChannelRequest,
 );
 
@@ -87,6 +93,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/youtube-manual-claim'),
+  validateRequest(ClaimReleaseZodSchema.addYoutubeManualClaimSchema),
   ClaimsController.addYoutubeManualClaim,
 );
 router.get(
@@ -109,6 +116,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/youtube-manual-claim'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateYoutubeManualClaim,
 );
 
@@ -122,6 +130,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/artist-channel-request'),
+  validateRequest(ClaimReleaseZodSchema.addYoutubeTakeDownSchema),
   ClaimsController.addYoutubeTakeDown,
 );
 router.get(
@@ -144,6 +153,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/artist-channel-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateYoutubeTakeDown,
 );
 
@@ -157,6 +167,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/youtube-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.addYoutubeClaimRequestSchema),
   ClaimsController.addYoutubeClaimRequest,
 );
 router.get(
@@ -179,6 +190,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/youtube-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateYoutubeClaimRequest,
 );
 
@@ -192,6 +204,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/facebook-whiteList-request'),
+  validateRequest(ClaimReleaseZodSchema.addFacebookWhitelistRequestSchema),
   ClaimsController.addFacebookWhitelistRequest,
 );
 router.get(
@@ -214,6 +227,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/facebook-whiteList-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateFacebookWhitelistRequest,
 );
 
@@ -227,6 +241,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/facebook-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.addFacebookClaimRequestSchema),
   ClaimsController.addFacebookClaimRequest,
 );
 router.get(
@@ -249,6 +264,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/facebook-claim-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateFacebookClaimRequest,
 );
 
@@ -262,6 +278,7 @@ router.post(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/whiteList-request'),
+  validateRequest(ClaimReleaseZodSchema.addWhitelistRequestSchema),
   ClaimsController.addWhitelistRequest,
 );
 router.get(
@@ -284,6 +301,7 @@ router.patch(
     ENUM_USER_ROLE.SUPER_ADMIN,
   ),
   requirePermission('/whiteList-request'),
+  validateRequest(ClaimReleaseZodSchema.updateApprovedStatusSchema),
   ClaimsController.updateWhitelistRequest,
 );
 

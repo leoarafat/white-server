@@ -3,6 +3,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { SecurityController } from './security.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { SecurityZodSchema } from './security.validations';
 
 const router = express.Router();
 
@@ -14,9 +16,21 @@ const authed = auth(
 );
 
 // ── Public login-flow endpoints (no session yet) ─────────────────────────────
-router.post('/2fa/login-verify', SecurityController.loginVerify2FA);
-router.post('/passkeys/login-options', SecurityController.passkeyLoginOptions);
-router.post('/passkeys/login-verify', SecurityController.passkeyLoginVerify);
+router.post(
+  '/2fa/login-verify',
+  validateRequest(SecurityZodSchema.loginVerify2FASchema),
+  SecurityController.loginVerify2FA,
+);
+router.post(
+  '/passkeys/login-options',
+  validateRequest(SecurityZodSchema.passkeyLoginOptionsSchema),
+  SecurityController.passkeyLoginOptions,
+);
+router.post(
+  '/passkeys/login-verify',
+  validateRequest(SecurityZodSchema.passkeyLoginVerifySchema),
+  SecurityController.passkeyLoginVerify,
+);
 
 // ── Authenticated endpoints (user or admin) ──────────────────────────────────
 router.get(
@@ -35,12 +49,14 @@ router.post(
   '/2fa/verify-enable',
   authed,
   requirePermission('/security'),
+  validateRequest(SecurityZodSchema.verifyEnable2FASchema),
   SecurityController.verifyEnable2FA,
 );
 router.post(
   '/2fa/disable',
   authed,
   requirePermission('/security'),
+  validateRequest(SecurityZodSchema.disable2FASchema),
   SecurityController.disable2FA,
 );
 
@@ -60,6 +76,7 @@ router.post(
   '/passkeys/register-verify',
   authed,
   requirePermission('/security'),
+  validateRequest(SecurityZodSchema.passkeyRegisterVerifySchema),
   SecurityController.passkeyRegisterVerify,
 );
 router.delete(

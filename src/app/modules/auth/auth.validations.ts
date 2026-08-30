@@ -27,8 +27,29 @@ const changePasswordZodSchema = z.object({
     }),
   }),
 });
+const forgotPasswordZodSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email('A valid email is required'),
+  }),
+});
+
+const resetPasswordZodSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email('A valid email is required'),
+    newPassword: z
+      .string({ required_error: 'New password is required' })
+      .min(6, 'Password must be at least 6 characters'),
+  }),
+});
+
 export const AuthValidation = {
   loginZodSchema,
   refreshTokenZodSchema,
   changePasswordZodSchema,
+  forgotPasswordZodSchema,
+  resetPasswordZodSchema,
 };

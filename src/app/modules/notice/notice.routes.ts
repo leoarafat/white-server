@@ -7,13 +7,29 @@ import {
   toggleNoticeStatus,
   updateNotice,
 } from './notice.controller';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { NoticeZodSchema } from './notice.validations';
 
 const router = express.Router();
 
-router.post('/', createNotice);
+const adminOnly = auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN);
+
+router.post(
+  '/',
+  adminOnly,
+  validateRequest(NoticeZodSchema.createNoticeSchema),
+  createNotice,
+);
 router.get('/', getNotices);
-router.put('/:id', updateNotice);
-router.delete('/:id', deleteNotice);
-router.patch('/:id/toggle-status', toggleNoticeStatus);
+router.put(
+  '/:id',
+  adminOnly,
+  validateRequest(NoticeZodSchema.updateNoticeSchema),
+  updateNotice,
+);
+router.delete('/:id', adminOnly, deleteNotice);
+router.patch('/:id/toggle-status', adminOnly, toggleNoticeStatus);
 
 export const noticeRoutes = router;

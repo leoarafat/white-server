@@ -4,6 +4,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { catalogMusicController } from './catalog.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { CatalogMusicZodSchema } from './catalog.validations';
 
 const router = Router();
 
@@ -69,11 +71,13 @@ router.get(
 router.patch(
   '/distribute/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.idParamsSchema),
   catalogMusicController.distributeMusic,
 );
 router.patch(
   '/move-to-review/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.idParamsSchema),
   catalogMusicController.moveToInReview,
 );
 router.delete(
@@ -84,6 +88,7 @@ router.delete(
 router.patch(
   '/distribute-without-pdl/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.idParamsSchema),
   catalogMusicController.distributeMusicWithoutPDL,
 );
 router.patch(
@@ -95,21 +100,25 @@ router.patch(
     ENUM_USER_ROLE.SUB_USER,
   ),
   requirePermission('/my-uploads'),
+  validateRequest(CatalogMusicZodSchema.editReleaseSchema),
   catalogMusicController.editMusic,
 );
 router.patch(
   '/edit-release-admin/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.editReleaseSchema),
   catalogMusicController.editMusicForAdmin,
 );
 router.patch(
   '/make-take-down/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.idParamsSchema),
   catalogMusicController.makeTakeDown,
 );
 router.patch(
   '/remove-take-down/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogMusicZodSchema.idParamsSchema),
   catalogMusicController.removeTakeDown,
 );
 router.patch(
@@ -121,6 +130,7 @@ router.patch(
     ENUM_USER_ROLE.SUB_USER,
   ),
   requirePermission('/my-uploads'),
+  validateRequest(CatalogMusicZodSchema.correctionSongSchema),
   catalogMusicController.correctionContent,
 );
 export const CatalogRoutes = router;

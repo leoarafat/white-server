@@ -7,6 +7,8 @@ import {
   attachOwnerContext,
   requirePermission,
 } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { PrimaryArtistZodSchema } from './primary-artist.validations';
 
 const router = Router();
 router.get(
@@ -55,6 +57,7 @@ router.post(
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
   uploadFile,
+  validateRequest(PrimaryArtistZodSchema.addPrimaryArtistSchema),
   PrimaryArtistController.addPrimaryArtist,
 );
 router.get(
@@ -73,6 +76,7 @@ router.patch(
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
   uploadFile,
+  validateRequest(PrimaryArtistZodSchema.updatePrimaryArtistSchema),
   PrimaryArtistController.updatePrimaryArtist,
 );
 export const PrimaryArtistRoutes = router;

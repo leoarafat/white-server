@@ -4,6 +4,8 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import { uploadFile } from '../../middlewares/fileUpload';
 import { ticketController } from './ticket.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { TicketZodSchema } from './ticket.validations';
 
 const router = express.Router();
 
@@ -17,6 +19,7 @@ router.post(
   auth(...USER_ROLES),
   requirePermission('/support'),
   uploadFile,
+  validateRequest(TicketZodSchema.createTicketSchema),
   ticketController.createTicket,
 );
 router.get(
@@ -31,6 +34,7 @@ router.get('/', auth(...ADMIN_ROLES), ticketController.getAllTickets);
 router.patch(
   '/:id/meta',
   auth(...ADMIN_ROLES),
+  validateRequest(TicketZodSchema.updateTicketMetaSchema),
   ticketController.updateTicketMeta,
 );
 
@@ -46,12 +50,14 @@ router.post(
   auth(...ALL_ROLES),
   requirePermission('/support'),
   uploadFile,
+  validateRequest(TicketZodSchema.replyToTicketSchema),
   ticketController.replyToTicket,
 );
 router.patch(
   '/:id/status',
   auth(...ALL_ROLES),
   requirePermission('/support'),
+  validateRequest(TicketZodSchema.updateTicketStatusSchema),
   ticketController.updateTicketStatus,
 );
 

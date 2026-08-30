@@ -64,7 +64,7 @@ router.patch(
   ),
   requirePermission('/my-uploads'),
   uploadFile,
-
+  validateRequest(VideoZodSchema.updateVideoFileSchema),
   VideoController.updateVideo,
 );
 

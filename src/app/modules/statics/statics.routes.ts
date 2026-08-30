@@ -4,6 +4,8 @@ import { StaticsController } from './statics.controller';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { StaticsZodSchema } from './statics.validations';
 
 const router = Router();
 //!Analytics management
@@ -64,6 +66,7 @@ router.post(
   '/add',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   uploadFile,
+  validateRequest(StaticsZodSchema.insertIntoDBSchema),
   StaticsController.insertIntoDB,
 );
 router.post(

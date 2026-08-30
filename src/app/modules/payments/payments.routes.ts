@@ -3,6 +3,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { paymentController } from './payments.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { PaymentZodSchema } from './payments.validations';
 
 const router = express.Router();
 
@@ -22,6 +24,7 @@ router.post(
   // Money-moving action (payout withdrawal request) — was previously
   // reachable by ANY sub-user regardless of granted permission.
   requirePermission('/financial-operations'),
+  validateRequest(PaymentZodSchema.requestForPaymentSchema),
   paymentController.RequestForPayment,
 );
 router.get(
@@ -33,21 +36,25 @@ router.get(
 router.post(
   '/add-from-admin',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(PaymentZodSchema.adminBalanceAdjustSchema),
   paymentController.addBalanceFromAdmin,
 );
 router.post(
   '/remove-from-admin',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(PaymentZodSchema.adminBalanceAdjustSchema),
   paymentController.removeBalanceFromAdmin,
 );
 router.post(
   '/reject',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(PaymentZodSchema.rejectPaymentSchema),
   paymentController.rejectPayment,
 );
 router.post(
   '/add-payment',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(PaymentZodSchema.makePaymentSchema),
   paymentController.makePayment,
 );
 router.post(

@@ -7,6 +7,8 @@ import {
   attachOwnerContext,
   requirePermission,
 } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { VevoChannelZodSchema } from './vevo-channel.validations';
 
 const router = Router();
 
@@ -62,6 +64,7 @@ router.patch(
   '/edit-request-update',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   uploadFile,
+  validateRequest(VevoChannelZodSchema.updateEditRequestSchema),
   ChannelController.updateEditRequest,
 );
 router.post(
@@ -79,6 +82,7 @@ router.post(
   '/add-channel',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
+  validateRequest(VevoChannelZodSchema.addChannelSchema),
   ChannelController.addChannel,
 );
 router.patch(
@@ -86,6 +90,7 @@ router.patch(
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
   uploadFile,
+  validateRequest(VevoChannelZodSchema.channelEditRequestSchema),
   ChannelController.channelUpdateRequest,
 );
 router.delete(
@@ -103,11 +108,13 @@ router.patch(
   '/update/:id',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
+  validateRequest(VevoChannelZodSchema.updateChannelSchema),
   ChannelController.updateChannel,
 );
 router.patch(
   '/update-channel/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(VevoChannelZodSchema.updateVevoChannelSchema),
   ChannelController.updateVevoChannel,
 );
 router.patch(

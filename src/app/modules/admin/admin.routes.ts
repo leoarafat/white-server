@@ -6,6 +6,8 @@ import { StaticsController } from '../statics/statics.controller';
 import { paymentController } from '../payments/payments.controller';
 import { UserController } from '../user/user.controller';
 import { uploadFile } from '../../middlewares/fileUpload';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { AdminZodSchema } from './admin.validations';
 
 const router = express.Router();
 router.get(
@@ -21,12 +23,14 @@ router.get(
 router.post(
   '/add-user',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(AdminZodSchema.createUserSchema),
   AdminController.createUser,
 );
 router.post('/register', AdminController.registerAdmin);
 router.post(
   '/make-admin',
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(AdminZodSchema.registerAdminSchema),
   AdminController.registerAdmin,
 );
 router.post('/login', AdminController.login);
@@ -35,6 +39,7 @@ router.post('/logout', AdminController.logout);
 router.post(
   '/change-password',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(AdminZodSchema.changePasswordSchema),
   AdminController.changePassword,
 );
 router.get(
@@ -46,12 +51,13 @@ router.patch(
   '/update-profile',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   uploadFile,
+  validateRequest(AdminZodSchema.updateAdminSchema),
   AdminController.updateAdmin,
 );
 router.patch(
   '/update-user/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
-
+  validateRequest(AdminZodSchema.updateUserProfileSchema),
   AdminController.updateUserProfile,
 );
 //!Payment

@@ -4,6 +4,8 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import { NewsController } from './news.controller';
 import { uploadFile } from '../../middlewares/fileUpload';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { NewsZodSchema } from './news.validations';
 
 const router = Router();
 
@@ -11,6 +13,7 @@ router.post(
   '/add',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   uploadFile,
+  validateRequest(NewsZodSchema.createNewsSchema),
   NewsController.createNews,
 );
 

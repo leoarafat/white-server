@@ -7,25 +7,42 @@ import { StaticsController } from '../statics/statics.controller';
 
 import { uploadFile } from '../../middlewares/fileUpload';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { UserZodSchema } from './user.validations';
 
 const router = express.Router();
 //!User
 
-router.post('/register', UserController.registrationUser);
+router.post(
+  '/register',
+  validateRequest(UserZodSchema.registrationUserSchema),
+  UserController.registrationUser,
+);
 router.post(
   '/add-sub-user',
   auth(ENUM_USER_ROLE.USER),
+  validateRequest(UserZodSchema.createSubUserSchema),
   UserController.createSubUser,
 );
-router.post('/activate-user', UserController.activateUser);
-router.post('/login', UserController.login);
+router.post(
+  '/activate-user',
+  validateRequest(UserZodSchema.activateUserSchema),
+  UserController.activateUser,
+);
+router.post(
+  '/login',
+  validateRequest(UserZodSchema.loginSchema),
+  UserController.login,
+);
 router.post(
   '/login-from-admin',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(UserZodSchema.loginFromAdminSchema),
   UserController.loginUserFromAdmin,
 );
 router.post(
   '/exchange-impersonation-code',
+  validateRequest(UserZodSchema.exchangeImpersonationCodeSchema),
   UserController.exchangeImpersonationCode,
 );
 router.post('/refresh-token', UserController.refreshToken);
@@ -36,6 +53,7 @@ router.patch(
   '/change-password',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/change-password'),
+  validateRequest(UserZodSchema.changePasswordSchema),
   UserController.changePassword,
 );
 //!Sub User
@@ -47,18 +65,21 @@ router.patch(
   '/profile-verify',
   auth(ENUM_USER_ROLE.USER),
   uploadFile,
+  validateRequest(UserZodSchema.profileVerificationSchema),
   UserController.profileVerification,
 );
 router.patch(
   '/label-verify',
   auth(ENUM_USER_ROLE.USER),
   uploadFile,
+  validateRequest(UserZodSchema.labelVerificationSchema),
   UserController.labelVerification,
 );
 router.patch(
   '/add-image',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   uploadFile,
+  validateRequest(UserZodSchema.addClientImageSchema),
   UserController.addClientImage,
 );
 router.patch(
@@ -70,11 +91,13 @@ router.patch(
 router.patch(
   '/address-verify',
   auth(ENUM_USER_ROLE.USER),
+  validateRequest(UserZodSchema.addressVerifySchema),
   UserController.updateProfile,
 );
 router.post(
   '/give-permission',
   auth(ENUM_USER_ROLE.USER),
+  validateRequest(UserZodSchema.givePermissionSchema),
   UserController.givePermission,
 );
 router.get(

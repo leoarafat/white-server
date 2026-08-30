@@ -4,6 +4,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { catalogVideoController } from './catalog-video.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { CatalogVideoZodSchema } from './catalog-video.validations';
 
 const router = Router();
 
@@ -62,11 +64,13 @@ router.patch(
 router.patch(
   '/move-to-review/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogVideoZodSchema.idParamsSchema),
   catalogVideoController.moveToInReview,
 );
 router.patch(
   '/edit-release/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogVideoZodSchema.editVideoSchema),
   catalogVideoController.editMusic,
 );
 router.patch(
@@ -78,6 +82,7 @@ router.patch(
     ENUM_USER_ROLE.SUB_USER,
   ),
   requirePermission('/my-uploads'),
+  validateRequest(CatalogVideoZodSchema.editVideoSchema),
   catalogVideoController.editVideo,
 );
 router.patch(
@@ -89,11 +94,13 @@ router.patch(
     ENUM_USER_ROLE.SUB_USER,
   ),
   requirePermission('/my-uploads'),
+  validateRequest(CatalogVideoZodSchema.idParamsSchema),
   catalogVideoController.manualApprove,
 );
 router.patch(
   '/transfer/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogVideoZodSchema.idParamsSchema),
   catalogVideoController.transferToVevo,
 );
 router.get(
@@ -104,11 +111,13 @@ router.get(
 router.patch(
   '/make-take-down/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogVideoZodSchema.idParamsSchema),
   catalogVideoController.makeTakeDown,
 );
 router.patch(
   '/remove-take-down/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(CatalogVideoZodSchema.idParamsSchema),
   catalogVideoController.removeTakeDown,
 );
 router.patch(

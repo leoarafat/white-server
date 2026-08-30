@@ -71,6 +71,7 @@ router.patch(
   '/update/:id',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/my-uploads'),
+  validateRequest(SingleTrackZodSchema.updateSingleMusicSchema),
   SingleMusicController.updateSingleMusic,
 );
 router.patch(

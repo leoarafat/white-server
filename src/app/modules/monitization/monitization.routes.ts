@@ -3,6 +3,8 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { MonetizationController } from './monitization.controller';
 import { requirePermission } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { MonetizationZodSchema } from './monitization.validations';
 
 const router = Router();
 router.get(
@@ -25,6 +27,7 @@ router.post(
   '/create-monetization',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/monetization'),
+  validateRequest(MonetizationZodSchema.createMonetizationSchema),
   MonetizationController.createMonetization,
 );
 router.get(
@@ -37,6 +40,7 @@ router.get(
 router.patch(
   '/update/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(MonetizationZodSchema.updateMonetizationSchema),
   MonetizationController.updateMonetization,
 );
 

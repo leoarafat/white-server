@@ -7,6 +7,8 @@ import {
   attachOwnerContext,
   requirePermission,
 } from '../../../shared/subUserAccess';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { LabelZodSchema } from './label.validations';
 
 const router = Router();
 router.get(
@@ -35,6 +37,7 @@ router.post(
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
   uploadFile,
+  validateRequest(LabelZodSchema.addLabelSchema),
   LabelController.addLabel,
 );
 router.patch(
@@ -42,6 +45,7 @@ router.patch(
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUB_USER),
   requirePermission('/artist-management'),
   uploadFile,
+  validateRequest(LabelZodSchema.updateMyLabelSchema),
   LabelController.updateMyLabel,
 );
 router.get(
@@ -80,6 +84,7 @@ router.get(
 router.patch(
   '/update/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(LabelZodSchema.updateLabelSchema),
   LabelController.updateLabel,
 );
 router.delete(
