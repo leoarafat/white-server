@@ -1,4 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import { ElementHandle, Page } from 'puppeteer';
+import { logger } from '../../shared/logger';
 
 /*
  * Revelator's Backstage UI (this white-label instance, backstage.ptunestudio.com)
@@ -17,6 +20,48 @@ const NAV_TIMEOUT = 30_000;
 
 export const delay = (ms: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, ms));
+
+// Every p-select existence-check fix so far has passed manual browser
+// testing (real Chrome, driven interactively) and then still failed the
+// exact same way on the next live run through the actual headless
+// Puppeteer bot — meaning something differs between that manual testing
+// and the bot's real headless execution that hasn't been identified yet.
+// Rather than keep guessing blindly, capture hard evidence at the exact
+// failure point: a screenshot plus the visible overlay's outerHTML (or a
+// note that none was found), written to disk so the next failure can
+// actually be inspected instead of re-diagnosed from an error string alone.
+async function dumpDebugState(page: Page, label: string): Promise<void> {
+  try {
+    const dir = path.join(process.cwd(), 'debug-screenshots');
+    fs.mkdirSync(dir, { recursive: true });
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const base = `${stamp}-${label.replace(/[^a-z0-9]+/gi, '-')}`;
+    await page.screenshot({
+      path: path.join(dir, `${base}.png`) as `${string}.png`,
+      fullPage: true,
+    });
+    const overlayHtml = await page.evaluate(() => {
+      const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+      const visible = overlays.find(el => (el as HTMLElement).offsetParent !== null);
+      return {
+        overlayCount: overlays.length,
+        visibleOverlayHtml: visible ? visible.outerHTML.slice(0, 3000) : null,
+        allOverlaysInfo: overlays.map(el => ({
+          visible: (el as HTMLElement).offsetParent !== null,
+          optionCount: el.querySelectorAll('.p-select-option').length,
+          hasEmptyMessage: !!el.querySelector('.p-select-empty-message'),
+        })),
+      };
+    });
+    fs.writeFileSync(
+      path.join(dir, `${base}.json`),
+      JSON.stringify(overlayHtml, null, 2),
+    );
+    logger.warn(`Revelator bot debug dump saved: ${base}`, overlayHtml.allOverlaysInfo);
+  } catch (err) {
+    logger.warn('Revelator bot debug dump failed', err);
+  }
+}
 
 export async function waitForAny(
   page: Page,
@@ -268,6 +313,7 @@ export async function selectPSelectOption(
 
   const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
   if (emptyMessage) {
+    await dumpDebugState(page, `pselect-empty-${triggerPlaceholder}-${value}`);
     await page.keyboard.press('Escape').catch(() => undefined);
     return { found: false };
   }
@@ -289,6 +335,7 @@ export async function selectPSelectOption(
   }, value);
 
   if (!clicked) {
+    await dumpDebugState(page, `pselect-noclick-${triggerPlaceholder}-${value}`);
     await page.keyboard.press('Escape').catch(() => undefined);
     return { found: false };
   }
@@ -350,6 +397,7 @@ export async function addArtistViaDialog(
 
   const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
   if (emptyMessage) {
+    await dumpDebugState(page, `artist-empty-${artistName}`);
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
   }
@@ -370,6 +418,7 @@ export async function addArtistViaDialog(
     return false;
   }, artistName);
   if (!clicked) {
+    await dumpDebugState(page, `artist-noclick-${artistName}`);
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
   }
