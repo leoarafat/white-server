@@ -6,13 +6,37 @@ export type RevelatorAudioAssetForm = {
   language: string;
   title: string;
   version?: string;
+  primaryArtists: string[];
   primaryGenre: string;
   secondaryGenre?: string;
+  origin: 'original' | 'public-domain' | 'cover';
+  trackProperties: string[];
   copyrightPYear: string;
   copyrightPText: string;
   isExplicit: boolean;
   hasLyrics: boolean;
   lyrics?: string;
+};
+
+// track.origin -> the exact radio-card label text on Revelator's "Create
+// Audio Asset" / "Release Details" forms (live-confirmed).
+export const ORIGIN_LABELS: Record<RevelatorAudioAssetForm['origin'], string> = {
+  original: 'Original Work',
+  'public-domain': 'Public Domain & Traditional',
+  cover: 'Cover Song',
+};
+
+// track.trackProperties entries -> Revelator's "Properties" toggle-button
+// labels (live-confirmed on the real "Create Audio Asset" form). Unmapped
+// values are dropped rather than guessed at.
+export const TRACK_PROPERTY_LABELS: Record<string, string> = {
+  remix: 'Remix or Derivative',
+  samples: 'Samples or Stock',
+  compilation: 'Mix or Compilation',
+  'alternate-version': 'Alternate Version',
+  'special-genre': 'Special Genre',
+  'non-musical': 'Non-Musical Content',
+  'includes-ai': 'Includes AI',
 };
 
 export type RevelatorReleaseForm = {
@@ -63,8 +87,11 @@ export function mapAudioAssetForm(
     language: track.trackTitleLanguage,
     title: track.title,
     version: track.subtitle || undefined,
+    primaryArtists: track.primaryArtist || [],
     primaryGenre: track.genre,
     secondaryGenre: track.subGenre || undefined,
+    origin: track.origin || 'original',
+    trackProperties: track.trackProperties || [],
     copyrightPYear: pCopy.year,
     copyrightPText: pCopy.text,
     isExplicit: track.parentalAdvisory === 'Explicit',

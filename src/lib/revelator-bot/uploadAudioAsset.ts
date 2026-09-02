@@ -1,11 +1,17 @@
 import { Page } from 'puppeteer';
-import { RevelatorAudioAssetForm } from './mapTrackToRevelatorForm';
+import config from '../../config';
+import {
+  RevelatorAudioAssetForm,
+  ORIGIN_LABELS,
+  TRACK_PROPERTY_LABELS,
+} from './mapTrackToRevelatorForm';
 import {
   clickNearText,
   fillByPlaceholder,
   findFileInputBySection,
   selectDropdownOption,
   selectPSelectOption,
+  addArtistViaDialog,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
@@ -90,6 +96,29 @@ export async function uploadAudioAsset(
   if (form.version) {
     await fillByPlaceholder(page, 'e.g. Live, Remix, Remastered', form.version);
   }
+
+  onProgress('Adding primary artist');
+  if (form.primaryArtists.length > 1) {
+    return {
+      ok: false,
+      error: {
+        message: `This release has ${form.primaryArtists.length} primary artists — sending releases with more than one primary artist isn't supported by the automation yet.`,
+        retryable: false,
+      },
+    };
+  }
+  if (form.primaryArtists[0]) {
+    const artistResult = await addArtistViaDialog(
+      page,
+      'Add Main Primary Artist',
+      form.primaryArtists[0],
+      'Add Artist',
+    );
+    if (!artistResult.found) {
+      return missingOption('Artist', form.primaryArtists[0]);
+    }
+  }
+
   const genreResult = await selectPSelectOption(page, 'Select genre', form.primaryGenre, 0);
   if (!genreResult.found) {
     return missingOption('Genre', form.primaryGenre);
@@ -100,8 +129,31 @@ export async function uploadAudioAsset(
       return missingOption('Secondary Genre', form.secondaryGenre);
     }
   }
+
+  const originLabel = ORIGIN_LABELS[form.origin];
+  const originOk = await clickNearText(page, 'Origin', originLabel);
+  if (!originOk) {
+    return {
+      ok: false,
+      error: { message: `Could not select Origin "${originLabel}"`, retryable: true },
+    };
+  }
+
   await selectDropdownOption(page, 'Select year', form.copyrightPYear);
   await fillByPlaceholder(page, 'e.g. Label LLC', form.copyrightPText);
+
+  onProgress('Setting track properties');
+  const mappedProperties = form.trackProperties
+    .map(p => TRACK_PROPERTY_LABELS[p])
+    .filter((label): label is string => Boolean(label));
+  if (mappedProperties.length > 0) {
+    for (const label of mappedProperties) {
+      await clickNearText(page, 'Properties', label);
+      await delay(200);
+    }
+  } else {
+    await clickNearText(page, 'Properties', 'None of the above apply');
+  }
 
   if (!form.isExplicit) {
     await clickNearText(page, 'Explicit Content Warning', 'Not Explicit');
@@ -155,36 +207,26 @@ export async function uploadAudioAsset(
   return { ok: true };
 }
 
-// Shared by both flows — the hamburger menu → the page switcher pill
-// (recon: click hamburger icon top-left, tile grid appears with
-// Assets/Audio, Assets/Video, Products/Digital Releases, etc.)
+// Shared by both flows. The original recon assumed a hamburger menu opening
+// a tile-grid switcher — confirmed WRONG against the real live account
+// (backstage.ptunestudio.com has a persistent left sidebar instead, no
+// hamburger at all) and was the actual cause of every real send failing
+// with "Could not navigate to Catalog → Audio" once login started working.
+// Both catalog sections have stable, predictable URLs, so navigate directly
+// rather than clicking through UI that doesn't match the real app.
+const CATALOG_PATHS: Record<'Audio' | 'Digital Releases', string> = {
+  Audio: 'en/catalog/audio/list',
+  'Digital Releases': 'en/catalog/releases/list',
+};
+
 export async function openCatalogSection(
   page: Page,
   sectionLabel: 'Audio' | 'Digital Releases',
 ): Promise<void> {
-  // The hamburger icon is the first interactive element in the top bar.
-  const hamburger = await page.$('header button, nav button, button');
-  if (hamburger) {
-    await hamburger.click();
-    await delay(400);
-  }
-  const clicked = await page.evaluate((label: string) => {
-    const tiles = Array.from(document.querySelectorAll('button, a, div'));
-    const match = tiles.find(
-      el =>
-        el.textContent?.trim() === label &&
-        el.children.length === 0,
-    );
-    if (match) {
-      const clickable =
-        match.closest('button, a') || (match as HTMLElement);
-      (clickable as HTMLElement).click();
-      return true;
-    }
-    return false;
-  }, sectionLabel);
-  if (!clicked) {
-    throw new Error(`Could not navigate to Catalog → ${sectionLabel}`);
-  }
-  await delay(800);
+  const base = config.revelator.baseUrl.replace(/\/+$/, '');
+  await page.goto(`${base}/${CATALOG_PATHS[sectionLabel]}`, {
+    waitUntil: 'networkidle2',
+    timeout: 30_000,
+  });
+  await delay(500);
 }

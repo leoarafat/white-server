@@ -56,10 +56,18 @@ function cssEscape(s: string): string {
   return s.replace(/["\\]/g, '\\$&');
 }
 
-// Finds a form control near a given heading/label text by walking the DOM —
-// used for the select/radio-group fields recon captured only by role+label,
-// not a stable attribute. Returns the first <input>/<select>/<button> found
-// within the same section (until the next heading).
+// Finds a form control near a given heading text. Revelator's section
+// headings are all <h5> (live-confirmed against the real "Create Audio
+// Asset" / "Create Digital Release" forms), but the DOM nesting between a
+// heading and its field is NOT consistent — some sections wrap the heading
+// and its content as sibling divs under a shared ".grid" container, others
+// put the heading and content as direct siblings inside one wrapping div.
+// Sibling-walking from the heading element itself breaks on the first
+// pattern (confirmed: "Origin", "Properties", "Explicit Content Warning",
+// "Lyrics", "Copyright" all failed with the old sibling-walk). The reliable
+// approach is DOM *document order*, independent of nesting: collect every
+// element between this heading and the next h1-h6 heading, in the order
+// querySelectorAll('*') already returns them (depth-first document order).
 export async function clickNearText(
   page: Page,
   sectionHeading: string,
@@ -67,25 +75,18 @@ export async function clickNearText(
 ): Promise<boolean> {
   return page.evaluate(
     (heading: string, control: string) => {
-      const all = Array.from(document.querySelectorAll('h1,h2,h3,h4,label'));
-      const start = all.find(el => el.textContent?.trim() === heading);
-      if (!start) return false;
-      let node: Element | null = start;
-      const sectionEls: Element[] = [];
-      // Collect siblings/descendants until the next heading-level element.
-      while (node && node.nextElementSibling) {
-        node = node.nextElementSibling;
-        if (
-          node.tagName.match(/^H[1-4]$/) ||
-          (node.tagName === 'LABEL' && node !== start)
-        ) {
-          break;
-        }
-        sectionEls.push(node, ...Array.from(node.querySelectorAll('*')));
-      }
-      const target = sectionEls.find(
-        el => el.textContent?.trim() === control,
+      const allEls = Array.from(document.querySelectorAll('*'));
+      const headingEls = allEls.filter(el => /^H[1-6]$/.test(el.tagName));
+      const startIdx = headingEls.findIndex(
+        el => el.textContent?.trim() === heading,
       );
+      if (startIdx === -1) return false;
+      const startEl = headingEls[startIdx];
+      const endEl = headingEls[startIdx + 1] || null;
+      const startPos = allEls.indexOf(startEl);
+      const endPos = endEl ? allEls.indexOf(endEl) : allEls.length;
+      const sectionEls = allEls.slice(startPos + 1, endPos);
+      const target = sectionEls.find(el => el.textContent?.trim() === control);
       if (target) {
         (target as HTMLElement).click();
         return true;
@@ -103,14 +104,20 @@ export async function findFileInputBySection(
 ): Promise<ElementHandle<HTMLInputElement> | null> {
   const handle = await page.evaluateHandle(
     (heading: string) => {
-      const all = Array.from(document.querySelectorAll('h1,h2,h3,h4'));
-      const start = all.find(el => el.textContent?.trim() === heading);
-      if (!start) return null;
-      let node: Element | null = start;
-      while (node && node.nextElementSibling) {
-        node = node.nextElementSibling;
-        if (node.tagName.match(/^H[1-4]$/)) break;
-        const input = node.querySelector('input[type="file"]');
+      // Same document-order approach as clickNearText above.
+      const allEls = Array.from(document.querySelectorAll('*'));
+      const headingEls = allEls.filter(el => /^H[1-6]$/.test(el.tagName));
+      const startIdx = headingEls.findIndex(
+        el => el.textContent?.trim() === heading,
+      );
+      if (startIdx === -1) return null;
+      const startEl = headingEls[startIdx];
+      const endEl = headingEls[startIdx + 1] || null;
+      const startPos = allEls.indexOf(startEl);
+      const endPos = endEl ? allEls.indexOf(endEl) : allEls.length;
+      const sectionEls = allEls.slice(startPos + 1, endPos);
+      for (const el of sectionEls) {
+        const input = el.querySelector('input[type="file"]');
         if (input) return input;
       }
       return null;
