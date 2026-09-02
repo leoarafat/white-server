@@ -172,19 +172,24 @@ export type PSelectResult = { found: boolean };
 // Genre search failed right after the Main-Primary-Artist dialog's own
 // p-select closed, in a run where isolated testing of Genre alone passed).
 // The most-recently-opened overlay is always last in document order.
-function lastOverlay(): Element | null {
-  const overlays = document.querySelectorAll('.p-select-overlay');
-  return overlays[overlays.length - 1] || null;
-}
-
+//
+// The overlay-lookup logic is duplicated inline in every evaluate/
+// waitForFunction callback below rather than shared as a JS function value
+// passed as an argument — Puppeteer only structured-clones evaluate
+// arguments (functions serialize to nothing, which is exactly what broke
+// the previous version: "getLastOverlay is not a function" on every real
+// run). Only the callback passed as the *first* argument to evaluate/
+// waitForFunction gets stringified and reconstructed in-browser; anything
+// passed as a later argument must be plain data.
 async function snapshotOptionList(page: Page): Promise<string> {
-  return page.evaluate((getLastOverlay: () => Element | null) => {
-    const overlay = getLastOverlay();
+  return page.evaluate(() => {
+    const overlays = document.querySelectorAll('.p-select-overlay');
+    const overlay = overlays[overlays.length - 1] || null;
     if (!overlay) return '';
     return Array.from(overlay.querySelectorAll('.p-select-option'))
       .map(el => el.textContent)
       .join('|');
-  }, lastOverlay);
+  });
 }
 
 async function waitForSearchSettled(
@@ -194,8 +199,9 @@ async function waitForSearchSettled(
 ): Promise<void> {
   await page
     .waitForFunction(
-      (base: string, getLastOverlay: () => Element | null) => {
-        const overlay = getLastOverlay();
+      (base: string) => {
+        const overlays = document.querySelectorAll('.p-select-overlay');
+        const overlay = overlays[overlays.length - 1] || null;
         if (!overlay) return false;
         if (overlay.querySelector('.p-select-empty-message')) return true;
         const current = Array.from(
@@ -207,7 +213,6 @@ async function waitForSearchSettled(
       },
       { timeout: timeoutMs },
       baseline,
-      lastOverlay,
     )
     .catch(() => undefined);
 }
@@ -216,14 +221,11 @@ async function getScopedElement(
   page: Page,
   selector: string,
 ): Promise<import('puppeteer').ElementHandle<Element> | null> {
-  const handle = await page.evaluateHandle(
-    (sel: string, getLastOverlay: () => Element | null) => {
-      const overlay = getLastOverlay();
-      return overlay ? overlay.querySelector(sel) : null;
-    },
-    selector,
-    lastOverlay,
-  );
+  const handle = await page.evaluateHandle((sel: string) => {
+    const overlays = document.querySelectorAll('.p-select-overlay');
+    const overlay = overlays[overlays.length - 1] || null;
+    return overlay ? overlay.querySelector(sel) : null;
+  }, selector);
   return handle.asElement() as import('puppeteer').ElementHandle<Element> | null;
 }
 
@@ -265,24 +267,21 @@ export async function selectPSelectOption(
     return { found: false };
   }
 
-  const clicked = await page.evaluate(
-    (needle: string, getLastOverlay: () => Element | null) => {
-      const overlay = getLastOverlay();
-      if (!overlay) return false;
-      const options = Array.from(overlay.querySelectorAll('.p-select-option'));
-      const match = options.find(el => {
-        const text = el.textContent?.trim() || '';
-        return text === needle || text.startsWith(needle);
-      });
-      if (match) {
-        (match as HTMLElement).click();
-        return true;
-      }
-      return false;
-    },
-    value,
-    lastOverlay,
-  );
+  const clicked = await page.evaluate((needle: string) => {
+    const overlays = document.querySelectorAll('.p-select-overlay');
+    const overlay = overlays[overlays.length - 1] || null;
+    if (!overlay) return false;
+    const options = Array.from(overlay.querySelectorAll('.p-select-option'));
+    const match = options.find(el => {
+      const text = el.textContent?.trim() || '';
+      return text === needle || text.startsWith(needle);
+    });
+    if (match) {
+      (match as HTMLElement).click();
+      return true;
+    }
+    return false;
+  }, value);
 
   if (!clicked) {
     await page.keyboard.press('Escape').catch(() => undefined);
@@ -350,24 +349,21 @@ export async function addArtistViaDialog(
     return { found: false };
   }
 
-  const clicked = await page.evaluate(
-    (needle: string, getLastOverlay: () => Element | null) => {
-      const overlay = getLastOverlay();
-      if (!overlay) return false;
-      const options = Array.from(overlay.querySelectorAll('.p-select-option'));
-      const match = options.find(el => {
-        const text = el.textContent?.trim() || '';
-        return text === needle || text.startsWith(needle);
-      });
-      if (match) {
-        (match as HTMLElement).click();
-        return true;
-      }
-      return false;
-    },
-    artistName,
-    lastOverlay,
-  );
+  const clicked = await page.evaluate((needle: string) => {
+    const overlays = document.querySelectorAll('.p-select-overlay');
+    const overlay = overlays[overlays.length - 1] || null;
+    if (!overlay) return false;
+    const options = Array.from(overlay.querySelectorAll('.p-select-option'));
+    const match = options.find(el => {
+      const text = el.textContent?.trim() || '';
+      return text === needle || text.startsWith(needle);
+    });
+    if (match) {
+      (match as HTMLElement).click();
+      return true;
+    }
+    return false;
+  }, artistName);
   if (!clicked) {
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
