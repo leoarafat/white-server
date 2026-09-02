@@ -7,6 +7,7 @@ import {
   REVELATOR_UPLOAD_QUEUE_NAME,
   RevelatorUploadJobData,
   RevelatorProgress,
+  revelatorUploadQueue,
 } from './revelator-upload.queue';
 import { SingleTrack } from '../app/modules/single-track/single.model';
 import { getBrowser } from '../lib/revelator-bot/browser';
@@ -126,6 +127,39 @@ async function processJob(
   }
 }
 
+// A deploy/restart can kill this process mid-job — BullMQ still resolves
+// the job to its terminal state (failed, since active jobs on a closed
+// worker aren't silently retried forever), but the track's own
+// `revelatorStatus` field only gets set to 'failed' by failStep() above,
+// which never runs if the process was killed before it could. Without this,
+// the track is stuck showing "Processing" (and the Send button stays
+// disabled) forever, with no way to resend short of a manual DB fix. Run
+// once at boot: any track still marked 'processing' whose job isn't
+// actually active/waiting anymore gets reconciled to 'failed'.
+async function reconcileOrphanedProcessingTracks(): Promise<void> {
+  const stuck = await SingleTrack.find(
+    { revelatorStatus: 'processing' },
+    { _id: 1, revelatorJobId: 1 },
+  );
+  for (const track of stuck) {
+    const job = track.revelatorJobId
+      ? await revelatorUploadQueue.getJob(track.revelatorJobId)
+      : null;
+    const state = job ? await job.getState() : 'missing';
+    if (state === 'active' || state === 'waiting' || state === 'delayed') {
+      continue; // genuinely still in progress — leave it alone
+    }
+    await SingleTrack.findByIdAndUpdate(track._id, {
+      revelatorStatus: 'failed',
+      revelatorError:
+        'Interrupted by a server restart before finishing — please resend.',
+    });
+    logger.warn(
+      `Reconciled orphaned "processing" Revelator status for track ${track._id}`,
+    );
+  }
+}
+
 async function bootstrapWorker() {
   try {
     await mongoose.connect(config.database_url as string, {
@@ -133,6 +167,7 @@ async function bootstrapWorker() {
       enableUtf8Validation: false,
     });
     logger.info('✅ Revelator upload worker: MongoDB connected');
+    await reconcileOrphanedProcessingTracks();
     logger.info('🚀 Revelator upload worker booted and waiting for jobs');
 
     const worker = new Worker<RevelatorUploadJobData>(
