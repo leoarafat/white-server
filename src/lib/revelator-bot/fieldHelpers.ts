@@ -155,6 +155,47 @@ export async function selectDropdownOption(
 
 export type PSelectResult = { found: boolean };
 
+// Revelator's p-select search (Artist/Label especially) hits a live server
+// query, not a pre-loaded local list — live-confirmed: a fixed ~600ms wait
+// after typing produced a false "does not exist" for an artist ("Adib")
+// that genuinely is in the account. Root cause: the dropdown already shows
+// an unfiltered option list the instant it opens, so a check for merely
+// "some options are present" (or even "options or empty-message present")
+// resolves immediately against that stale list, before the debounced
+// server search for the typed text has even fired. The only reliable
+// signal is a *change* from what was showing right before typing — so this
+// snapshots the option list first, then waits for it to actually differ
+// (or for the empty-message to appear).
+async function snapshotOptionList(page: Page): Promise<string> {
+  return page.evaluate(() =>
+    Array.from(document.querySelectorAll('.p-select-option'))
+      .map(el => el.textContent)
+      .join('|'),
+  );
+}
+
+async function waitForSearchSettled(
+  page: Page,
+  baseline: string,
+  timeoutMs = 6000,
+): Promise<void> {
+  await page
+    .waitForFunction(
+      (base: string) => {
+        if (document.querySelector('.p-select-empty-message')) return true;
+        const current = Array.from(
+          document.querySelectorAll('.p-select-option'),
+        )
+          .map(el => el.textContent)
+          .join('|');
+        return current !== base && current.length > 0;
+      },
+      { timeout: timeoutMs },
+      baseline,
+    )
+    .catch(() => undefined);
+}
+
 // Language/Genre/Artist/Label are all PrimeNG <p-select> — clicking the
 // trigger (matched by its `placeholder`) opens an overlay with a
 // `.p-select-filter` search box, `.p-select-option` <li> results, and (the
@@ -181,9 +222,10 @@ export async function selectPSelectOption(
 
   const filter = await page.$('.p-select-filter');
   if (filter) {
+    const baseline = await snapshotOptionList(page);
     await filter.click({ clickCount: 3 });
     await filter.type(value, { delay: 10 });
-    await delay(600);
+    await waitForSearchSettled(page, baseline);
   }
 
   const emptyMessage = await page.$('.p-select-empty-message');
@@ -260,8 +302,9 @@ export async function addArtistViaDialog(
 
   const filter = await page.$('.p-select-filter');
   if (filter) {
+    const baseline = await snapshotOptionList(page);
     await filter.type(artistName, { delay: 10 });
-    await delay(600);
+    await waitForSearchSettled(page, baseline);
   }
 
   const emptyMessage = await page.$('.p-select-empty-message');
