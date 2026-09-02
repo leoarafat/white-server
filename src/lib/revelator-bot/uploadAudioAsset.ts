@@ -223,6 +223,11 @@ const CATALOG_PATHS: Record<'Audio' | 'Digital Releases', string> = {
   'Digital Releases': 'en/catalog/releases/list',
 };
 
+const CATALOG_READY_TEXT: Record<'Audio' | 'Digital Releases', string> = {
+  Audio: 'New Audio Asset',
+  'Digital Releases': 'New Release',
+};
+
 export async function openCatalogSection(
   page: Page,
   sectionLabel: 'Audio' | 'Digital Releases',
@@ -232,5 +237,10 @@ export async function openCatalogSection(
     waitUntil: 'networkidle2',
     timeout: 30_000,
   });
-  await delay(500);
+  // networkidle2 only tracks network requests — Angular can finish those
+  // and still be mid-render (live-confirmed: a real run failed with
+  // "Could not find 'New Audio Asset' button" right after this navigation,
+  // on a run that otherwise worked correctly past every later step). Wait
+  // for the list page's own "New X" button text instead of a fixed delay.
+  await waitForAny(page, [CATALOG_READY_TEXT[sectionLabel]], 15_000);
 }
