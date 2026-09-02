@@ -66,9 +66,11 @@ const singleMusicSchema = new Schema<ISingleTrack>(
     remixer: {
       type: String,
     },
+    // No longer required — the new upload form drives credits via
+    // `contributors[]` and auto-fills this (and the other legacy flat
+    // fields below) for backward compatibility. See contributor.utils.ts.
     author: {
       type: String,
-      required: true,
     },
     // Store artist NAMES (strings), same as the video flow — not ObjectId refs.
     primaryArtist: {
@@ -78,7 +80,6 @@ const singleMusicSchema = new Schema<ISingleTrack>(
 
     composer: {
       type: String,
-      required: true,
     },
     arranger: {
       type: String,
@@ -116,9 +117,10 @@ const singleMusicSchema = new Schema<ISingleTrack>(
       required: true,
     },
     // Store label NAME (string), same as the video flow — not an ObjectId ref.
+    // Not schema-required any more — only meaningful when hasRecordLabel is
+    // true (enforced client-side / at the service layer, not the DB).
     label: {
       type: String,
-      required: true,
     },
     publisher: {
       type: String,
@@ -237,6 +239,63 @@ const singleMusicSchema = new Schema<ISingleTrack>(
     },
     revelatorAssetTitle: {
       type: String,
+    },
+
+    contributors: {
+      type: [
+        {
+          name: { type: String, required: true },
+          roleId: { type: Number, required: true },
+          roleName: { type: String, required: true },
+          roleGroupId: { type: Number, required: true },
+          sharePercent: { type: Number },
+        },
+      ],
+      default: [],
+    },
+    hasIsrc: {
+      type: Boolean,
+      default: false,
+    },
+    isCompilation: {
+      type: Boolean,
+      default: false,
+    },
+    hasRecordLabel: {
+      type: Boolean,
+      default: false,
+    },
+    previouslyReleased: {
+      type: Boolean,
+      default: false,
+    },
+    previousReleaseDate: {
+      type: String,
+    },
+    iswc: {
+      type: String,
+    },
+    trackProperties: {
+      type: [String],
+      default: [],
+    },
+    origin: {
+      type: String,
+      enum: ['original', 'public-domain', 'cover'],
+      default: 'original',
+    },
+    copyrightPYear: { type: String },
+    copyrightPText: { type: String },
+    copyrightCYear: { type: String },
+    copyrightCText: { type: String },
+    localizations: {
+      type: [
+        {
+          language: { type: String, required: true },
+          title: { type: String, required: true },
+        },
+      ],
+      default: [],
     },
   },
   {

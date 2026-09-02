@@ -1,96 +1,26 @@
 import { Request, Response } from 'express';
-import { getUserISRC } from '../statics/isrcs';
 
-import { Mutex } from 'async-mutex';
 import { logger } from '../../../shared/logger';
 import { Isrc } from './isrc.model';
 import ApiError from '../../../errors/ApiError';
 import mongoose from 'mongoose';
+import { generateNextIsrc } from './isrc.service';
 
-const isrcMutex = new Mutex();
 export const generateIsrc = async (req: Request, res: Response) => {
-  await isrcMutex.runExclusive(async () => {
-    try {
-      const userISRCs = await getUserISRC();
-
-      // Filter valid ISRCs only
-      const validISRCs = userISRCs.filter((isrc: string) =>
-        /^QT6X6\d{7}$/.test(isrc.trim()),
-      );
-
-      let newISRC: string;
-
-      if (validISRCs.length === 0) {
-        newISRC = 'QT6X62500001';
-      } else {
-        // Sort ISRCs and get the highest one
-        const sorted = validISRCs.sort((a, b) => {
-          const aNum = parseInt(a.slice(-7));
-          const bNum = parseInt(b.slice(-7));
-          return aNum - bNum;
-        });
-
-        const lastISRC = sorted[sorted.length - 1];
-        const numericPart = parseInt(lastISRC.slice(-7), 10);
-        const nextNumber = numericPart + 1;
-        newISRC = `QT6X6${nextNumber.toString().padStart(7, '0')}`;
-      }
-
-      res.status(200).json({
-        success: true,
-        data: newISRC,
-      });
-    } catch (error) {
-      logger.error('Error generating ISRC:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to generate ISRC',
-      });
-    }
-  });
+  try {
+    const newISRC = await generateNextIsrc();
+    res.status(200).json({
+      success: true,
+      data: newISRC,
+    });
+  } catch (error) {
+    logger.error('Error generating ISRC:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate ISRC',
+    });
+  }
 };
-// export const generateIsrc = async (req: Request, res: Response) => {
-//   await isrcMutex.runExclusive(async () => {
-//     try {
-//       const userISRCs = await getUserISRC();
-
-//       // Filter valid ISRCs only
-//       const validISRCs = userISRCs.filter((isrc: string) =>
-//         /^BDA1M\d{7}$/.test(isrc.trim()),
-//       );
-
-//       let newISRC: string;
-
-//       if (validISRCs.length === 0) {
-//         newISRC = 'QT6X62500001';
-//       } else {
-//         // Sort ISRCs and get the highest one
-//         const sorted = validISRCs.sort((a, b) => {
-//           const aNum = parseInt(a.slice(-7));
-//           const bNum = parseInt(b.slice(-7));
-//           return aNum - bNum;
-//         });
-
-//         const lastISRC = sorted[sorted.length - 1];
-//         const numericPart = parseInt(lastISRC.slice(-7), 10);
-//         const nextNumber = numericPart + 1;
-//         newISRC = `QT6X6${nextNumber.toString().padStart(7, '0')}`;
-//       }
-
-//       res.status(200).json({
-//         success: true,
-//         data: newISRC,
-//       });
-//     } catch (error) {
-//       logger.error('Error generating ISRC:', error);
-//       res.status(500).json({
-//         success: false,
-//         message: 'Failed to generate ISRC',
-//       });
-//     }
-//   });
-// };
-
 export const createIsrc = async (req: Request, res: Response) => {
   try {
     const data = req.body;

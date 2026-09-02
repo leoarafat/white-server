@@ -1,0 +1,1184 @@
+[
+  {
+    "languageId": 58,
+    "name": "Punjabi",
+    "languageCode": "pa",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 97,
+    "name": "Faroese",
+    "languageCode": "fo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 105,
+    "name": "Herero",
+    "languageCode": "hz",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 125,
+    "name": "Kuanyama",
+    "languageCode": "kj",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 137,
+    "name": "Marathi",
+    "languageCode": "mr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 155,
+    "name": "Pali",
+    "languageCode": "pi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 184,
+    "name": "Uzbek",
+    "languageCode": "uz",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 188,
+    "name": "Welsh",
+    "languageCode": "cy",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 194,
+    "name": "Zhuang",
+    "languageCode": "za",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 11,
+    "name": "Danish",
+    "languageCode": "da",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 41,
+    "name": "Telugu",
+    "languageCode": "te",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 43,
+    "name": "Turkish",
+    "languageCode": "tr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 48,
+    "name": "Instrumental",
+    "languageCode": "zxx",
+    "isValidMetadataLanguage": false
+  },
+  {
+    "languageId": 53,
+    "name": "Bengali",
+    "languageCode": "bn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 82,
+    "name": "Bislama",
+    "languageCode": "bi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 89,
+    "name": "Chuvash",
+    "languageCode": "cv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 140,
+    "name": "Nauru",
+    "languageCode": "na",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 150,
+    "name": "Ojibwa",
+    "languageCode": "oj",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 153,
+    "name": "Oriya",
+    "languageCode": "or",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 157,
+    "name": "Quechua",
+    "languageCode": "qu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 185,
+    "name": "Venda",
+    "languageCode": "ve",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 191,
+    "name": "Xhosa",
+    "languageCode": "xh",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 198,
+    "name": "Rajasthani",
+    "languageCode": "raj",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 9,
+    "name": "Croatian",
+    "languageCode": "hr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 18,
+    "name": "Hungarian",
+    "languageCode": "hu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 37,
+    "name": "Spanish",
+    "languageCode": "es",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 69,
+    "name": "Albanian",
+    "languageCode": "sq",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 75,
+    "name": "Aymara",
+    "languageCode": "ay",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 113,
+    "name": "Javanese",
+    "languageCode": "jv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 131,
+    "name": "Manx",
+    "languageCode": "gv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 152,
+    "name": "Oromo",
+    "languageCode": "om",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 158,
+    "name": "Romansh",
+    "languageCode": "rm",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 177,
+    "name": "Tswana",
+    "languageCode": "tn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 186,
+    "name": "Volapük",
+    "languageCode": "vo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 10,
+    "name": "Czech",
+    "languageCode": "cs",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 66,
+    "name": "Abkhazian",
+    "languageCode": "ab",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 95,
+    "name": "Esperanto",
+    "languageCode": "eo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 118,
+    "name": "Central Khmer",
+    "languageCode": "km",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 122,
+    "name": "Komi",
+    "languageCode": "kv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 141,
+    "name": "Navajo",
+    "languageCode": "nv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 162,
+    "name": "Northern Sami",
+    "languageCode": "se",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 196,
+    "name": "Haryanvi",
+    "languageCode": "bgc",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 29,
+    "name": "Norwegian",
+    "languageCode": "no",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 44,
+    "name": "Ukrainian",
+    "languageCode": "uk",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 49,
+    "name": "Chinese Simplified",
+    "languageCode": "zh-Hans",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 61,
+    "name": "Amharic",
+    "languageCode": "am",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 77,
+    "name": "Bambara",
+    "languageCode": "bm",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 85,
+    "name": "Burmese",
+    "languageCode": "my",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 104,
+    "name": "Hausa",
+    "languageCode": "ha",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 109,
+    "name": "Igbo",
+    "languageCode": "ig",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 117,
+    "name": "Kashmiri",
+    "languageCode": "ks",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 12,
+    "name": "Dutch",
+    "languageCode": "nl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 13,
+    "name": "Estonian",
+    "languageCode": "et",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 20,
+    "name": "Indonesian",
+    "languageCode": "id",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 25,
+    "name": "Lao",
+    "languageCode": "lo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 99,
+    "name": "Fulah",
+    "languageCode": "ff",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 110,
+    "name": "Inupiaq",
+    "languageCode": "ik",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 111,
+    "name": "Ido",
+    "languageCode": "io",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 133,
+    "name": "Malagasy",
+    "languageCode": "mg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 136,
+    "name": "Maori",
+    "languageCode": "mi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 164,
+    "name": "Sango",
+    "languageCode": "sg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 172,
+    "name": "Swahili",
+    "languageCode": "sw",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 180,
+    "name": "Tatar",
+    "languageCode": "tt",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 189,
+    "name": "Wolof",
+    "languageCode": "wo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 201,
+    "name": "Konkani",
+    "languageCode": "kok",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 1,
+    "name": "English",
+    "languageCode": "en",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 5,
+    "name": "Arabic",
+    "languageCode": "ar",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 17,
+    "name": "Hindi",
+    "languageCode": "hi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 35,
+    "name": "Slovak",
+    "languageCode": "sk",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 45,
+    "name": "Urdu",
+    "languageCode": "ur",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 57,
+    "name": "Persian",
+    "languageCode": "fa",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 68,
+    "name": "Akan",
+    "languageCode": "ak",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 76,
+    "name": "Azerbaijani",
+    "languageCode": "az",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 83,
+    "name": "Bosnian",
+    "languageCode": "bs",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 98,
+    "name": "Fijian",
+    "languageCode": "fj",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 120,
+    "name": "Kinyarwanda",
+    "languageCode": "rw",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 123,
+    "name": "Kongo",
+    "languageCode": "kg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 134,
+    "name": "Malayalam",
+    "languageCode": "ml",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 145,
+    "name": "Norwegian Bokmål",
+    "languageCode": "nb",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 147,
+    "name": "Sichuan Yi",
+    "languageCode": "ii",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 148,
+    "name": "South Ndebele",
+    "languageCode": "nr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 182,
+    "name": "Tahitian",
+    "languageCode": "ty",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 193,
+    "name": "Yoruba",
+    "languageCode": "yo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 195,
+    "name": "Bhojpuri",
+    "languageCode": "bho",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 2,
+    "name": "Hebrew",
+    "languageCode": "he",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 19,
+    "name": "Icelandic",
+    "languageCode": "is",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 32,
+    "name": "Romanian",
+    "languageCode": "ro",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 36,
+    "name": "Slovenian",
+    "languageCode": "sl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 56,
+    "name": "Latin",
+    "languageCode": "la",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 70,
+    "name": "Aragonese",
+    "languageCode": "an",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 79,
+    "name": "Basque",
+    "languageCode": "eu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 92,
+    "name": "Cree",
+    "languageCode": "cr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 106,
+    "name": "Hiri Motu",
+    "languageCode": "ho",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 132,
+    "name": "Macedonian",
+    "languageCode": "mk",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 143,
+    "name": "Nepali",
+    "languageCode": "ne",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 144,
+    "name": "Ndonga",
+    "languageCode": "ng",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 151,
+    "name": "Church Slavic",
+    "languageCode": "cu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 176,
+    "name": "Turkmen",
+    "languageCode": "tk",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 179,
+    "name": "Tsonga",
+    "languageCode": "ts",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 190,
+    "name": "Western Frisian",
+    "languageCode": "fy",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 197,
+    "name": "Konkani",
+    "languageCode": "kok",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 31,
+    "name": "Portuguese",
+    "languageCode": "pt",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 38,
+    "name": "Swedish",
+    "languageCode": "sv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 78,
+    "name": "Bashkir",
+    "languageCode": "ba",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 84,
+    "name": "Breton",
+    "languageCode": "br",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 115,
+    "name": "Kannada",
+    "languageCode": "kn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 127,
+    "name": "Ganda",
+    "languageCode": "lg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 139,
+    "name": "Mongolian",
+    "languageCode": "mn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 142,
+    "name": "North Ndebele",
+    "languageCode": "nd",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 154,
+    "name": "Ossetian",
+    "languageCode": "os",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 161,
+    "name": "Sindhi",
+    "languageCode": "sd",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 171,
+    "name": "Sundanese",
+    "languageCode": "su",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 175,
+    "name": "Tibetan",
+    "languageCode": "bo",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 192,
+    "name": "Yiddish",
+    "languageCode": "yi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 27,
+    "name": "Lithuanian",
+    "languageCode": "lt",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 39,
+    "name": "Tagalog",
+    "languageCode": "tl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 42,
+    "name": "Thai",
+    "languageCode": "th",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 50,
+    "name": "Chinese Traditional",
+    "languageCode": "zh-Hant",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 59,
+    "name": "Sanskrit",
+    "languageCode": "sa",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 71,
+    "name": "Armenian",
+    "languageCode": "hy",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 81,
+    "name": "Bihari languages",
+    "languageCode": "hi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 87,
+    "name": "Chechen",
+    "languageCode": "ce",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 88,
+    "name": "Chichewa",
+    "languageCode": "ny",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 116,
+    "name": "Kanuri",
+    "languageCode": "kr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 128,
+    "name": "Limburgan",
+    "languageCode": "li",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 129,
+    "name": "Lingala",
+    "languageCode": "ln",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 163,
+    "name": "Samoan",
+    "languageCode": "sm",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 28,
+    "name": "Malay",
+    "languageCode": "ms",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 34,
+    "name": "Russian",
+    "languageCode": "ru",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 47,
+    "name": "Zulu",
+    "languageCode": "zu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 90,
+    "name": "Cornish",
+    "languageCode": "kw",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 93,
+    "name": "Divehi",
+    "languageCode": "dv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 94,
+    "name": "Dzongkha",
+    "languageCode": "dz",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 107,
+    "name": "Interlingua",
+    "languageCode": "ia",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 114,
+    "name": "Kalaallisut",
+    "languageCode": "kl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 138,
+    "name": "Marshallese",
+    "languageCode": "mh",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 149,
+    "name": "Occitan",
+    "languageCode": "oc",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 202,
+    "name": "Rajasthani",
+    "languageCode": "raj",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 6,
+    "name": "Bulgarian",
+    "languageCode": "bg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 22,
+    "name": "Japanese",
+    "languageCode": "ja",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 23,
+    "name": "Kazakh",
+    "languageCode": "kk",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 46,
+    "name": "Vietnamese",
+    "languageCode": "vi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 52,
+    "name": "Cantonese",
+    "languageCode": "yue-Hant",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 54,
+    "name": "Haitian",
+    "languageCode": "ht",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 63,
+    "name": "Tigrinya",
+    "languageCode": "ti",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 67,
+    "name": "Afar",
+    "languageCode": "aa",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 72,
+    "name": "Assamese",
+    "languageCode": "as",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 102,
+    "name": "Guarani",
+    "languageCode": "gn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 112,
+    "name": "Inuktitut",
+    "languageCode": "iu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 124,
+    "name": "Kurdish",
+    "languageCode": "ku",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 156,
+    "name": "Pashto",
+    "languageCode": "ps",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 165,
+    "name": "Serbian",
+    "languageCode": "sr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 166,
+    "name": "Gaelic",
+    "languageCode": "gd",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 167,
+    "name": "Shona",
+    "languageCode": "sn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 168,
+    "name": "Sinhala",
+    "languageCode": "si",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 187,
+    "name": "Walloon",
+    "languageCode": "wa",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 8,
+    "name": "Catalan",
+    "languageCode": "ca",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 21,
+    "name": "Italian",
+    "languageCode": "it",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 96,
+    "name": "Ewe",
+    "languageCode": "ee",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 103,
+    "name": "Gujarati",
+    "languageCode": "gu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 119,
+    "name": "Kikuyu",
+    "languageCode": "ki",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 121,
+    "name": "Kirghiz",
+    "languageCode": "ky",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 169,
+    "name": "Somali",
+    "languageCode": "so",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 173,
+    "name": "Swati",
+    "languageCode": "ss",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 4,
+    "name": "Afrikaans",
+    "languageCode": "af",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 24,
+    "name": "Korean",
+    "languageCode": "ko",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 62,
+    "name": "Oromo",
+    "languageCode": "gaz",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 86,
+    "name": "Chamorro",
+    "languageCode": "ch",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 100,
+    "name": "Galician",
+    "languageCode": "gl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 108,
+    "name": "Interlingue",
+    "languageCode": "ie",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 135,
+    "name": "Maltese",
+    "languageCode": "mt",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 146,
+    "name": "Norwegian Nynorsk",
+    "languageCode": "nn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 170,
+    "name": "Southern Sotho",
+    "languageCode": "st",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 174,
+    "name": "Tajik",
+    "languageCode": "tg",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 183,
+    "name": "Uighur",
+    "languageCode": "ug",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 199,
+    "name": "Bhojpuri",
+    "languageCode": "bho",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 200,
+    "name": "Haryanvi",
+    "languageCode": "bgc",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 3,
+    "name": "French",
+    "languageCode": "fr",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 15,
+    "name": "German",
+    "languageCode": "de",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 16,
+    "name": "Greek",
+    "languageCode": "el",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 26,
+    "name": "Latvian",
+    "languageCode": "lv",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 30,
+    "name": "Polish",
+    "languageCode": "pl",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 40,
+    "name": "Tamil",
+    "languageCode": "ta",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 74,
+    "name": "Avestan",
+    "languageCode": "ae",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 80,
+    "name": "Belarusian",
+    "languageCode": "be",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 178,
+    "name": "Tonga",
+    "languageCode": "to",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 14,
+    "name": "Finnish",
+    "languageCode": "fi",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 55,
+    "name": "Irish",
+    "languageCode": "ga",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 60,
+    "name": "Spanish (Latin America)",
+    "languageCode": "es-419",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 73,
+    "name": "Avaric",
+    "languageCode": "av",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 91,
+    "name": "Corsican",
+    "languageCode": "co",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 101,
+    "name": "Georgian",
+    "languageCode": "ka",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 126,
+    "name": "Luxembourgish",
+    "languageCode": "lb",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 130,
+    "name": "Luba-Katanga",
+    "languageCode": "lu",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 159,
+    "name": "Rundi",
+    "languageCode": "rn",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 160,
+    "name": "Sardinian",
+    "languageCode": "sc",
+    "isValidMetadataLanguage": true
+  },
+  {
+    "languageId": 181,
+    "name": "Twi",
+    "languageCode": "tw",
+    "isValidMetadataLanguage": true
+  }
+]

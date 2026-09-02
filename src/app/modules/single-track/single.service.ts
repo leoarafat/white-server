@@ -14,6 +14,11 @@ import { Types } from 'mongoose';
 import { PrimaryArtist } from '../primary-artist/primary-artist.model';
 import { Label } from '../label/label.model';
 import { notifyAdminsOfSubmission } from '../notifications/notification.hooks';
+import { generateNextIsrc } from '../isrc/isrc.service';
+import {
+  concatCopyright,
+  mapContributorsToLegacyFields,
+} from './contributor.utils';
 
 // Single tracks now store artist/label NAMES (strings), like the video flow.
 // The upload form may still send PrimaryArtist/Label ObjectIds, so resolve any
@@ -75,6 +80,10 @@ const uploadSingle = async (req: Request) => {
     if (isExistIsrc) {
       throw new ApiError(400, 'ISRC  Is Duplicate');
     }
+  } else if (!data.hasIsrc) {
+    // "No, I don't have an ISRC" — auto-generate one server-side, same
+    // counter the old (disconnected) /isrc/generate endpoint used.
+    data.isrc = await generateNextIsrc();
   }
 
   if (data.upc) {
@@ -86,6 +95,18 @@ const uploadSingle = async (req: Request) => {
   data.releaseId = generateArtistId();
   data.format = 'Album';
 
+  // Copyright P/C: the form collects year+text separately, but the stored
+  // field (and every existing table/CSV export) expects Revelator's own
+  // single-string convention — see contributor.utils.ts.
+  data.pLine = concatCopyright(data.copyrightPYear, data.copyrightPText) || data.pLine;
+  data.cLine = concatCopyright(data.copyrightCYear, data.copyrightCText) || data.cLine;
+
+  // Role-based contributors[] is the new source of truth; derive the legacy
+  // flat fields from it so nothing else in the app breaks.
+  if (Array.isArray(data.contributors) && data.contributors.length) {
+    Object.assign(data, mapContributorsToLegacyFields(data.contributors));
+  }
+
   // The single-track upload form doesn't collect these, but the schema marks
   // them required — supply sensible defaults so submission isn't blocked by a
   // Mongoose validation error naming fields that aren't in the form.
@@ -96,13 +117,12 @@ const uploadSingle = async (req: Request) => {
   // Accept either a freshly-uploaded multipart file (legacy flow) OR a URL
   // already uploaded via /single-music/upload-asset (dream-records-style
   // background upload). The client keeps the returned URL in `audio` / `image`.
-  //@ts-ignore
-  const audioFile = files?.audio
-    ? `${files.audio[0].location}`
+  const filesMap = files as Record<string, Express.MulterS3.File[]> | undefined;
+  const audioFile = filesMap?.audio
+    ? `${filesMap.audio[0].location}`
     : data.audio || undefined;
-  //@ts-ignore
-  const imageFile = files?.image
-    ? `${files.image[0].location}`
+  const imageFile = filesMap?.image
+    ? `${filesMap.image[0].location}`
     : data.image || undefined;
 
   if (!audioFile || !imageFile) {
@@ -311,6 +331,15 @@ const updateSingleMusic = async (id: string, payload: any) => {
     }
     if (payload.producer) {
       musicData.producer = payload.producer;
+    }
+    if (payload.copyrightPYear || payload.copyrightPText) {
+      musicData.pLine = concatCopyright(payload.copyrightPYear, payload.copyrightPText) || musicData.pLine;
+    }
+    if (payload.copyrightCYear || payload.copyrightCText) {
+      musicData.cLine = concatCopyright(payload.copyrightCYear, payload.copyrightCText) || musicData.cLine;
+    }
+    if (Array.isArray(payload.contributors)) {
+      Object.assign(musicData, mapContributorsToLegacyFields(payload.contributors));
     }
     const result = await SingleTrack.findOneAndUpdate({ _id: id }, musicData, {
       new: true,

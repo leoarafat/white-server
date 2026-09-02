@@ -1,0 +1,2576 @@
+[
+  {
+    "musicStyleId": 350,
+    "name": "Afro House",
+    "parentId": 292,
+    "order": 3
+  },
+  {
+    "musicStyleId": 418,
+    "name": "Kwaito",
+    "parentId": 292,
+    "order": 17
+  },
+  {
+    "musicStyleId": 424,
+    "name": "Taarab",
+    "parentId": 292,
+    "order": 23
+  },
+  {
+    "musicStyleId": 69,
+    "name": "North African",
+    "parentId": 21,
+    "order": 48
+  },
+  {
+    "musicStyleId": 71,
+    "name": "Chicago Blues",
+    "parentId": 28,
+    "order": 51
+  },
+  {
+    "musicStyleId": 79,
+    "name": "Bossa Nova",
+    "parentId": 29,
+    "order": 60
+  },
+  {
+    "musicStyleId": 115,
+    "name": "Baroque Era",
+    "parentId": 32,
+    "order": 100
+  },
+  {
+    "musicStyleId": 126,
+    "name": "(Classical) Orchestral",
+    "parentId": 32,
+    "order": 110
+  },
+  {
+    "musicStyleId": 139,
+    "name": "Outlaw Country",
+    "parentId": 34,
+    "order": 138
+  },
+  {
+    "musicStyleId": 333,
+    "name": "Cuban",
+    "parentId": null,
+    "order": 143
+  },
+  {
+    "musicStyleId": 151,
+    "name": "Trance",
+    "parentId": 16,
+    "order": 160
+  },
+  {
+    "musicStyleId": 160,
+    "name": "Dirty South",
+    "parentId": 41,
+    "order": 182
+  },
+  {
+    "musicStyleId": 169,
+    "name": "West Coast Rap",
+    "parentId": 41,
+    "order": 198
+  },
+  {
+    "musicStyleId": 170,
+    "name": "Chanukah",
+    "parentId": 20,
+    "order": 200
+  },
+  {
+    "musicStyleId": 171,
+    "name": "Christmas",
+    "parentId": 20,
+    "order": 201
+  },
+  {
+    "musicStyleId": 173,
+    "name": "Christmas: Classic",
+    "parentId": 20,
+    "order": 203
+  },
+  {
+    "musicStyleId": 176,
+    "name": "Christmas: Modern",
+    "parentId": 20,
+    "order": 207
+  },
+  {
+    "musicStyleId": 183,
+    "name": "Thanksgiving",
+    "parentId": 20,
+    "order": 214
+  },
+  {
+    "musicStyleId": 541,
+    "name": "Orchestral",
+    "parentId": null,
+    "order": 275
+  },
+  {
+    "musicStyleId": 580,
+    "name": "Egyptian Pop",
+    "parentId": 10,
+    "order": 279
+  },
+  {
+    "musicStyleId": 45,
+    "name": "J-Pop",
+    "parentId": 10,
+    "order": 284
+  },
+  {
+    "musicStyleId": 232,
+    "name": "Kayokyoku",
+    "parentId": 10,
+    "order": 285
+  },
+  {
+    "musicStyleId": 249,
+    "name": "Neo-Soul",
+    "parentId": 24,
+    "order": 308
+  },
+  {
+    "musicStyleId": 253,
+    "name": "Roots Reggae",
+    "parentId": 13,
+    "order": 314
+  },
+  {
+    "musicStyleId": 11,
+    "name": "Rock",
+    "parentId": null,
+    "order": 331
+  },
+  {
+    "musicStyleId": 268,
+    "name": "Rock & Roll",
+    "parentId": 11,
+    "order": 345
+  },
+  {
+    "musicStyleId": 278,
+    "name": "Folk-Rock",
+    "parentId": 14,
+    "order": 360
+  },
+  {
+    "musicStyleId": 280,
+    "name": "Traditional Folk",
+    "parentId": 14,
+    "order": 362
+  },
+  {
+    "musicStyleId": 286,
+    "name": "TV Soundtrack",
+    "parentId": 52,
+    "order": 369
+  },
+  {
+    "musicStyleId": 287,
+    "name": "Standards",
+    "parentId": 53,
+    "order": 384
+  },
+  {
+    "musicStyleId": 328,
+    "name": "Tango",
+    "parentId": 15,
+    "order": 425
+  },
+  {
+    "musicStyleId": 554,
+    "name": "African Dancehall",
+    "parentId": 292,
+    "order": 1
+  },
+  {
+    "musicStyleId": 415,
+    "name": "Highlife",
+    "parentId": 292,
+    "order": 14
+  },
+  {
+    "musicStyleId": 420,
+    "name": "Mbalax",
+    "parentId": 292,
+    "order": 19
+  },
+  {
+    "musicStyleId": 425,
+    "name": "Zouglou",
+    "parentId": 292,
+    "order": 24
+  },
+  {
+    "musicStyleId": 560,
+    "name": "Indie Levant",
+    "parentId": 25,
+    "order": 31
+  },
+  {
+    "musicStyleId": 75,
+    "name": "Delta Blues",
+    "parentId": 28,
+    "order": 55
+  },
+  {
+    "musicStyleId": 77,
+    "name": "Axé",
+    "parentId": 29,
+    "order": 58
+  },
+  {
+    "musicStyleId": 88,
+    "name": "Sing-Along",
+    "parentId": 23,
+    "order": 70
+  },
+  {
+    "musicStyleId": 96,
+    "name": "Chinese Opera",
+    "parentId": 30,
+    "order": 78
+  },
+  {
+    "musicStyleId": 97,
+    "name": "Chinese Orchestral",
+    "parentId": 30,
+    "order": 79
+  },
+  {
+    "musicStyleId": 118,
+    "name": "Choral",
+    "parentId": 32,
+    "order": 106
+  },
+  {
+    "musicStyleId": 135,
+    "name": "Contemporary Bluegrass",
+    "parentId": 34,
+    "order": 134
+  },
+  {
+    "musicStyleId": 444,
+    "name": "Chachacha",
+    "parentId": 333,
+    "order": 145
+  },
+  {
+    "musicStyleId": 54,
+    "name": "Disney",
+    "parentId": null,
+    "order": 161
+  },
+  {
+    "musicStyleId": 572,
+    "name": "Khaleeji Folk",
+    "parentId": 35,
+    "order": 179
+  },
+  {
+    "musicStyleId": 167,
+    "name": "Rap",
+    "parentId": 41,
+    "order": 193
+  },
+  {
+    "musicStyleId": 553,
+    "name": "Hörspiele",
+    "parentId": null,
+    "order": 215
+  },
+  {
+    "musicStyleId": 334,
+    "name": "Carnatic Classical",
+    "parentId": 187,
+    "order": 226
+  },
+  {
+    "musicStyleId": 335,
+    "name": "Hindustani Classical",
+    "parentId": 187,
+    "order": 227
+  },
+  {
+    "musicStyleId": 220,
+    "name": "Reggaeton / Latin Urban",
+    "parentId": 18,
+    "order": 263
+  },
+  {
+    "musicStyleId": 245,
+    "name": "Disco",
+    "parentId": 24,
+    "order": 304
+  },
+  {
+    "musicStyleId": 340,
+    "name": "Gujarati",
+    "parentId": 190,
+    "order": 320
+  },
+  {
+    "musicStyleId": 338,
+    "name": "Rabindra Sangeet",
+    "parentId": 190,
+    "order": 328
+  },
+  {
+    "musicStyleId": 262,
+    "name": "Hair Metal",
+    "parentId": 11,
+    "order": 339
+  },
+  {
+    "musicStyleId": 266,
+    "name": "Prog-Rock/Art Rock",
+    "parentId": 11,
+    "order": 343
+  },
+  {
+    "musicStyleId": 308,
+    "name": "Europe",
+    "parentId": 15,
+    "order": 405
+  },
+  {
+    "musicStyleId": 309,
+    "name": "Fado",
+    "parentId": 15,
+    "order": 406
+  },
+  {
+    "musicStyleId": 323,
+    "name": "Russian Chanson",
+    "parentId": 15,
+    "order": 420
+  },
+  {
+    "musicStyleId": 292,
+    "name": "African",
+    "parentId": null,
+    "order": 0
+  },
+  {
+    "musicStyleId": 412,
+    "name": "Bongo-Flava",
+    "parentId": 292,
+    "order": 11
+  },
+  {
+    "musicStyleId": 26,
+    "name": "Anime",
+    "parentId": null,
+    "order": 38
+  },
+  {
+    "musicStyleId": 70,
+    "name": "Acoustic Blues",
+    "parentId": 28,
+    "order": 50
+  },
+  {
+    "musicStyleId": 123,
+    "name": "Medieval Era",
+    "parentId": 32,
+    "order": 115
+  },
+  {
+    "musicStyleId": 125,
+    "name": "Modern Era",
+    "parentId": 32,
+    "order": 117
+  },
+  {
+    "musicStyleId": 441,
+    "name": "Solo Instrumental",
+    "parentId": 32,
+    "order": 124
+  },
+  {
+    "musicStyleId": 168,
+    "name": "Underground Rap",
+    "parentId": 41,
+    "order": 197
+  },
+  {
+    "musicStyleId": 578,
+    "name": "Christmas: Country",
+    "parentId": 20,
+    "order": 205
+  },
+  {
+    "musicStyleId": 181,
+    "name": "Easter",
+    "parentId": 20,
+    "order": 212
+  },
+  {
+    "musicStyleId": 184,
+    "name": "Bollywood",
+    "parentId": 43,
+    "order": 217
+  },
+  {
+    "musicStyleId": 185,
+    "name": "Devotional & Spiritual",
+    "parentId": 43,
+    "order": 218
+  },
+  {
+    "musicStyleId": 186,
+    "name": "Ghazals",
+    "parentId": 43,
+    "order": 219
+  },
+  {
+    "musicStyleId": 538,
+    "name": "(Jazz) Latin Jazz",
+    "parentId": 22,
+    "order": 240
+  },
+  {
+    "musicStyleId": 204,
+    "name": "Mainstream Jazz",
+    "parentId": 22,
+    "order": 241
+  },
+  {
+    "musicStyleId": 211,
+    "name": "Korean Indie",
+    "parentId": 48,
+    "order": 249
+  },
+  {
+    "musicStyleId": 223,
+    "name": "Regional Mexicano",
+    "parentId": 18,
+    "order": 264
+  },
+  {
+    "musicStyleId": 19,
+    "name": "New Age",
+    "parentId": null,
+    "order": 267
+  },
+  {
+    "musicStyleId": 227,
+    "name": "Relaxation",
+    "parentId": 19,
+    "order": 271
+  },
+  {
+    "musicStyleId": 10,
+    "name": "Pop",
+    "parentId": null,
+    "order": 276
+  },
+  {
+    "musicStyleId": 259,
+    "name": "British Invasion",
+    "parentId": 11,
+    "order": 336
+  },
+  {
+    "musicStyleId": 267,
+    "name": "Psychedelic",
+    "parentId": 11,
+    "order": 344
+  },
+  {
+    "musicStyleId": 322,
+    "name": "Russian",
+    "parentId": null,
+    "order": 353
+  },
+  {
+    "musicStyleId": 14,
+    "name": "Singer/Songwriter",
+    "parentId": null,
+    "order": 356
+  },
+  {
+    "musicStyleId": 279,
+    "name": "New Acoustic",
+    "parentId": 14,
+    "order": 361
+  },
+  {
+    "musicStyleId": 330,
+    "name": "Turkish",
+    "parentId": null,
+    "order": 376
+  },
+  {
+    "musicStyleId": 291,
+    "name": "Vocal Pop",
+    "parentId": 53,
+    "order": 388
+  },
+  {
+    "musicStyleId": 293,
+    "name": "Afrikaans",
+    "parentId": 15,
+    "order": 390
+  },
+  {
+    "musicStyleId": 64,
+    "name": "New Wave",
+    "parentId": 25,
+    "order": 35
+  },
+  {
+    "musicStyleId": 94,
+    "name": "Chinese Flute",
+    "parentId": 30,
+    "order": 76
+  },
+  {
+    "musicStyleId": 533,
+    "name": "Bass",
+    "parentId": 12,
+    "order": 167
+  },
+  {
+    "musicStyleId": 35,
+    "name": "Folk",
+    "parentId": null,
+    "order": 177
+  },
+  {
+    "musicStyleId": 188,
+    "name": "Indian Folk",
+    "parentId": 43,
+    "order": 220
+  },
+  {
+    "musicStyleId": 189,
+    "name": "Indian Pop",
+    "parentId": 43,
+    "order": 221
+  },
+  {
+    "musicStyleId": 194,
+    "name": "Avant-Garde Jazz",
+    "parentId": 22,
+    "order": 231
+  },
+  {
+    "musicStyleId": 195,
+    "name": "Bebop",
+    "parentId": 22,
+    "order": 232
+  },
+  {
+    "musicStyleId": 208,
+    "name": "Korean Traditional",
+    "parentId": 48,
+    "order": 251
+  },
+  {
+    "musicStyleId": 583,
+    "name": "Levant Pop",
+    "parentId": 10,
+    "order": 287
+  },
+  {
+    "musicStyleId": 584,
+    "name": "Maghreb Pop",
+    "parentId": 10,
+    "order": 288
+  },
+  {
+    "musicStyleId": 341,
+    "name": "Haryanvi",
+    "parentId": 190,
+    "order": 321
+  },
+  {
+    "musicStyleId": 275,
+    "name": "Alternative Folk",
+    "parentId": 14,
+    "order": 357
+  },
+  {
+    "musicStyleId": 283,
+    "name": "Musicals",
+    "parentId": 52,
+    "order": 366
+  },
+  {
+    "musicStyleId": 319,
+    "name": "Klezmer",
+    "parentId": 15,
+    "order": 417
+  },
+  {
+    "musicStyleId": 327,
+    "name": "South America",
+    "parentId": 15,
+    "order": 424
+  },
+  {
+    "musicStyleId": 416,
+    "name": "Kizomba",
+    "parentId": 292,
+    "order": 15
+  },
+  {
+    "musicStyleId": 428,
+    "name": "Pop Punk",
+    "parentId": 25,
+    "order": 36
+  },
+  {
+    "musicStyleId": 563,
+    "name": "Khaleeji Shailat",
+    "parentId": 21,
+    "order": 45
+  },
+  {
+    "musicStyleId": 81,
+    "name": "Forró",
+    "parentId": 29,
+    "order": 62
+  },
+  {
+    "musicStyleId": 92,
+    "name": "Chinese Alt",
+    "parentId": 30,
+    "order": 74
+  },
+  {
+    "musicStyleId": 443,
+    "name": "Bolero",
+    "parentId": 333,
+    "order": 144
+  },
+  {
+    "musicStyleId": 155,
+    "name": "Downtempo",
+    "parentId": 12,
+    "order": 168
+  },
+  {
+    "musicStyleId": 20,
+    "name": "Holiday",
+    "parentId": null,
+    "order": 199
+  },
+  {
+    "musicStyleId": 46,
+    "name": "K-Pop",
+    "parentId": 48,
+    "order": 252
+  },
+  {
+    "musicStyleId": 38,
+    "name": "French Pop",
+    "parentId": 10,
+    "order": 280
+  },
+  {
+    "musicStyleId": 252,
+    "name": "Dub",
+    "parentId": 13,
+    "order": 312
+  },
+  {
+    "musicStyleId": 337,
+    "name": "Bengali",
+    "parentId": 190,
+    "order": 318
+  },
+  {
+    "musicStyleId": 349,
+    "name": "Urdu",
+    "parentId": 190,
+    "order": 330
+  },
+  {
+    "musicStyleId": 255,
+    "name": "Adult Alternative",
+    "parentId": 11,
+    "order": 332
+  },
+  {
+    "musicStyleId": 265,
+    "name": "Jam Bands",
+    "parentId": 11,
+    "order": 342
+  },
+  {
+    "musicStyleId": 271,
+    "name": "(Rock) Singer/Songwriter",
+    "parentId": 11,
+    "order": 346
+  },
+  {
+    "musicStyleId": 281,
+    "name": "Film Soundtrack",
+    "parentId": 52,
+    "order": 364
+  },
+  {
+    "musicStyleId": 550,
+    "name": "Özgün",
+    "parentId": 330,
+    "order": 378
+  },
+  {
+    "musicStyleId": 298,
+    "name": "Australia",
+    "parentId": 15,
+    "order": 395
+  },
+  {
+    "musicStyleId": 306,
+    "name": "Dini",
+    "parentId": 15,
+    "order": 403
+  },
+  {
+    "musicStyleId": 326,
+    "name": "South Africa",
+    "parentId": 15,
+    "order": 423
+  },
+  {
+    "musicStyleId": 68,
+    "name": "Khaleeji",
+    "parentId": 21,
+    "order": 43
+  },
+  {
+    "musicStyleId": 73,
+    "name": "Contemporary Blues",
+    "parentId": 28,
+    "order": 53
+  },
+  {
+    "musicStyleId": 87,
+    "name": "Lullabies",
+    "parentId": 23,
+    "order": 69
+  },
+  {
+    "musicStyleId": 95,
+    "name": "Chinese Hip-Hop",
+    "parentId": 30,
+    "order": 77
+  },
+  {
+    "musicStyleId": 110,
+    "name": "Gospel",
+    "parentId": 31,
+    "order": 93
+  },
+  {
+    "musicStyleId": 434,
+    "name": "(Classical) Electronic",
+    "parentId": 32,
+    "order": 109
+  },
+  {
+    "musicStyleId": 138,
+    "name": "Honky Tonk",
+    "parentId": 34,
+    "order": 137
+  },
+  {
+    "musicStyleId": 140,
+    "name": "Thai Country",
+    "parentId": 34,
+    "order": 139
+  },
+  {
+    "musicStyleId": 142,
+    "name": "Traditional Country",
+    "parentId": 34,
+    "order": 141
+  },
+  {
+    "musicStyleId": 528,
+    "name": "Guajira",
+    "parentId": 333,
+    "order": 146
+  },
+  {
+    "musicStyleId": 530,
+    "name": "Mambo",
+    "parentId": 333,
+    "order": 148
+  },
+  {
+    "musicStyleId": 148,
+    "name": "House",
+    "parentId": 16,
+    "order": 155
+  },
+  {
+    "musicStyleId": 164,
+    "name": "Hip-Hop",
+    "parentId": 41,
+    "order": 187
+  },
+  {
+    "musicStyleId": 247,
+    "name": "Funk",
+    "parentId": 24,
+    "order": 306
+  },
+  {
+    "musicStyleId": 248,
+    "name": "Motown",
+    "parentId": 24,
+    "order": 307
+  },
+  {
+    "musicStyleId": 13,
+    "name": "Reggae",
+    "parentId": null,
+    "order": 310
+  },
+  {
+    "musicStyleId": 261,
+    "name": "Glam Rock",
+    "parentId": 11,
+    "order": 338
+  },
+  {
+    "musicStyleId": 269,
+    "name": "Rockabilly",
+    "parentId": 11,
+    "order": 347
+  },
+  {
+    "musicStyleId": 591,
+    "name": "Khaleeji Tarab",
+    "parentId": 552,
+    "order": 375
+  },
+  {
+    "musicStyleId": 288,
+    "name": "Traditional Pop",
+    "parentId": 53,
+    "order": 385
+  },
+  {
+    "musicStyleId": 290,
+    "name": "Vocal Jazz",
+    "parentId": 53,
+    "order": 387
+  },
+  {
+    "musicStyleId": 295,
+    "name": "Afro-Pop",
+    "parentId": 15,
+    "order": 392
+  },
+  {
+    "musicStyleId": 39,
+    "name": "German Folk",
+    "parentId": 15,
+    "order": 410
+  },
+  {
+    "musicStyleId": 409,
+    "name": "Afro Soul",
+    "parentId": 292,
+    "order": 4
+  },
+  {
+    "musicStyleId": 558,
+    "name": "Alte",
+    "parentId": 292,
+    "order": 8
+  },
+  {
+    "musicStyleId": 78,
+    "name": "Baile Funk",
+    "parentId": 29,
+    "order": 59
+  },
+  {
+    "musicStyleId": 31,
+    "name": "Christian & Gospel",
+    "parentId": null,
+    "order": 85
+  },
+  {
+    "musicStyleId": 122,
+    "name": "Impressionist",
+    "parentId": 32,
+    "order": 114
+  },
+  {
+    "musicStyleId": 437,
+    "name": "Oratorio",
+    "parentId": 32,
+    "order": 118
+  },
+  {
+    "musicStyleId": 129,
+    "name": "Wedding Music",
+    "parentId": 32,
+    "order": 126
+  },
+  {
+    "musicStyleId": 34,
+    "name": "Country",
+    "parentId": null,
+    "order": 130
+  },
+  {
+    "musicStyleId": 531,
+    "name": "Son",
+    "parentId": 333,
+    "order": 149
+  },
+  {
+    "musicStyleId": 158,
+    "name": "Industrial",
+    "parentId": 12,
+    "order": 173
+  },
+  {
+    "musicStyleId": 569,
+    "name": "Levant Electronic",
+    "parentId": 12,
+    "order": 174
+  },
+  {
+    "musicStyleId": 159,
+    "name": "Alternative Rap",
+    "parentId": 41,
+    "order": 181
+  },
+  {
+    "musicStyleId": 535,
+    "name": "Turkish Hip-Hop/Rap",
+    "parentId": 41,
+    "order": 195
+  },
+  {
+    "musicStyleId": 177,
+    "name": "Christmas: Pop",
+    "parentId": 20,
+    "order": 208
+  },
+  {
+    "musicStyleId": 191,
+    "name": "Sufi",
+    "parentId": 43,
+    "order": 222
+  },
+  {
+    "musicStyleId": 192,
+    "name": "Tamil",
+    "parentId": 43,
+    "order": 223
+  },
+  {
+    "musicStyleId": 196,
+    "name": "Big Band",
+    "parentId": 22,
+    "order": 233
+  },
+  {
+    "musicStyleId": 18,
+    "name": "Latin",
+    "parentId": null,
+    "order": 253
+  },
+  {
+    "musicStyleId": 593,
+    "name": "Bachata",
+    "parentId": 18,
+    "order": 255
+  },
+  {
+    "musicStyleId": 40,
+    "name": "German Pop",
+    "parentId": 10,
+    "order": 281
+  },
+  {
+    "musicStyleId": 582,
+    "name": "Khaleeji Pop",
+    "parentId": 10,
+    "order": 286
+  },
+  {
+    "musicStyleId": 238,
+    "name": "Pinoy Pop",
+    "parentId": 10,
+    "order": 294
+  },
+  {
+    "musicStyleId": 543,
+    "name": "Lovers Rock",
+    "parentId": 13,
+    "order": 313
+  },
+  {
+    "musicStyleId": 254,
+    "name": "Ska",
+    "parentId": 13,
+    "order": 315
+  },
+  {
+    "musicStyleId": 263,
+    "name": "Hard Rock",
+    "parentId": 11,
+    "order": 340
+  },
+  {
+    "musicStyleId": 549,
+    "name": "Religious",
+    "parentId": 330,
+    "order": 379
+  },
+  {
+    "musicStyleId": 53,
+    "name": "Vocal",
+    "parentId": null,
+    "order": 383
+  },
+  {
+    "musicStyleId": 304,
+    "name": "Contemporary Celtic",
+    "parentId": 15,
+    "order": 401
+  },
+  {
+    "musicStyleId": 315,
+    "name": "Iberia",
+    "parentId": 15,
+    "order": 413
+  },
+  {
+    "musicStyleId": 324,
+    "name": "Sanat",
+    "parentId": 15,
+    "order": 421
+  },
+  {
+    "musicStyleId": 325,
+    "name": "Soca",
+    "parentId": 15,
+    "order": 422
+  },
+  {
+    "musicStyleId": 557,
+    "name": "Afro-fusion",
+    "parentId": 292,
+    "order": 7
+  },
+  {
+    "musicStyleId": 551,
+    "name": "Amapiano",
+    "parentId": 292,
+    "order": 9
+  },
+  {
+    "musicStyleId": 417,
+    "name": "Kuduro",
+    "parentId": 292,
+    "order": 16
+  },
+  {
+    "musicStyleId": 423,
+    "name": "Soukous",
+    "parentId": 292,
+    "order": 22
+  },
+  {
+    "musicStyleId": 60,
+    "name": "College Rock",
+    "parentId": 25,
+    "order": 26
+  },
+  {
+    "musicStyleId": 72,
+    "name": "Classic Blues",
+    "parentId": 28,
+    "order": 52
+  },
+  {
+    "musicStyleId": 74,
+    "name": "Country Blues",
+    "parentId": 28,
+    "order": 54
+  },
+  {
+    "musicStyleId": 82,
+    "name": "Frevo",
+    "parentId": 29,
+    "order": 63
+  },
+  {
+    "musicStyleId": 85,
+    "name": "Samba",
+    "parentId": 29,
+    "order": 66
+  },
+  {
+    "musicStyleId": 89,
+    "name": "Stories",
+    "parentId": 23,
+    "order": 71
+  },
+  {
+    "musicStyleId": 106,
+    "name": "Christian Rap",
+    "parentId": 31,
+    "order": 89
+  },
+  {
+    "musicStyleId": 429,
+    "name": "Art Song",
+    "parentId": 32,
+    "order": 98
+  },
+  {
+    "musicStyleId": 430,
+    "name": "Brass & Woodwinds",
+    "parentId": 32,
+    "order": 101
+  },
+  {
+    "musicStyleId": 119,
+    "name": "Classical Crossover",
+    "parentId": 32,
+    "order": 107
+  },
+  {
+    "musicStyleId": 121,
+    "name": "Classical Era",
+    "parentId": 32,
+    "order": 108
+  },
+  {
+    "musicStyleId": 130,
+    "name": "Novelty",
+    "parentId": 33,
+    "order": 128
+  },
+  {
+    "musicStyleId": 137,
+    "name": "Country Gospel",
+    "parentId": 34,
+    "order": 136
+  },
+  {
+    "musicStyleId": 157,
+    "name": "IDM/Experimental",
+    "parentId": 12,
+    "order": 172
+  },
+  {
+    "musicStyleId": 43,
+    "name": "Indian",
+    "parentId": null,
+    "order": 216
+  },
+  {
+    "musicStyleId": 201,
+    "name": "Fusion",
+    "parentId": 22,
+    "order": 238
+  },
+  {
+    "musicStyleId": 48,
+    "name": "Korean",
+    "parentId": null,
+    "order": 246
+  },
+  {
+    "musicStyleId": 216,
+    "name": "Alternative & Rock in Spanish",
+    "parentId": 18,
+    "order": 254
+  },
+  {
+    "musicStyleId": 218,
+    "name": "Contemporary Latin",
+    "parentId": 18,
+    "order": 257
+  },
+  {
+    "musicStyleId": 228,
+    "name": "Travel",
+    "parentId": 19,
+    "order": 272
+  },
+  {
+    "musicStyleId": 49,
+    "name": "Opera",
+    "parentId": null,
+    "order": 274
+  },
+  {
+    "musicStyleId": 241,
+    "name": "Tai-Pop",
+    "parentId": 10,
+    "order": 299
+  },
+  {
+    "musicStyleId": 243,
+    "name": "Thai Pop",
+    "parentId": 10,
+    "order": 301
+  },
+  {
+    "musicStyleId": 345,
+    "name": "Odia",
+    "parentId": 190,
+    "order": 325
+  },
+  {
+    "musicStyleId": 260,
+    "name": "Death Metal/Black Metal",
+    "parentId": 11,
+    "order": 337
+  },
+  {
+    "musicStyleId": 586,
+    "name": "Russian Rock",
+    "parentId": 11,
+    "order": 349
+  },
+  {
+    "musicStyleId": 587,
+    "name": "Russian Bard",
+    "parentId": 322,
+    "order": 354
+  },
+  {
+    "musicStyleId": 588,
+    "name": "Russian Romance",
+    "parentId": 322,
+    "order": 355
+  },
+  {
+    "musicStyleId": 544,
+    "name": "Video Game",
+    "parentId": 52,
+    "order": 370
+  },
+  {
+    "musicStyleId": 422,
+    "name": "Shangaan Electro",
+    "parentId": 292,
+    "order": 21
+  },
+  {
+    "musicStyleId": 561,
+    "name": "Indie Maghreb",
+    "parentId": 25,
+    "order": 32
+  },
+  {
+    "musicStyleId": 566,
+    "name": "Maghreb Rai",
+    "parentId": 21,
+    "order": 47
+  },
+  {
+    "musicStyleId": 84,
+    "name": "Pagode",
+    "parentId": 29,
+    "order": 65
+  },
+  {
+    "musicStyleId": 98,
+    "name": "Chinese Regional Folk",
+    "parentId": 30,
+    "order": 80
+  },
+  {
+    "musicStyleId": 99,
+    "name": "Chinese Rock",
+    "parentId": 30,
+    "order": 81
+  },
+  {
+    "musicStyleId": 100,
+    "name": "Chinese Strings",
+    "parentId": 30,
+    "order": 82
+  },
+  {
+    "musicStyleId": 114,
+    "name": "Avant-Garde",
+    "parentId": 32,
+    "order": 99
+  },
+  {
+    "musicStyleId": 433,
+    "name": "Contemporary Era",
+    "parentId": 32,
+    "order": 111
+  },
+  {
+    "musicStyleId": 435,
+    "name": "Guitar",
+    "parentId": 32,
+    "order": 113
+  },
+  {
+    "musicStyleId": 440,
+    "name": "Sacred",
+    "parentId": 32,
+    "order": 123
+  },
+  {
+    "musicStyleId": 143,
+    "name": "Urban Cowboy",
+    "parentId": 34,
+    "order": 142
+  },
+  {
+    "musicStyleId": 152,
+    "name": "Lounge",
+    "parentId": 55,
+    "order": 163
+  },
+  {
+    "musicStyleId": 568,
+    "name": "Electro-Cha'abi",
+    "parentId": 12,
+    "order": 170
+  },
+  {
+    "musicStyleId": 41,
+    "name": "Hip Hop/Rap",
+    "parentId": null,
+    "order": 180
+  },
+  {
+    "musicStyleId": 576,
+    "name": "Maghreb Hip-Hop",
+    "parentId": 41,
+    "order": 191
+  },
+  {
+    "musicStyleId": 193,
+    "name": "Telugu",
+    "parentId": 43,
+    "order": 224
+  },
+  {
+    "musicStyleId": 199,
+    "name": "Crossover Jazz",
+    "parentId": 22,
+    "order": 236
+  },
+  {
+    "musicStyleId": 202,
+    "name": "Hard Bop",
+    "parentId": 22,
+    "order": 239
+  },
+  {
+    "musicStyleId": 205,
+    "name": "Ragtime",
+    "parentId": 22,
+    "order": 242
+  },
+  {
+    "musicStyleId": 233,
+    "name": "Malaysian Pop",
+    "parentId": 10,
+    "order": 289
+  },
+  {
+    "musicStyleId": 285,
+    "name": "Sound Effects",
+    "parentId": 52,
+    "order": 368
+  },
+  {
+    "musicStyleId": 305,
+    "name": "Dangdut",
+    "parentId": 15,
+    "order": 402
+  },
+  {
+    "musicStyleId": 317,
+    "name": "Israeli",
+    "parentId": 15,
+    "order": 415
+  },
+  {
+    "musicStyleId": 321,
+    "name": "Polka",
+    "parentId": 15,
+    "order": 419
+  },
+  {
+    "musicStyleId": 331,
+    "name": "Worldbeat",
+    "parentId": 15,
+    "order": 427
+  },
+  {
+    "musicStyleId": 65,
+    "name": "Punk",
+    "parentId": 25,
+    "order": 37
+  },
+  {
+    "musicStyleId": 564,
+    "name": "Levant",
+    "parentId": 21,
+    "order": 46
+  },
+  {
+    "musicStyleId": 112,
+    "name": "Southern Gospel",
+    "parentId": 31,
+    "order": 95
+  },
+  {
+    "musicStyleId": 117,
+    "name": "Chant",
+    "parentId": 32,
+    "order": 105
+  },
+  {
+    "musicStyleId": 438,
+    "name": "Percussion",
+    "parentId": 32,
+    "order": 119
+  },
+  {
+    "musicStyleId": 442,
+    "name": "Violin",
+    "parentId": 32,
+    "order": 125
+  },
+  {
+    "musicStyleId": 532,
+    "name": "Timba",
+    "parentId": 333,
+    "order": 150
+  },
+  {
+    "musicStyleId": 146,
+    "name": "Garage",
+    "parentId": 16,
+    "order": 153
+  },
+  {
+    "musicStyleId": 147,
+    "name": "Hardcore",
+    "parentId": 16,
+    "order": 154
+  },
+  {
+    "musicStyleId": 153,
+    "name": "Swing",
+    "parentId": 55,
+    "order": 164
+  },
+  {
+    "musicStyleId": 154,
+    "name": "Ambient",
+    "parentId": 12,
+    "order": 166
+  },
+  {
+    "musicStyleId": 573,
+    "name": "Egyptian Hip-Hop",
+    "parentId": 41,
+    "order": 184
+  },
+  {
+    "musicStyleId": 198,
+    "name": "Cool",
+    "parentId": 22,
+    "order": 235
+  },
+  {
+    "musicStyleId": 200,
+    "name": "Dixieland",
+    "parentId": 22,
+    "order": 237
+  },
+  {
+    "musicStyleId": 225,
+    "name": "Meditation",
+    "parentId": 19,
+    "order": 269
+  },
+  {
+    "musicStyleId": 539,
+    "name": "Yoga",
+    "parentId": 19,
+    "order": 273
+  },
+  {
+    "musicStyleId": 190,
+    "name": "Regional Indian",
+    "parentId": null,
+    "order": 316
+  },
+  {
+    "musicStyleId": 343,
+    "name": "Malayalam",
+    "parentId": 190,
+    "order": 323
+  },
+  {
+    "musicStyleId": 256,
+    "name": "American Trad Rock",
+    "parentId": 11,
+    "order": 333
+  },
+  {
+    "musicStyleId": 264,
+    "name": "Heavy Metal",
+    "parentId": 11,
+    "order": 341
+  },
+  {
+    "musicStyleId": 272,
+    "name": "Southern Rock",
+    "parentId": 11,
+    "order": 350
+  },
+  {
+    "musicStyleId": 589,
+    "name": "Egyptian Tarab",
+    "parentId": 552,
+    "order": 373
+  },
+  {
+    "musicStyleId": 547,
+    "name": "Turkish Rock",
+    "parentId": 330,
+    "order": 382
+  },
+  {
+    "musicStyleId": 289,
+    "name": "Trot",
+    "parentId": 53,
+    "order": 386
+  },
+  {
+    "musicStyleId": 302,
+    "name": "Celtic",
+    "parentId": 15,
+    "order": 399
+  },
+  {
+    "musicStyleId": 303,
+    "name": "Celtic Folk",
+    "parentId": 15,
+    "order": 400
+  },
+  {
+    "musicStyleId": 332,
+    "name": "Zydeco",
+    "parentId": 15,
+    "order": 428
+  },
+  {
+    "musicStyleId": 410,
+    "name": "Afrobeats",
+    "parentId": 292,
+    "order": 5
+  },
+  {
+    "musicStyleId": 29,
+    "name": "Brazilian",
+    "parentId": null,
+    "order": 57
+  },
+  {
+    "musicStyleId": 108,
+    "name": "Classic Christian",
+    "parentId": 31,
+    "order": 91
+  },
+  {
+    "musicStyleId": 431,
+    "name": "Cantata",
+    "parentId": 32,
+    "order": 102
+  },
+  {
+    "musicStyleId": 127,
+    "name": "Renaissance",
+    "parentId": 32,
+    "order": 121
+  },
+  {
+    "musicStyleId": 12,
+    "name": "Electronic",
+    "parentId": null,
+    "order": 165
+  },
+  {
+    "musicStyleId": 37,
+    "name": "Fitness & Workout",
+    "parentId": null,
+    "order": 176
+  },
+  {
+    "musicStyleId": 571,
+    "name": "Iraqi Folk",
+    "parentId": 35,
+    "order": 178
+  },
+  {
+    "musicStyleId": 161,
+    "name": "East Coast Rap",
+    "parentId": 41,
+    "order": 183
+  },
+  {
+    "musicStyleId": 163,
+    "name": "Hardcore Rap",
+    "parentId": 41,
+    "order": 186
+  },
+  {
+    "musicStyleId": 175,
+    "name": "Christmas: Jazz",
+    "parentId": 20,
+    "order": 206
+  },
+  {
+    "musicStyleId": 207,
+    "name": "Trad Jazz",
+    "parentId": 22,
+    "order": 244
+  },
+  {
+    "musicStyleId": 47,
+    "name": "Karaoke",
+    "parentId": null,
+    "order": 245
+  },
+  {
+    "musicStyleId": 594,
+    "name": "Merengue",
+    "parentId": 18,
+    "order": 260
+  },
+  {
+    "musicStyleId": 17,
+    "name": "Salsa y Tropical",
+    "parentId": 18,
+    "order": 265
+  },
+  {
+    "musicStyleId": 585,
+    "name": "Russian Pop",
+    "parentId": 10,
+    "order": 296
+  },
+  {
+    "musicStyleId": 246,
+    "name": "Doo Wop",
+    "parentId": 24,
+    "order": 305
+  },
+  {
+    "musicStyleId": 336,
+    "name": "Assamese",
+    "parentId": 190,
+    "order": 317
+  },
+  {
+    "musicStyleId": 344,
+    "name": "Marathi",
+    "parentId": 190,
+    "order": 324
+  },
+  {
+    "musicStyleId": 282,
+    "name": "Foreign Cinema",
+    "parentId": 52,
+    "order": 365
+  },
+  {
+    "musicStyleId": 15,
+    "name": "World",
+    "parentId": null,
+    "order": 389
+  },
+  {
+    "musicStyleId": 296,
+    "name": "Arabesque",
+    "parentId": 15,
+    "order": 393
+  },
+  {
+    "musicStyleId": 300,
+    "name": "Calypso",
+    "parentId": 15,
+    "order": 397
+  },
+  {
+    "musicStyleId": 61,
+    "name": "Goth Rock",
+    "parentId": 25,
+    "order": 28
+  },
+  {
+    "musicStyleId": 62,
+    "name": "Grunge",
+    "parentId": 25,
+    "order": 29
+  },
+  {
+    "musicStyleId": 66,
+    "name": "Arabic Pop",
+    "parentId": 21,
+    "order": 40
+  },
+  {
+    "musicStyleId": 562,
+    "name": "Khaleeji Jalsat",
+    "parentId": 21,
+    "order": 44
+  },
+  {
+    "musicStyleId": 80,
+    "name": "Choro",
+    "parentId": 29,
+    "order": 61
+  },
+  {
+    "musicStyleId": 91,
+    "name": "Cantopop",
+    "parentId": 30,
+    "order": 73
+  },
+  {
+    "musicStyleId": 101,
+    "name": "Taiwanese Folk",
+    "parentId": 30,
+    "order": 83
+  },
+  {
+    "musicStyleId": 107,
+    "name": "Christian Rock",
+    "parentId": 31,
+    "order": 90
+  },
+  {
+    "musicStyleId": 109,
+    "name": "Contemporary Gospel",
+    "parentId": 31,
+    "order": 92
+  },
+  {
+    "musicStyleId": 432,
+    "name": "Cello",
+    "parentId": 32,
+    "order": 103
+  },
+  {
+    "musicStyleId": 134,
+    "name": "Bluegrass",
+    "parentId": 34,
+    "order": 133
+  },
+  {
+    "musicStyleId": 144,
+    "name": "Breakbeat",
+    "parentId": 16,
+    "order": 152
+  },
+  {
+    "musicStyleId": 174,
+    "name": "Christmas: Classical",
+    "parentId": 20,
+    "order": 204
+  },
+  {
+    "musicStyleId": 182,
+    "name": "Halloween",
+    "parentId": 20,
+    "order": 213
+  },
+  {
+    "musicStyleId": 56,
+    "name": "Inspirational",
+    "parentId": null,
+    "order": 228
+  },
+  {
+    "musicStyleId": 206,
+    "name": "Smooth Jazz",
+    "parentId": 22,
+    "order": 243
+  },
+  {
+    "musicStyleId": 58,
+    "name": "Marching Bands",
+    "parentId": null,
+    "order": 266
+  },
+  {
+    "musicStyleId": 224,
+    "name": "Healing",
+    "parentId": 19,
+    "order": 268
+  },
+  {
+    "musicStyleId": 231,
+    "name": "Indo Pop",
+    "parentId": 10,
+    "order": 282
+  },
+  {
+    "musicStyleId": 240,
+    "name": "Soft Rock",
+    "parentId": 10,
+    "order": 298
+  },
+  {
+    "musicStyleId": 24,
+    "name": "R&B/Soul",
+    "parentId": null,
+    "order": 302
+  },
+  {
+    "musicStyleId": 250,
+    "name": "Soul",
+    "parentId": 24,
+    "order": 309
+  },
+  {
+    "musicStyleId": 339,
+    "name": "Bhojpuri",
+    "parentId": 190,
+    "order": 319
+  },
+  {
+    "musicStyleId": 348,
+    "name": "Rajasthani",
+    "parentId": 190,
+    "order": 329
+  },
+  {
+    "musicStyleId": 273,
+    "name": "Surf",
+    "parentId": 11,
+    "order": 351
+  },
+  {
+    "musicStyleId": 274,
+    "name": "Tex-Mex",
+    "parentId": 11,
+    "order": 352
+  },
+  {
+    "musicStyleId": 277,
+    "name": "Contemporary Singer/Songwriter",
+    "parentId": 14,
+    "order": 359
+  },
+  {
+    "musicStyleId": 52,
+    "name": "Soundtrack",
+    "parentId": null,
+    "order": 363
+  },
+  {
+    "musicStyleId": 310,
+    "name": "Farsi",
+    "parentId": 15,
+    "order": 407
+  },
+  {
+    "musicStyleId": 311,
+    "name": "Flamenco",
+    "parentId": 15,
+    "order": 408
+  },
+  {
+    "musicStyleId": 414,
+    "name": "Gqom",
+    "parentId": 292,
+    "order": 13
+  },
+  {
+    "musicStyleId": 426,
+    "name": "EMO",
+    "parentId": 25,
+    "order": 27
+  },
+  {
+    "musicStyleId": 559,
+    "name": "Indie Egyptian",
+    "parentId": 25,
+    "order": 30
+  },
+  {
+    "musicStyleId": 86,
+    "name": "Sertanejo",
+    "parentId": 29,
+    "order": 67
+  },
+  {
+    "musicStyleId": 23,
+    "name": "Children's Music",
+    "parentId": null,
+    "order": 68
+  },
+  {
+    "musicStyleId": 113,
+    "name": "Traditional Gospel",
+    "parentId": 31,
+    "order": 96
+  },
+  {
+    "musicStyleId": 32,
+    "name": "Classical",
+    "parentId": null,
+    "order": 97
+  },
+  {
+    "musicStyleId": 120,
+    "name": "Early Music",
+    "parentId": 32,
+    "order": 112
+  },
+  {
+    "musicStyleId": 439,
+    "name": "Piano",
+    "parentId": 32,
+    "order": 120
+  },
+  {
+    "musicStyleId": 128,
+    "name": "Romantic Era",
+    "parentId": 32,
+    "order": 122
+  },
+  {
+    "musicStyleId": 132,
+    "name": "Alternative Country",
+    "parentId": 34,
+    "order": 131
+  },
+  {
+    "musicStyleId": 141,
+    "name": "Traditional Bluegrass",
+    "parentId": 34,
+    "order": 140
+  },
+  {
+    "musicStyleId": 149,
+    "name": "Jungle/Drum'n'bass",
+    "parentId": 16,
+    "order": 156
+  },
+  {
+    "musicStyleId": 595,
+    "name": "Psy-Trance ",
+    "parentId": 16,
+    "order": 158
+  },
+  {
+    "musicStyleId": 156,
+    "name": "Electronica",
+    "parentId": 12,
+    "order": 171
+  },
+  {
+    "musicStyleId": 162,
+    "name": "Gangsta Rap",
+    "parentId": 41,
+    "order": 185
+  },
+  {
+    "musicStyleId": 575,
+    "name": "Levant Hip-Hop",
+    "parentId": 41,
+    "order": 190
+  },
+  {
+    "musicStyleId": 179,
+    "name": "Christmas: Religious",
+    "parentId": 20,
+    "order": 210
+  },
+  {
+    "musicStyleId": 187,
+    "name": "Indian Classical",
+    "parentId": null,
+    "order": 225
+  },
+  {
+    "musicStyleId": 22,
+    "name": "Jazz",
+    "parentId": null,
+    "order": 230
+  },
+  {
+    "musicStyleId": 212,
+    "name": "Korean Rock",
+    "parentId": 48,
+    "order": 250
+  },
+  {
+    "musicStyleId": 217,
+    "name": "Baladas y Boleros",
+    "parentId": 18,
+    "order": 256
+  },
+  {
+    "musicStyleId": 226,
+    "name": "Nature",
+    "parentId": 19,
+    "order": 270
+  },
+  {
+    "musicStyleId": 235,
+    "name": "Manilla Sound",
+    "parentId": 10,
+    "order": 291
+  },
+  {
+    "musicStyleId": 244,
+    "name": "Contemporary R&B",
+    "parentId": 24,
+    "order": 303
+  },
+  {
+    "musicStyleId": 342,
+    "name": "Kannada",
+    "parentId": 190,
+    "order": 322
+  },
+  {
+    "musicStyleId": 346,
+    "name": "Punjabi",
+    "parentId": 190,
+    "order": 326
+  },
+  {
+    "musicStyleId": 270,
+    "name": "Roots Rock",
+    "parentId": 11,
+    "order": 348
+  },
+  {
+    "musicStyleId": 552,
+    "name": "Tarab",
+    "parentId": null,
+    "order": 372
+  },
+  {
+    "musicStyleId": 590,
+    "name": "Iraqi Tarab",
+    "parentId": 552,
+    "order": 374
+  },
+  {
+    "musicStyleId": 545,
+    "name": "Turkish Alternative",
+    "parentId": 330,
+    "order": 380
+  },
+  {
+    "musicStyleId": 299,
+    "name": "Cajun",
+    "parentId": 15,
+    "order": 396
+  },
+  {
+    "musicStyleId": 320,
+    "name": "North America",
+    "parentId": 15,
+    "order": 418
+  },
+  {
+    "musicStyleId": 555,
+    "name": "African Reggae",
+    "parentId": 292,
+    "order": 2
+  },
+  {
+    "musicStyleId": 427,
+    "name": "Indie Pop",
+    "parentId": 25,
+    "order": 33
+  },
+  {
+    "musicStyleId": 21,
+    "name": "Arabic",
+    "parentId": null,
+    "order": 39
+  },
+  {
+    "musicStyleId": 83,
+    "name": "MPB",
+    "parentId": 29,
+    "order": 64
+  },
+  {
+    "musicStyleId": 102,
+    "name": "Tibetan Native Music",
+    "parentId": 30,
+    "order": 84
+  },
+  {
+    "musicStyleId": 104,
+    "name": "Christian Metal",
+    "parentId": 31,
+    "order": 87
+  },
+  {
+    "musicStyleId": 124,
+    "name": "Minimalism",
+    "parentId": 32,
+    "order": 116
+  },
+  {
+    "musicStyleId": 131,
+    "name": "Standup Comedy",
+    "parentId": 33,
+    "order": 129
+  },
+  {
+    "musicStyleId": 136,
+    "name": "Contemporary Country",
+    "parentId": 34,
+    "order": 135
+  },
+  {
+    "musicStyleId": 150,
+    "name": "Techno",
+    "parentId": 16,
+    "order": 159
+  },
+  {
+    "musicStyleId": 534,
+    "name": "Dubstep",
+    "parentId": 12,
+    "order": 169
+  },
+  {
+    "musicStyleId": 166,
+    "name": "Old School Rap",
+    "parentId": 41,
+    "order": 192
+  },
+  {
+    "musicStyleId": 180,
+    "name": "Christmas: Rock",
+    "parentId": 20,
+    "order": 211
+  },
+  {
+    "musicStyleId": 592,
+    "name": "Cumbia",
+    "parentId": 18,
+    "order": 258
+  },
+  {
+    "musicStyleId": 236,
+    "name": "Oldies",
+    "parentId": 10,
+    "order": 292
+  },
+  {
+    "musicStyleId": 251,
+    "name": "Classic/Modern Dancehall",
+    "parentId": 13,
+    "order": 311
+  },
+  {
+    "musicStyleId": 347,
+    "name": "Punjabi Pop",
+    "parentId": 190,
+    "order": 327
+  },
+  {
+    "musicStyleId": 257,
+    "name": "Arena Rock",
+    "parentId": 11,
+    "order": 334
+  },
+  {
+    "musicStyleId": 276,
+    "name": "Contemporary Folk",
+    "parentId": 14,
+    "order": 358
+  },
+  {
+    "musicStyleId": 284,
+    "name": "Original Score",
+    "parentId": 52,
+    "order": 367
+  },
+  {
+    "musicStyleId": 312,
+    "name": "France",
+    "parentId": 15,
+    "order": 409
+  },
+  {
+    "musicStyleId": 314,
+    "name": "Hawaii",
+    "parentId": 15,
+    "order": 412
+  },
+  {
+    "musicStyleId": 411,
+    "name": "Benga",
+    "parentId": 292,
+    "order": 10
+  },
+  {
+    "musicStyleId": 419,
+    "name": "Maskandi",
+    "parentId": 292,
+    "order": 18
+  },
+  {
+    "musicStyleId": 25,
+    "name": "Alternative",
+    "parentId": null,
+    "order": 25
+  },
+  {
+    "musicStyleId": 63,
+    "name": "Indie Rock",
+    "parentId": 25,
+    "order": 34
+  },
+  {
+    "musicStyleId": 565,
+    "name": "Dabke",
+    "parentId": 21,
+    "order": 41
+  },
+  {
+    "musicStyleId": 67,
+    "name": "Islamic",
+    "parentId": 21,
+    "order": 42
+  },
+  {
+    "musicStyleId": 28,
+    "name": "Blues",
+    "parentId": null,
+    "order": 49
+  },
+  {
+    "musicStyleId": 76,
+    "name": "Electric Blues",
+    "parentId": 28,
+    "order": 56
+  },
+  {
+    "musicStyleId": 30,
+    "name": "Chinese",
+    "parentId": null,
+    "order": 72
+  },
+  {
+    "musicStyleId": 93,
+    "name": "Chinese Classical",
+    "parentId": 30,
+    "order": 75
+  },
+  {
+    "musicStyleId": 103,
+    "name": "CCM",
+    "parentId": 31,
+    "order": 86
+  },
+  {
+    "musicStyleId": 105,
+    "name": "Christian Pop",
+    "parentId": 31,
+    "order": 88
+  },
+  {
+    "musicStyleId": 111,
+    "name": "Praise & Worship",
+    "parentId": 31,
+    "order": 94
+  },
+  {
+    "musicStyleId": 33,
+    "name": "Comedy",
+    "parentId": null,
+    "order": 127
+  },
+  {
+    "musicStyleId": 133,
+    "name": "Americana",
+    "parentId": 34,
+    "order": 132
+  },
+  {
+    "musicStyleId": 529,
+    "name": "Guaracha",
+    "parentId": 333,
+    "order": 147
+  },
+  {
+    "musicStyleId": 165,
+    "name": "Latin Rap",
+    "parentId": 41,
+    "order": 189
+  },
+  {
+    "musicStyleId": 577,
+    "name": "Russian Hip-Hop",
+    "parentId": 41,
+    "order": 194
+  },
+  {
+    "musicStyleId": 536,
+    "name": "UK Hip Hop",
+    "parentId": 41,
+    "order": 196
+  },
+  {
+    "musicStyleId": 172,
+    "name": "Christmas: Children's",
+    "parentId": 20,
+    "order": 202
+  },
+  {
+    "musicStyleId": 178,
+    "name": "Christmas: R&B",
+    "parentId": 20,
+    "order": 209
+  },
+  {
+    "musicStyleId": 197,
+    "name": "Contemporary Jazz",
+    "parentId": 22,
+    "order": 234
+  },
+  {
+    "musicStyleId": 209,
+    "name": "Korean Folk-Pop",
+    "parentId": 48,
+    "order": 247
+  },
+  {
+    "musicStyleId": 230,
+    "name": "Britpop",
+    "parentId": 10,
+    "order": 278
+  },
+  {
+    "musicStyleId": 234,
+    "name": "Mandopop",
+    "parentId": 10,
+    "order": 290
+  },
+  {
+    "musicStyleId": 237,
+    "name": "Original Pilipino Music",
+    "parentId": 10,
+    "order": 293
+  },
+  {
+    "musicStyleId": 239,
+    "name": "Pop/Rock",
+    "parentId": 10,
+    "order": 295
+  },
+  {
+    "musicStyleId": 542,
+    "name": "Shows",
+    "parentId": 10,
+    "order": 297
+  },
+  {
+    "musicStyleId": 258,
+    "name": "Blues-Rock",
+    "parentId": 11,
+    "order": 335
+  },
+  {
+    "musicStyleId": 59,
+    "name": "Spoken Word",
+    "parentId": null,
+    "order": 371
+  },
+  {
+    "musicStyleId": 548,
+    "name": "Fantezi",
+    "parentId": 330,
+    "order": 377
+  },
+  {
+    "musicStyleId": 546,
+    "name": "Turkish Pop",
+    "parentId": 330,
+    "order": 381
+  },
+  {
+    "musicStyleId": 294,
+    "name": "Afro-Beat",
+    "parentId": 15,
+    "order": 391
+  },
+  {
+    "musicStyleId": 307,
+    "name": "Enka",
+    "parentId": 15,
+    "order": 404
+  },
+  {
+    "musicStyleId": 316,
+    "name": "Indonesian Religious",
+    "parentId": 15,
+    "order": 414
+  },
+  {
+    "musicStyleId": 318,
+    "name": "Japan",
+    "parentId": 15,
+    "order": 416
+  },
+  {
+    "musicStyleId": 556,
+    "name": "Afro-folk",
+    "parentId": 292,
+    "order": 6
+  },
+  {
+    "musicStyleId": 413,
+    "name": "Coupé-Décalé",
+    "parentId": 292,
+    "order": 12
+  },
+  {
+    "musicStyleId": 421,
+    "name": "Ndombolo",
+    "parentId": 292,
+    "order": 20
+  },
+  {
+    "musicStyleId": 116,
+    "name": "Chamber Music",
+    "parentId": 32,
+    "order": 104
+  },
+  {
+    "musicStyleId": 16,
+    "name": "Dance",
+    "parentId": null,
+    "order": 151
+  },
+  {
+    "musicStyleId": 567,
+    "name": "Maghreb Dance",
+    "parentId": 16,
+    "order": 157
+  },
+  {
+    "musicStyleId": 55,
+    "name": "Easy Listening",
+    "parentId": null,
+    "order": 162
+  },
+  {
+    "musicStyleId": 570,
+    "name": "Maghreb Electronic",
+    "parentId": 12,
+    "order": 175
+  },
+  {
+    "musicStyleId": 574,
+    "name": "Khaleeji Hip-Hop",
+    "parentId": 41,
+    "order": 188
+  },
+  {
+    "musicStyleId": 57,
+    "name": "Instrumental",
+    "parentId": null,
+    "order": 229
+  },
+  {
+    "musicStyleId": 210,
+    "name": "Korean Hip-Hop",
+    "parentId": 48,
+    "order": 248
+  },
+  {
+    "musicStyleId": 219,
+    "name": "Latin Jazz",
+    "parentId": 18,
+    "order": 259
+  },
+  {
+    "musicStyleId": 221,
+    "name": "Pop in Spanish",
+    "parentId": 18,
+    "order": 261
+  },
+  {
+    "musicStyleId": 222,
+    "name": "Raices",
+    "parentId": 18,
+    "order": 262
+  },
+  {
+    "musicStyleId": 229,
+    "name": "Adult Contemporary",
+    "parentId": 10,
+    "order": 277
+  },
+  {
+    "musicStyleId": 581,
+    "name": "Iraqi Pop",
+    "parentId": 10,
+    "order": 283
+  },
+  {
+    "musicStyleId": 242,
+    "name": "Teen Pop",
+    "parentId": 10,
+    "order": 300
+  },
+  {
+    "musicStyleId": 297,
+    "name": "Asia",
+    "parentId": 15,
+    "order": 394
+  },
+  {
+    "musicStyleId": 301,
+    "name": "Caribbean",
+    "parentId": 15,
+    "order": 398
+  },
+  {
+    "musicStyleId": 313,
+    "name": "Halk",
+    "parentId": 15,
+    "order": 411
+  },
+  {
+    "musicStyleId": 329,
+    "name": "Traditional Celtic",
+    "parentId": 15,
+    "order": 426
+  }
+]

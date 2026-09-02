@@ -4,6 +4,21 @@ import { IUser } from '../user/user.interface';
 import { ILabel } from '../label/label.interface';
 import { IPrimaryArtist } from '../primary-artist/primary-artist.interface';
 
+// Role-based contributor — Revelator-shaped (see revelatorfinal.md §7.5):
+// roleGroupId 1=Key Artist, 2=Performer, 3=Producer & Engineer, 4=Writer/Publisher.
+export type IContributor = {
+  name: string;
+  roleId: number;
+  roleName: string;
+  roleGroupId: 1 | 2 | 3 | 4;
+  sharePercent?: number;
+};
+
+export type ILocalization = {
+  language: string;
+  title: string;
+};
+
 export type ISingleTrack = {
   audio: string;
   trimmedAudio?: string;
@@ -75,4 +90,20 @@ export type ISingleTrack = {
   revelatorJobId?: string;
   sentToRevelatorAt?: Date;
   revelatorAssetTitle?: string;
+
+  // Revelator-shaped fields (see revelatorfinal.md field map)
+  contributors: IContributor[];
+  hasIsrc: boolean;
+  isCompilation: boolean;
+  hasRecordLabel: boolean;
+  previouslyReleased: boolean;
+  previousReleaseDate?: string;
+  iswc?: string;
+  trackProperties: string[];
+  origin: 'original' | 'public-domain' | 'cover';
+  copyrightPYear?: string;
+  copyrightPText?: string;
+  copyrightCYear?: string;
+  copyrightCText?: string;
+  localizations?: ILocalization[];
 };

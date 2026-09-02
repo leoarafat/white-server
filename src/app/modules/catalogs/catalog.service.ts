@@ -23,6 +23,31 @@ import {
 import { buildMetadata } from './catalogs.utils';
 import mongoose, { Types } from 'mongoose';
 import { PrimaryArtist } from '../primary-artist/primary-artist.model';
+import {
+  concatCopyright,
+  mapContributorsToLegacyFields,
+} from '../single-track/contributor.utils';
+
+// Applies the copyright-year+text -> single-string concat, and derives the
+// legacy flat contributor fields (author/composer/etc.) from the new
+// role-based `contributors[]` array — shared by both the user-resubmission
+// (editMusic) and admin (editMusicForAdmin) update paths below.
+function enrichSingleTrackUpdate(updateData: Record<string, any>) {
+  if (updateData.copyrightPYear || updateData.copyrightPText) {
+    updateData.pLine =
+      concatCopyright(updateData.copyrightPYear, updateData.copyrightPText) ||
+      updateData.pLine;
+  }
+  if (updateData.copyrightCYear || updateData.copyrightCText) {
+    updateData.cLine =
+      concatCopyright(updateData.copyrightCYear, updateData.copyrightCText) ||
+      updateData.cLine;
+  }
+  if (Array.isArray(updateData.contributors)) {
+    Object.assign(updateData, mapContributorsToLegacyFields(updateData.contributors));
+  }
+  return updateData;
+}
 
 //!
 const releaseSongs = async (query: Record<string, unknown>) => {
@@ -502,6 +527,7 @@ const editMusic = async (req: Request) => {
     // untouched (never regressed back to 'pending').
     const resubmittingAfterMasterRejection =
       singleTrack.masterApprovalStatus === 'rejected';
+    enrichSingleTrackUpdate(updateData);
     return await SingleTrack.findOneAndUpdate(
       { _id: id },
       {
@@ -568,6 +594,7 @@ const editMusicForAdmin = async (req: Request) => {
   const singleTrack = await SingleTrack.findById(id);
 
   if (singleTrack) {
+    enrichSingleTrackUpdate(updateData);
     return await SingleTrack.findOneAndUpdate(
       { _id: id },
       {

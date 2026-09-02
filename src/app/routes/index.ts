@@ -49,6 +49,7 @@ import { PartnerActivityAdminRoutes } from '../modules/partnerApi/activity/partn
 import { PartnerReleaseAdminRoutes } from '../modules/partnerApi/release/partnerRelease.admin.routes';
 import { PartnerChannelAdminRoutes } from '../modules/partnerApi/channel/partnerChannel.admin.routes';
 import { RevelatorRoutes } from '../modules/revelator/revelator.routes';
+import { LookupRoutes } from '../modules/lookup/lookup.routes';
 
 const router = express.Router();
 
@@ -254,6 +255,10 @@ const moduleRoutes = [
   {
     path: '/revelator',
     route: RevelatorRoutes,
+  },
+  {
+    path: '/lookup',
+    route: LookupRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

@@ -10,38 +10,35 @@ const req = (field: string) =>
     .trim()
     .min(1, `${field} is required`);
 
+// Files now arrive pre-uploaded (via POST /single-music/upload-asset, called
+// the instant the user picks each file) — the final submit is a plain JSON
+// body carrying `audio`/`image` as URL strings, not multipart. `files` is
+// left optional here only for the legacy multipart path some older callers
+// (e.g. /edit-audio draft resubmission) may still use.
 const uploadSingleSchema = z.object({
   body: z.object({
     releaseTitle: req('Release Title'),
     primaryArtist: req('Primary Artist'),
     genre: req('Genre'),
     subGenre: req('Sub Genre'),
-    label: req('Label'),
     format: req('Format'),
     releaseDate: req('Release Date'),
     productionYear: req('Production Year'),
-    pLine: req('P Line'),
-    cLine: req('C Line'),
     primaryTrackType: req('Primary Track Type'),
     title: req('Track Title'),
-    author: req('Author'),
-    composer: req('Composer'),
     parentalAdvisory: req('Parental Advisory'),
     trackTitleLanguage: req('Track Title Language'),
     lyricsLanguage: req('Lyrics Language'),
     instrumental: req('Instrumental'),
+    audio: z.string().trim().optional(),
+    image: z.string().trim().optional(),
   }),
-  files: z.object(
-    {
-      audio: z
-        .array(z.any())
-        .nonempty({ message: 'Audio Track file is required' }),
-      image: z
-        .array(z.any())
-        .nonempty({ message: 'Cover Artwork file is required' }),
-    },
-    { required_error: 'Audio Track and Cover Artwork files are required' },
-  ),
+  files: z
+    .object({
+      audio: z.array(z.any()).optional(),
+      image: z.array(z.any()).optional(),
+    })
+    .optional(),
 });
 
 // PATCH /single-music/update/:id — a loose partial edit of the track,

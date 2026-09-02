@@ -12,6 +12,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "dev:revelator-upload": "ts-node-dev --respawn --transpile-only src/queues/revelator-upload.worker.ts",
     "dev:revelator-analytics": "ts-node-dev --respawn --transpile-only src/queues/revelator-analytics.worker.ts",
+    "seed:lookups": "ts-node-dev --transpile-only --exit-child src/app/modules/lookup/lookup.seed.ts",
     "build": "tsc",
     "vercel-build": "npm run build",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
