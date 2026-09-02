@@ -5,10 +5,12 @@ import {
   fillByPlaceholder,
   findFileInputBySection,
   selectDropdownOption,
+  selectPSelectOption,
+  addArtistViaDialog,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
-import { openCatalogSection } from './uploadAudioAsset';
+import { openCatalogSection, missingOption } from './uploadAudioAsset';
 import { RevelatorBotError } from './uploadAudioAsset';
 
 // Drives Catalog → Digital Releases → "New Release" (recon: 3-step dialog —
@@ -69,15 +71,51 @@ export async function uploadCoverAndRelease(
     }
   }
 
+  onProgress('Adding primary artist');
+  if (form.primaryArtists.length > 1) {
+    // Revelator's "Are there 4 or more Primary Artists on this release?"
+    // toggle changes this section in a way that hasn't been recon'd against
+    // the real form yet — rather than guess at an unverified UI path (and
+    // risk silently dropping or misassigning artists on a real release),
+    // fail clearly so this case gets a proper recon pass before it's trusted.
+    return {
+      ok: false,
+      error: {
+        message: `This release has ${form.primaryArtists.length} primary artists — sending releases with more than one primary artist isn't supported by the automation yet.`,
+        retryable: false,
+      },
+    };
+  }
+  if (form.primaryArtists[0]) {
+    const artistResult = await addArtistViaDialog(
+      page,
+      'Add Main Primary Artist',
+      form.primaryArtists[0],
+      'Add Artist',
+    );
+    if (!artistResult.found) {
+      return missingOption('Artist', form.primaryArtists[0]);
+    }
+  }
+
   onProgress('Filling release metadata');
-  await selectDropdownOption(page, 'Select language', form.language);
+  const languageResult = await selectPSelectOption(page, 'Select language', form.language);
+  if (!languageResult.found) {
+    return missingOption('Language', form.language);
+  }
   await fillByPlaceholder(page, 'e.g. My Great Song', form.title);
   if (form.version) {
     await fillByPlaceholder(page, 'e.g. Live, Remix, Remastered', form.version);
   }
-  await selectDropdownOption(page, 'Select genre', form.primaryGenre);
+  const genreResult = await selectPSelectOption(page, 'Select genre', form.primaryGenre, 0);
+  if (!genreResult.found) {
+    return missingOption('Genre', form.primaryGenre);
+  }
   if (form.secondaryGenre) {
-    await clickNearText(page, 'Secondary Genre', form.secondaryGenre);
+    const secondaryGenreResult = await selectPSelectOption(page, 'Select genre', form.secondaryGenre, 1);
+    if (!secondaryGenreResult.found) {
+      return missingOption('Secondary Genre', form.secondaryGenre);
+    }
   }
 
   await clickNearText(
@@ -85,6 +123,13 @@ export async function uploadCoverAndRelease(
     'Label',
     form.hasLabel ? 'Yes' : 'No',
   );
+  if (form.hasLabel && form.labelName) {
+    await delay(300);
+    const labelResult = await selectPSelectOption(page, 'Select label', form.labelName);
+    if (!labelResult.found) {
+      return missingOption('Label', form.labelName);
+    }
+  }
   await clickNearText(
     page,
     'Release History',

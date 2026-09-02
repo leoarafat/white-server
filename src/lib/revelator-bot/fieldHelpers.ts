@@ -1,14 +1,16 @@
 import { ElementHandle, Page } from 'puppeteer';
 
 /*
- * Revelator's Backstage UI is a React app with no stable class names or
- * test-ids we can rely on (confirmed during recon — see the plan doc). Every
- * lookup here targets the one thing that IS stable: the visible text
- * (placeholder, label, button label) captured during recon. This is the
- * standard resilient-selector strategy, but it still needs a short live
- * calibration pass against the real account before going to production —
- * recon captured the accessibility tree, not raw DOM attributes, so exact
- * radio/select internals may need a small adjustment on first real run.
+ * Revelator's Backstage UI (this white-label instance, backstage.ptunestudio.com)
+ * is an Angular app built on PrimeNG — confirmed via live DOM recon against
+ * the real "Create Digital Release" form. Two selector strategies are used
+ * here: most fields are targeted by their stable visible text (placeholder,
+ * label, button label), same as before. Search/autocomplete fields (Language,
+ * Genre, Artist, Label — anything backed by PrimeNG's <p-select>) are handled
+ * by selectPSelectOption/addArtistViaDialog below, which target PrimeNG's own
+ * stable class names (.p-select-filter, .p-select-option, .p-select-empty-message)
+ * rather than guessing at option text placement — this is also how the bot
+ * detects a value that doesn't exist in the account's Revelator catalog.
  */
 
 const NAV_TIMEOUT = 30_000;
@@ -142,4 +144,145 @@ export async function selectDropdownOption(
     return false;
   }, optionText);
   return clicked;
+}
+
+export type PSelectResult = { found: boolean };
+
+// Language/Genre/Artist/Label are all PrimeNG <p-select> — clicking the
+// trigger (matched by its `placeholder`) opens an overlay with a
+// `.p-select-filter` search box, `.p-select-option` <li> results, and (the
+// key bit for existence-checking) a `.p-select-empty-message` <li> reading
+// "No results found" when nothing in THIS Revelator account matches. Artist
+// and Label options render as "Name<id>" (name and a numeric id concatenated
+// in one text node, id styled separately) — hence the startsWith fallback
+// below rather than requiring an exact match. `index` picks which trigger
+// when more than one element on the page shares the same placeholder (e.g.
+// Primary Genre vs Secondary Genre, both "Select genre", in DOM order).
+export async function selectPSelectOption(
+  page: Page,
+  triggerPlaceholder: string,
+  value: string,
+  index = 0,
+): Promise<PSelectResult> {
+  const triggers = await page.$$(
+    `[placeholder="${cssEscape(triggerPlaceholder)}"]`,
+  );
+  const trigger = triggers[index];
+  if (!trigger) return { found: false };
+  await trigger.click();
+  await delay(400);
+
+  const filter = await page.$('.p-select-filter');
+  if (filter) {
+    await filter.click({ clickCount: 3 });
+    await filter.type(value, { delay: 10 });
+    await delay(600);
+  }
+
+  const emptyMessage = await page.$('.p-select-empty-message');
+  if (emptyMessage) {
+    await page.keyboard.press('Escape').catch(() => undefined);
+    return { found: false };
+  }
+
+  const clicked = await page.evaluate((needle: string) => {
+    const options = Array.from(document.querySelectorAll('.p-select-option'));
+    const match = options.find(el => {
+      const text = el.textContent?.trim() || '';
+      return text === needle || text.startsWith(needle);
+    });
+    if (match) {
+      (match as HTMLElement).click();
+      return true;
+    }
+    return false;
+  }, value);
+
+  if (!clicked) {
+    await page.keyboard.press('Escape').catch(() => undefined);
+    return { found: false };
+  }
+  return { found: true };
+}
+
+async function clickDialogButtonByText(
+  page: Page,
+  text: string,
+): Promise<boolean> {
+  return page.evaluate((needle: string) => {
+    const btn = Array.from(
+      document.querySelectorAll('.p-dialog button'),
+    ).find(b => b.textContent?.trim() === needle) as HTMLButtonElement | undefined;
+    if (btn && !btn.disabled) {
+      btn.click();
+      return true;
+    }
+    return false;
+  }, text);
+}
+
+// "Add Main Primary Artist" / "Add Artist" (Key Artists) / "Add Performer" /
+// "Add Credit" each open a p-dialog containing one
+// `[placeholder="Select Artist"]` p-select — picking an artist there reveals
+// an Artist Profiles section (Spotify/Apple linking, left untouched — it's
+// optional) and enables the dialog's own submit button, which shares the
+// open button's label (e.g. both are "Add Artist" for Main Primary Artist).
+export async function addArtistViaDialog(
+  page: Page,
+  openButtonText: string,
+  artistName: string,
+  submitButtonText: string,
+): Promise<PSelectResult> {
+  const opened = await page.evaluate((text: string) => {
+    const btn = Array.from(document.querySelectorAll('button')).find(
+      b => b.textContent?.trim() === text,
+    );
+    if (btn) {
+      (btn as HTMLElement).click();
+      return true;
+    }
+    return false;
+  }, openButtonText);
+  if (!opened) return { found: false };
+  await delay(500);
+
+  const trigger = await page.$('.p-dialog [placeholder="Select Artist"]');
+  if (!trigger) return { found: false };
+  await trigger.click();
+  await delay(400);
+
+  const filter = await page.$('.p-select-filter');
+  if (filter) {
+    await filter.type(artistName, { delay: 10 });
+    await delay(600);
+  }
+
+  const emptyMessage = await page.$('.p-select-empty-message');
+  if (emptyMessage) {
+    await clickDialogButtonByText(page, 'Cancel');
+    return { found: false };
+  }
+
+  const clicked = await page.evaluate((needle: string) => {
+    const options = Array.from(document.querySelectorAll('.p-select-option'));
+    const match = options.find(el => {
+      const text = el.textContent?.trim() || '';
+      return text === needle || text.startsWith(needle);
+    });
+    if (match) {
+      (match as HTMLElement).click();
+      return true;
+    }
+    return false;
+  }, artistName);
+  if (!clicked) {
+    await clickDialogButtonByText(page, 'Cancel');
+    return { found: false };
+  }
+  await delay(500);
+
+  const submitted = await clickDialogButtonByText(page, submitButtonText);
+  if (!submitted) return { found: false };
+  await delay(500);
+  return { found: true };
 }

@@ -25,7 +25,7 @@ import mongoose, { Types } from 'mongoose';
 import { PrimaryArtist } from '../primary-artist/primary-artist.model';
 import {
   concatCopyright,
-  mapContributorsToLegacyFields,
+  mergeContributorLegacyFields,
 } from '../single-track/contributor.utils';
 
 // Applies the copyright-year+text -> single-string concat, and derives the
@@ -44,7 +44,7 @@ function enrichSingleTrackUpdate(updateData: Record<string, any>) {
       updateData.cLine;
   }
   if (Array.isArray(updateData.contributors)) {
-    Object.assign(updateData, mapContributorsToLegacyFields(updateData.contributors));
+    mergeContributorLegacyFields(updateData, updateData.contributors);
   }
   return updateData;
 }
@@ -584,11 +584,18 @@ const editMusicForAdmin = async (req: Request) => {
     updateData.primaryArtist = primaryArtist
       .map((artist: { value: string }) => artist.value)
       .filter((artistId: string | undefined) => artistId !== undefined);
-  }
-  if (primaryArtist && primaryArtist[0]?._id && Array.isArray(primaryArtist)) {
+  } else if (primaryArtist && primaryArtist[0]?._id && Array.isArray(primaryArtist)) {
     updateData.primaryArtist = primaryArtist
       .map((artist: { _id: string }) => artist._id)
       .filter((artistId: string | undefined) => artistId !== undefined);
+  } else if (Array.isArray(primaryArtist)) {
+    // ViewRelease.tsx (admin) sends plain artist name strings, same shape
+    // the upload wizard and editMusic already handle — without this branch
+    // primaryArtist was silently dropped from the update (destructured out
+    // above, never re-attached to updateData).
+    updateData.primaryArtist = primaryArtist.filter(
+      (v: unknown) => typeof v === 'string' && v.trim(),
+    );
   }
 
   const singleTrack = await SingleTrack.findById(id);

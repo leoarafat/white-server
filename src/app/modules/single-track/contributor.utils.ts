@@ -42,6 +42,30 @@ export function mapContributorsToLegacyFields(contributors: IContributor[] = [])
   };
 }
 
+const isEmpty = (v: unknown): boolean =>
+  v === undefined ||
+  v === null ||
+  v === '' ||
+  (Array.isArray(v) && v.length === 0);
+
+// Fills flat legacy fields from contributors[] onto `data`, but ONLY where
+// `data` doesn't already carry an explicit value for that field — e.g. the
+// upload form submits `featuringArtists` directly (via its own Featuring
+// Artists picker) AND contributors[] may separately include a "Featuring"
+// Key Artist; blindly overwriting with Object.assign would let an empty
+// contributors-derived list wipe out an explicitly chosen value.
+export function mergeContributorLegacyFields(
+  data: Record<string, unknown>,
+  contributors: IContributor[] = [],
+): void {
+  const mapped = mapContributorsToLegacyFields(contributors);
+  for (const [key, value] of Object.entries(mapped)) {
+    if (isEmpty(data[key]) && !isEmpty(value)) {
+      data[key] = value;
+    }
+  }
+}
+
 // Revelator's own confirmed convention (revelatorfinal.md §7.3): a single
 // concatenated "{year} {text}" string, not a separate {year, text} object.
 export function concatCopyright(year?: string, text?: string): string | undefined {

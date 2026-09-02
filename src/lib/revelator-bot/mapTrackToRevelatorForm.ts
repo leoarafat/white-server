@@ -19,6 +19,7 @@ export type RevelatorReleaseForm = {
   language: string;
   title: string;
   version?: string;
+  primaryArtists: string[];
   primaryGenre: string;
   secondaryGenre?: string;
   hasLabel: boolean;
@@ -87,6 +88,7 @@ export function mapReleaseForm(track: ISingleTrack): RevelatorReleaseForm {
     language: track.trackTitleLanguage,
     title: track.releaseTitle || track.title,
     version: track.subtitle || undefined,
+    primaryArtists: track.primaryArtist || [],
     primaryGenre: track.genre,
     secondaryGenre: track.subGenre || undefined,
     hasLabel: Boolean(track.label),

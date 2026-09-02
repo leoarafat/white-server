@@ -15,12 +15,26 @@ const req = (field: string) =>
 // body carrying `audio`/`image` as URL strings, not multipart. `files` is
 // left optional here only for the legacy multipart path some older callers
 // (e.g. /edit-audio draft resubmission) may still use.
+// The live form now sends primaryArtist as a real JSON array (previously a
+// comma-joined string over multipart) — accept either shape, same as the
+// service layer's resolveArtistNames() already does.
+const primaryArtistField = z
+  .union([z.string(), z.array(z.string())], {
+    required_error: 'Primary Artist is required',
+  })
+  .refine(
+    v => (Array.isArray(v) ? v.length > 0 : v.trim().length > 0),
+    'Primary Artist is required',
+  );
+
 const uploadSingleSchema = z.object({
   body: z.object({
     releaseTitle: req('Release Title'),
-    primaryArtist: req('Primary Artist'),
+    primaryArtist: primaryArtistField,
     genre: req('Genre'),
-    subGenre: req('Sub Genre'),
+    // Secondary Genre is optional in the wizard (matches ptune's own
+    // "Enter Release Details" step, where only Primary Genre is required).
+    subGenre: z.string().trim().optional(),
     format: req('Format'),
     releaseDate: req('Release Date'),
     productionYear: req('Production Year'),

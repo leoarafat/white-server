@@ -5,11 +5,32 @@ import {
   fillByPlaceholder,
   findFileInputBySection,
   selectDropdownOption,
+  selectPSelectOption,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
 
 export type RevelatorBotError = { message: string; retryable: boolean };
+
+// A dropdown field (Language, Genre, ...) is account-specific in Revelator —
+// it only offers entities that already exist in that Revelator account, so a
+// value the release form has but the account doesn't (typo, or genuinely
+// missing) can't be picked. Fail immediately with a clear message instead of
+// silently skipping the field and letting Revelator's own generic "Please
+// fill all mandatory fields" toast surface later with no indication of which
+// field or value was the problem.
+export function missingOption(
+  field: string,
+  value: string,
+): { ok: false; error: RevelatorBotError } {
+  return {
+    ok: false,
+    error: {
+      message: `${field} "${value}" does not exist in this Revelator account. Add it in Revelator first, or fix the value on the release, then resend.`,
+      retryable: false,
+    },
+  };
+}
 
 // Drives Catalog → Audio → "New Audio Asset" (recon: 3-step dialog —
 // Audio Files, Audio Details, Publishing Details, all in one scrollable
@@ -61,16 +82,23 @@ export async function uploadAudioAsset(
   }
 
   onProgress('Filling audio metadata');
-  await selectDropdownOption(page, 'Select language', form.language);
+  const languageResult = await selectPSelectOption(page, 'Select language', form.language);
+  if (!languageResult.found) {
+    return missingOption('Language', form.language);
+  }
   await fillByPlaceholder(page, 'e.g. My Great Song', form.title);
   if (form.version) {
     await fillByPlaceholder(page, 'e.g. Live, Remix, Remastered', form.version);
   }
-  await selectDropdownOption(page, 'Select genre', form.primaryGenre);
+  const genreResult = await selectPSelectOption(page, 'Select genre', form.primaryGenre, 0);
+  if (!genreResult.found) {
+    return missingOption('Genre', form.primaryGenre);
+  }
   if (form.secondaryGenre) {
-    // Second "Select genre" control (Secondary Genre) — best-effort via
-    // section-scoped lookup since the placeholder is identical to Primary.
-    await clickNearText(page, 'Secondary Genre', form.secondaryGenre);
+    const secondaryGenreResult = await selectPSelectOption(page, 'Select genre', form.secondaryGenre, 1);
+    if (!secondaryGenreResult.found) {
+      return missingOption('Secondary Genre', form.secondaryGenre);
+    }
   }
   await selectDropdownOption(page, 'Select year', form.copyrightPYear);
   await fillByPlaceholder(page, 'e.g. Label LLC', form.copyrightPText);

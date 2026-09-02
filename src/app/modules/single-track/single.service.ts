@@ -17,7 +17,7 @@ import { notifyAdminsOfSubmission } from '../notifications/notification.hooks';
 import { generateNextIsrc } from '../isrc/isrc.service';
 import {
   concatCopyright,
-  mapContributorsToLegacyFields,
+  mergeContributorLegacyFields,
 } from './contributor.utils';
 
 // Single tracks now store artist/label NAMES (strings), like the video flow.
@@ -93,7 +93,7 @@ const uploadSingle = async (req: Request) => {
     }
   }
   data.releaseId = generateArtistId();
-  data.format = 'Album';
+  if (!data.format) data.format = 'Single';
 
   // Copyright P/C: the form collects year+text separately, but the stored
   // field (and every existing table/CSV export) expects Revelator's own
@@ -102,9 +102,11 @@ const uploadSingle = async (req: Request) => {
   data.cLine = concatCopyright(data.copyrightCYear, data.copyrightCText) || data.cLine;
 
   // Role-based contributors[] is the new source of truth; derive the legacy
-  // flat fields from it so nothing else in the app breaks.
+  // flat fields from it (only where the caller didn't already send an
+  // explicit value — e.g. featuringArtists comes from its own picker too)
+  // so nothing else in the app breaks.
   if (Array.isArray(data.contributors) && data.contributors.length) {
-    Object.assign(data, mapContributorsToLegacyFields(data.contributors));
+    mergeContributorLegacyFields(data, data.contributors);
   }
 
   // The single-track upload form doesn't collect these, but the schema marks
@@ -339,7 +341,7 @@ const updateSingleMusic = async (id: string, payload: any) => {
       musicData.cLine = concatCopyright(payload.copyrightCYear, payload.copyrightCText) || musicData.cLine;
     }
     if (Array.isArray(payload.contributors)) {
-      Object.assign(musicData, mapContributorsToLegacyFields(payload.contributors));
+      mergeContributorLegacyFields(musicData, payload.contributors);
     }
     const result = await SingleTrack.findOneAndUpdate({ _id: id }, musicData, {
       new: true,
