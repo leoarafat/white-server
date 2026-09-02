@@ -35,10 +35,16 @@ export async function captureErrorToast(
 
 // True once the "Create Digital Release"/"Create Audio Asset" dialog itself
 // is gone from the DOM (the success path — no toast, dialog closes).
+// Generous by default: "Create" here uploads and processes a full master
+// WAV on Revelator's side, which takes far longer than a UI interaction.
+// The old 15s budget expired mid-upload on a form that was completely
+// valid (confirmed from a screenshot: every field filled, no validation
+// errors, Create enabled) and surfaced as the misleading "creation did not
+// complete (dialog stayed open)".
 export async function waitForDialogClosed(
   page: Page,
   dialogHeading: string,
-  timeoutMs = 15000,
+  timeoutMs = 300_000,
 ): Promise<boolean> {
   try {
     await page.waitForFunction(
