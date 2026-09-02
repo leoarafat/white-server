@@ -166,12 +166,17 @@ export type PSelectResult = { found: boolean };
 // typing — snapshot the option list first, then wait for it to differ (or
 // for the empty-message to appear).
 //
-// Everything here is also scoped to the LAST `.p-select-overlay` in the
-// DOM, not `document` globally — PrimeNG's CDK overlay container can leave
-// a previous field's overlay panel behind after it's closed (confirmed:
-// Genre search failed right after the Main-Primary-Artist dialog's own
-// p-select closed, in a run where isolated testing of Genre alone passed).
-// The most-recently-opened overlay is always last in document order.
+// Everything here is also scoped to the currently VISIBLE
+// `.p-select-overlay` (offsetParent !== null), not `document` globally and
+// not just "last in the DOM" — PrimeNG's CDK overlay container can leave a
+// previous field's overlay panel behind after it's closed without removing
+// it, so DOM order alone is unreliable (confirmed live: a real send still
+// failed with "Genre does not exist" using a last-in-DOM-order pick, right
+// after "Select existing assets" and the Main-Primary-Artist dialog had
+// each opened their own p-select earlier in the same run — one of those
+// stale, closed-but-still-present overlays was being picked over the
+// actually-open Genre one). Falls back to the last DOM element only if
+// nothing is currently visible (e.g. right as an overlay opens).
 //
 // The overlay-lookup logic is duplicated inline in every evaluate/
 // waitForFunction callback below rather than shared as a JS function value
@@ -183,8 +188,8 @@ export type PSelectResult = { found: boolean };
 // passed as a later argument must be plain data.
 async function snapshotOptionList(page: Page): Promise<string> {
   return page.evaluate(() => {
-    const overlays = document.querySelectorAll('.p-select-overlay');
-    const overlay = overlays[overlays.length - 1] || null;
+    const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+    const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
     if (!overlay) return '';
     return Array.from(overlay.querySelectorAll('.p-select-option'))
       .map(el => el.textContent)
@@ -200,8 +205,8 @@ async function waitForSearchSettled(
   await page
     .waitForFunction(
       (base: string) => {
-        const overlays = document.querySelectorAll('.p-select-overlay');
-        const overlay = overlays[overlays.length - 1] || null;
+        const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+        const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
         if (!overlay) return false;
         if (overlay.querySelector('.p-select-empty-message')) return true;
         const current = Array.from(
@@ -222,8 +227,8 @@ async function getScopedElement(
   selector: string,
 ): Promise<import('puppeteer').ElementHandle<Element> | null> {
   const handle = await page.evaluateHandle((sel: string) => {
-    const overlays = document.querySelectorAll('.p-select-overlay');
-    const overlay = overlays[overlays.length - 1] || null;
+    const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+    const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
     return overlay ? overlay.querySelector(sel) : null;
   }, selector);
   return handle.asElement() as import('puppeteer').ElementHandle<Element> | null;
@@ -268,8 +273,8 @@ export async function selectPSelectOption(
   }
 
   const clicked = await page.evaluate((needle: string) => {
-    const overlays = document.querySelectorAll('.p-select-overlay');
-    const overlay = overlays[overlays.length - 1] || null;
+    const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+    const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
     if (!overlay) return false;
     const options = Array.from(overlay.querySelectorAll('.p-select-option'));
     const match = options.find(el => {
@@ -350,8 +355,8 @@ export async function addArtistViaDialog(
   }
 
   const clicked = await page.evaluate((needle: string) => {
-    const overlays = document.querySelectorAll('.p-select-overlay');
-    const overlay = overlays[overlays.length - 1] || null;
+    const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
+    const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
     if (!overlay) return false;
     const options = Array.from(overlay.querySelectorAll('.p-select-option'));
     const match = options.find(el => {
