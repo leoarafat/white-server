@@ -289,17 +289,21 @@ async function getScopedElement(
 // below rather than requiring an exact match. `index` picks which trigger
 // when more than one element on the page shares the same placeholder (e.g.
 // Primary Genre vs Secondary Genre, both "Select genre", in DOM order).
-export async function selectPSelectOption(
+//
+// The overlay has been observed closing itself mid-interaction on the real
+// headless bot in a way that hasn't reproduced under interactive manual
+// testing even after removing the confirmed clickCount:3 cause — most
+// likely a layout-shift race right after the preceding step (e.g. the
+// Main Primary Artist dialog closing and the page reflowing) lands the
+// click somewhere that dismisses the panel. Rather than keep chasing an
+// exact cause that resists reproduction, this retries the whole
+// open-search-click sequence once on an unexpected 0-overlay outcome
+// before concluding "not found".
+async function attemptSelectPSelectOption(
   page: Page,
-  triggerPlaceholder: string,
+  trigger: import('puppeteer').ElementHandle<Element>,
   value: string,
-  index = 0,
-): Promise<PSelectResult> {
-  const triggers = await page.$$(
-    `[placeholder="${cssEscape(triggerPlaceholder)}"]`,
-  );
-  const trigger = triggers[index];
-  if (!trigger) return { found: false };
+): Promise<PSelectResult | 'overlay-vanished'> {
   await trigger.click();
   await delay(400);
 
@@ -310,9 +314,7 @@ export async function selectPSelectOption(
     // filter is always freshly empty right when the overlay opens, and
     // live-confirmed a clickCount:3 here was closing the overlay outright
     // (three rapid clicks landing as an accidental double-click-equivalent
-    // on a PrimeNG element that toggles the panel) — the debug dump on a
-    // real run showed 0 overlays left in the DOM by the time this function
-    // went looking for the option to click, right after typing "Arabic".
+    // on a PrimeNG element that toggles the panel).
     await filter.click();
     await filter.type(value, { delay: 10 });
     await waitForSearchSettled(page, baseline);
@@ -320,15 +322,13 @@ export async function selectPSelectOption(
 
   const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
   if (emptyMessage) {
-    await dumpDebugState(page, `pselect-empty-${triggerPlaceholder}-${value}`);
-    await page.keyboard.press('Escape').catch(() => undefined);
     return { found: false };
   }
 
-  const clicked = await page.evaluate((needle: string) => {
+  const result = await page.evaluate((needle: string) => {
     const overlays = Array.from(document.querySelectorAll('.p-select-overlay'));
     const overlay = overlays.find(el => (el as HTMLElement).offsetParent !== null) || overlays[overlays.length - 1] || null;
-    if (!overlay) return false;
+    if (!overlay) return 'no-overlay';
     const options = Array.from(overlay.querySelectorAll('.p-select-option'));
     const match = options.find(el => {
       const text = el.textContent?.trim() || '';
@@ -336,17 +336,44 @@ export async function selectPSelectOption(
     });
     if (match) {
       (match as HTMLElement).click();
-      return true;
+      return 'clicked';
     }
-    return false;
+    return 'not-found';
   }, value);
 
-  if (!clicked) {
-    await dumpDebugState(page, `pselect-noclick-${triggerPlaceholder}-${value}`);
-    await page.keyboard.press('Escape').catch(() => undefined);
-    return { found: false };
+  if (result === 'no-overlay') return 'overlay-vanished';
+  return { found: result === 'clicked' };
+}
+
+export async function selectPSelectOption(
+  page: Page,
+  triggerPlaceholder: string,
+  value: string,
+  index = 0,
+): Promise<PSelectResult> {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const triggers = await page.$$(
+      `[placeholder="${cssEscape(triggerPlaceholder)}"]`,
+    );
+    const trigger = triggers[index];
+    if (!trigger) return { found: false };
+
+    const result = await attemptSelectPSelectOption(page, trigger, value);
+    if (result === 'overlay-vanished') {
+      await dumpDebugState(
+        page,
+        `pselect-vanished-attempt${attempt}-${triggerPlaceholder}-${value}`,
+      );
+      await delay(600); // let any in-progress reflow settle before retrying
+      continue;
+    }
+    if (!result.found) {
+      await dumpDebugState(page, `pselect-notfound-${triggerPlaceholder}-${value}`);
+      await page.keyboard.press('Escape').catch(() => undefined);
+    }
+    return result;
   }
-  return { found: true };
+  return { found: false };
 }
 
 async function clickDialogButtonByText(
@@ -433,6 +460,11 @@ export async function addArtistViaDialog(
 
   const submitted = await clickDialogButtonByText(page, submitButtonText);
   if (!submitted) return { found: false };
-  await delay(500);
+  // Longer settle than before: the dialog closing reflows the page (an
+  // artist chip appears, revealing/shifting whatever comes after), and the
+  // very next p-select opened right after this (Genre) has been observed
+  // closing itself immediately — plausibly a layout-shift race with this
+  // reflow. Give it more room before the caller touches anything else.
+  await delay(1200);
   return { found: true };
 }
