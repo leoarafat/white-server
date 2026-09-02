@@ -1,11 +1,11 @@
 module.exports = {
   apps: [
     {
-      name: 'api',
+      name: 'newapi',
       script: 'dist/server.js',
       instances: 1,
       exec_mode: 'fork',
-      node_args: '--max-old-space-size=768',
+      node_args: '--max-old-space-size=1024',
       env: {
         NODE_ENV: 'production',
       },
