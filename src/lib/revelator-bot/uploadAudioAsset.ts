@@ -13,6 +13,7 @@ import {
   selectPSelectOption,
   addArtistViaDialog,
   waitForAny,
+  dumpValidationState,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
@@ -194,15 +195,21 @@ export async function uploadAudioAsset(
 
   const errorMessage = await captureErrorToast(page);
   if (errorMessage) {
+    await dumpValidationState(page, 'audio-asset-error-toast');
     return { ok: false, error: { message: errorMessage, retryable: false } };
   }
 
   const closed = await waitForDialogClosed(page, 'Create Audio Asset');
   if (!closed) {
+    // Revelator rejected the form without a toast we recognise — capture
+    // which field(s) it's actually flagging so this is diagnosable.
+    const flagged = await dumpValidationState(page, 'audio-asset-stayed-open');
     return {
       ok: false,
       error: {
-        message: 'Audio asset creation did not complete (dialog stayed open)',
+        message: flagged.length
+          ? `Revelator rejected the audio asset — it flagged: ${flagged.join('; ')}`
+          : 'Audio asset creation did not complete (dialog stayed open)',
         retryable: true,
       },
     };

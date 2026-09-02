@@ -198,6 +198,47 @@ export async function selectDropdownOption(
   return clicked;
 }
 
+// When Revelator refuses to accept a Create (its dialog just stays open,
+// sometimes with no toast we recognise), the useful information is which
+// field it flagged. Angular marks invalid controls with .ng-invalid and
+// renders the message next to them, so collect those and save a screenshot
+// alongside — this is what turns "creation did not complete" into an
+// actionable "Revelator flagged: Properties — This field is required".
+export async function dumpValidationState(
+  page: Page,
+  label: string,
+): Promise<string[]> {
+  try {
+    const dir = path.join(process.cwd(), 'debug-screenshots');
+    fs.mkdirSync(dir, { recursive: true });
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const base = `${stamp}-${label.replace(/[^a-z0-9]+/gi, '-')}`;
+    await page.screenshot({
+      path: path.join(dir, `${base}.png`) as `${string}.png`,
+      fullPage: true,
+    });
+    const flagged = await page.evaluate(() => {
+      const messages = new Set<string>();
+      document
+        .querySelectorAll('.p-error, .ng-invalid.ng-touched, [class*="error-message"]')
+        .forEach(el => {
+          const text = (el as HTMLElement).innerText?.trim();
+          if (text && text.length < 200) messages.add(text);
+        });
+      return Array.from(messages);
+    });
+    fs.writeFileSync(
+      path.join(dir, `${base}.json`),
+      JSON.stringify({ flagged }, null, 2),
+    );
+    logger.warn(`Revelator validation dump saved: ${base}`, flagged);
+    return flagged;
+  } catch (err) {
+    logger.warn('Revelator validation dump failed', err);
+    return [];
+  }
+}
+
 export type PSelectResult = { found: boolean };
 
 // Revelator's p-select search (Artist/Label especially) hits a live server
