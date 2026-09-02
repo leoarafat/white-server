@@ -304,6 +304,20 @@ async function attemptSelectPSelectOption(
   trigger: import('puppeteer').ElementHandle<Element>,
   value: string,
 ): Promise<PSelectResult | 'overlay-vanished'> {
+  // Scroll into view via JS *before* clicking, deliberately not relying on
+  // Puppeteer's click-time auto-scroll — Angular CDK overlays (PrimeNG is
+  // built on CDK) commonly close on any scroll of their positioning
+  // ancestor, and a scroll landing between the overlay opening and the very
+  // next interaction with it (the filter click) is the leading remaining
+  // suspect after clickCount:3 and a longer settle both failed to fix a
+  // 100%-reproducible closure on the real bot. Getting the trigger fully in
+  // view up front means nothing later in this function should need to
+  // scroll at all.
+  await page.evaluate(
+    el => (el as HTMLElement).scrollIntoView({ block: 'center' }),
+    trigger,
+  );
+  await delay(150);
   await trigger.click();
   await delay(400);
 
