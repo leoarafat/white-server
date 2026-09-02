@@ -395,12 +395,31 @@ async function clickDialogButtonByText(
   text: string,
 ): Promise<boolean> {
   return page.evaluate((needle: string) => {
-    const btn = Array.from(
-      document.querySelectorAll('.p-dialog button'),
-    ).find(b => b.textContent?.trim() === needle) as HTMLButtonElement | undefined;
-    if (btn && !btn.disabled) {
-      btn.click();
-      return true;
+    // Scope to the TOPMOST dialog's own FOOTER — not `.p-dialog button`
+    // globally. The entire "Create Audio Asset" / "Create Digital Release"
+    // form is itself a .p-dialog (class re-full-screen-modal), so a global
+    // `.p-dialog button` search for "Add Artist" matched the *page's*
+    // "Key Artists → + Add Artist" trigger (earlier in the DOM) instead of
+    // the Add-Main-Primary-Artist dialog's submit button. That opened a
+    // second "Add Key Artist" dialog with a required Role field on top of
+    // everything, leaving the primary artist unsubmitted and blocking every
+    // later step — which surfaced, very misleadingly, as
+    // 'Genre "Arabic" does not exist'. Confirmed from a failure screenshot.
+    const dialogs = Array.from(document.querySelectorAll('.p-dialog'));
+    const topmost = dialogs[dialogs.length - 1];
+    if (!topmost) return false;
+    const scopes = [
+      topmost.querySelector('.p-dialog-footer'),
+      topmost,
+    ].filter(Boolean) as Element[];
+    for (const scope of scopes) {
+      const btn = Array.from(scope.querySelectorAll('button')).find(
+        b => b.textContent?.trim() === needle,
+      ) as HTMLButtonElement | undefined;
+      if (btn && !btn.disabled) {
+        btn.click();
+        return true;
+      }
     }
     return false;
   }, text);
