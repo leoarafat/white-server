@@ -84,4 +84,17 @@ export default {
     SENDER_EMAIL: process.env.SENDER_EMAIL,
     BREVO_API_KEY: process.env.BREVO_API_KEY,
   },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  },
+  settings: {
+    encryptionKey: process.env.SETTINGS_ENCRYPTION_KEY,
+  },
+  revelator: {
+    baseUrl: process.env.REVELATOR_BASE_URL || 'https://backstage.ptunestudio.com',
+    uploadTempDir: process.env.REVELATOR_UPLOAD_TEMP_DIR,
+    analyticsTempDir: process.env.REVELATOR_ANALYTICS_TEMP_DIR,
+    analyticsCron: process.env.REVELATOR_ANALYTICS_CRON || '0 3 * * *',
+  },
 };

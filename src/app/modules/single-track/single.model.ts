@@ -221,6 +221,23 @@ const singleMusicSchema = new Schema<ISingleTrack>(
       enum: ['pending', 'approved', 'rejected'],
       default: 'approved',
     },
+    revelatorStatus: {
+      type: String,
+      enum: ['none', 'queued', 'processing', 'live', 'failed'],
+      default: 'none',
+    },
+    revelatorError: {
+      type: String,
+    },
+    revelatorJobId: {
+      type: String,
+    },
+    sentToRevelatorAt: {
+      type: Date,
+    },
+    revelatorAssetTitle: {
+      type: String,
+    },
   },
   {
     timestamps: true,

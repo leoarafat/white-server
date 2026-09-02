@@ -48,6 +48,7 @@ import { PartnerKeyAdminRoutes } from '../modules/partnerApi/key/partnerKey.admi
 import { PartnerActivityAdminRoutes } from '../modules/partnerApi/activity/partnerActivity.admin.routes';
 import { PartnerReleaseAdminRoutes } from '../modules/partnerApi/release/partnerRelease.admin.routes';
 import { PartnerChannelAdminRoutes } from '../modules/partnerApi/channel/partnerChannel.admin.routes';
+import { RevelatorRoutes } from '../modules/revelator/revelator.routes';
 
 const router = express.Router();
 
@@ -249,6 +250,10 @@ const moduleRoutes = [
   {
     path: '/partner-admin/channels',
     route: PartnerChannelAdminRoutes,
+  },
+  {
+    path: '/revelator',
+    route: RevelatorRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

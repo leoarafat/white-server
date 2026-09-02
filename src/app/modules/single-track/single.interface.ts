@@ -70,4 +70,9 @@ export type ISingleTrack = {
   mood: string;
   crbtTitle: string;
   crbtTime: string;
+  revelatorStatus: 'none' | 'queued' | 'processing' | 'live' | 'failed';
+  revelatorError?: string;
+  revelatorJobId?: string;
+  sentToRevelatorAt?: Date;
+  revelatorAssetTitle?: string;
 };

@@ -144,6 +144,7 @@ import { app } from './app';
 import config from './config/index';
 import { logger } from './shared/logger';
 import initializeSocketIO from './socket/socket';
+import { startRevelatorUploadEventsBridge } from './queues/revelator-upload.events';
 import './utils/tmp-files';
 
 /* ----------------------------- Config Guardrails ---------------------------- */
@@ -161,6 +162,7 @@ const SHUTDOWN_TIMEOUT_MS = 10_000;
 /* --------------------------- HTTP Server & Socket --------------------------- */
 const server: Server = createServer(app);
 initializeSocketIO(server);
+startRevelatorUploadEventsBridge();
 
 // ─── Timeout Configuration ────────────────────────────────────────────────────
 //
