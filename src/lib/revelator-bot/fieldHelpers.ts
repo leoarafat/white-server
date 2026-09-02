@@ -306,7 +306,14 @@ export async function selectPSelectOption(
   const filter = await getScopedElement(page, '.p-select-filter');
   if (filter) {
     const baseline = await snapshotOptionList(page);
-    await filter.click({ clickCount: 3 });
+    // NOT a triple-click-to-select-all here (unlike fillByPlaceholder) — the
+    // filter is always freshly empty right when the overlay opens, and
+    // live-confirmed a clickCount:3 here was closing the overlay outright
+    // (three rapid clicks landing as an accidental double-click-equivalent
+    // on a PrimeNG element that toggles the panel) — the debug dump on a
+    // real run showed 0 overlays left in the DOM by the time this function
+    // went looking for the option to click, right after typing "Arabic".
+    await filter.click();
     await filter.type(value, { delay: 10 });
     await waitForSearchSettled(page, baseline);
   }
