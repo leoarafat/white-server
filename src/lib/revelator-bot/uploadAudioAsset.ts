@@ -12,6 +12,7 @@ import {
   selectDropdownOption,
   selectPSelectOption,
   addArtistViaDialog,
+  waitForAny,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
@@ -68,7 +69,10 @@ export async function uploadAudioAsset(
       error: { message: 'Could not find "New Audio Asset" button', retryable: true },
     };
   }
-  await delay(800);
+  // "New Audio Asset" is a full route change (/en/catalog/audio/manage/create),
+  // not an in-page dialog — a fixed delay races the navigation on a slower
+  // load. Wait for the form's own first heading instead of guessing a delay.
+  await waitForAny(page, ['Stereo File'], 15_000);
 
   onProgress('Attaching audio file');
   const fileInput = await findFileInputBySection(page, 'Stereo File');

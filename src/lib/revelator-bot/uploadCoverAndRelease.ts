@@ -7,6 +7,7 @@ import {
   selectDropdownOption,
   selectPSelectOption,
   addArtistViaDialog,
+  waitForAny,
   delay,
 } from './fieldHelpers';
 import { captureErrorToast, waitForDialogClosed } from './errorToast';
@@ -43,7 +44,9 @@ export async function uploadCoverAndRelease(
       error: { message: 'Could not find "New Release" button', retryable: true },
     };
   }
-  await delay(800);
+  // Same full route change as "New Audio Asset" — wait for real content
+  // instead of a fixed delay racing the navigation.
+  await waitForAny(page, ['Select existing assets', 'Tracks'], 15_000);
 
   onProgress('Selecting the uploaded audio asset');
   const assetSelected = await selectDropdownOption(
