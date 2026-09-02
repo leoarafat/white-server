@@ -160,18 +160,31 @@ export type PSelectResult = { found: boolean };
 // after typing produced a false "does not exist" for an artist ("Adib")
 // that genuinely is in the account. Root cause: the dropdown already shows
 // an unfiltered option list the instant it opens, so a check for merely
-// "some options are present" (or even "options or empty-message present")
-// resolves immediately against that stale list, before the debounced
-// server search for the typed text has even fired. The only reliable
-// signal is a *change* from what was showing right before typing — so this
-// snapshots the option list first, then waits for it to actually differ
-// (or for the empty-message to appear).
+// "some options are present" resolves immediately against that stale list,
+// before the debounced server search for the typed text has even fired.
+// The only reliable signal is a *change* from what was showing right before
+// typing — snapshot the option list first, then wait for it to differ (or
+// for the empty-message to appear).
+//
+// Everything here is also scoped to the LAST `.p-select-overlay` in the
+// DOM, not `document` globally — PrimeNG's CDK overlay container can leave
+// a previous field's overlay panel behind after it's closed (confirmed:
+// Genre search failed right after the Main-Primary-Artist dialog's own
+// p-select closed, in a run where isolated testing of Genre alone passed).
+// The most-recently-opened overlay is always last in document order.
+function lastOverlay(): Element | null {
+  const overlays = document.querySelectorAll('.p-select-overlay');
+  return overlays[overlays.length - 1] || null;
+}
+
 async function snapshotOptionList(page: Page): Promise<string> {
-  return page.evaluate(() =>
-    Array.from(document.querySelectorAll('.p-select-option'))
+  return page.evaluate((getLastOverlay: () => Element | null) => {
+    const overlay = getLastOverlay();
+    if (!overlay) return '';
+    return Array.from(overlay.querySelectorAll('.p-select-option'))
       .map(el => el.textContent)
-      .join('|'),
-  );
+      .join('|');
+  }, lastOverlay);
 }
 
 async function waitForSearchSettled(
@@ -181,10 +194,12 @@ async function waitForSearchSettled(
 ): Promise<void> {
   await page
     .waitForFunction(
-      (base: string) => {
-        if (document.querySelector('.p-select-empty-message')) return true;
+      (base: string, getLastOverlay: () => Element | null) => {
+        const overlay = getLastOverlay();
+        if (!overlay) return false;
+        if (overlay.querySelector('.p-select-empty-message')) return true;
         const current = Array.from(
-          document.querySelectorAll('.p-select-option'),
+          overlay.querySelectorAll('.p-select-option'),
         )
           .map(el => el.textContent)
           .join('|');
@@ -192,8 +207,24 @@ async function waitForSearchSettled(
       },
       { timeout: timeoutMs },
       baseline,
+      lastOverlay,
     )
     .catch(() => undefined);
+}
+
+async function getScopedElement(
+  page: Page,
+  selector: string,
+): Promise<import('puppeteer').ElementHandle<Element> | null> {
+  const handle = await page.evaluateHandle(
+    (sel: string, getLastOverlay: () => Element | null) => {
+      const overlay = getLastOverlay();
+      return overlay ? overlay.querySelector(sel) : null;
+    },
+    selector,
+    lastOverlay,
+  );
+  return handle.asElement() as import('puppeteer').ElementHandle<Element> | null;
 }
 
 // Language/Genre/Artist/Label are all PrimeNG <p-select> — clicking the
@@ -220,7 +251,7 @@ export async function selectPSelectOption(
   await trigger.click();
   await delay(400);
 
-  const filter = await page.$('.p-select-filter');
+  const filter = await getScopedElement(page, '.p-select-filter');
   if (filter) {
     const baseline = await snapshotOptionList(page);
     await filter.click({ clickCount: 3 });
@@ -228,24 +259,30 @@ export async function selectPSelectOption(
     await waitForSearchSettled(page, baseline);
   }
 
-  const emptyMessage = await page.$('.p-select-empty-message');
+  const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
   if (emptyMessage) {
     await page.keyboard.press('Escape').catch(() => undefined);
     return { found: false };
   }
 
-  const clicked = await page.evaluate((needle: string) => {
-    const options = Array.from(document.querySelectorAll('.p-select-option'));
-    const match = options.find(el => {
-      const text = el.textContent?.trim() || '';
-      return text === needle || text.startsWith(needle);
-    });
-    if (match) {
-      (match as HTMLElement).click();
-      return true;
-    }
-    return false;
-  }, value);
+  const clicked = await page.evaluate(
+    (needle: string, getLastOverlay: () => Element | null) => {
+      const overlay = getLastOverlay();
+      if (!overlay) return false;
+      const options = Array.from(overlay.querySelectorAll('.p-select-option'));
+      const match = options.find(el => {
+        const text = el.textContent?.trim() || '';
+        return text === needle || text.startsWith(needle);
+      });
+      if (match) {
+        (match as HTMLElement).click();
+        return true;
+      }
+      return false;
+    },
+    value,
+    lastOverlay,
+  );
 
   if (!clicked) {
     await page.keyboard.press('Escape').catch(() => undefined);
@@ -300,31 +337,37 @@ export async function addArtistViaDialog(
   await trigger.click();
   await delay(400);
 
-  const filter = await page.$('.p-select-filter');
+  const filter = await getScopedElement(page, '.p-select-filter');
   if (filter) {
     const baseline = await snapshotOptionList(page);
     await filter.type(artistName, { delay: 10 });
     await waitForSearchSettled(page, baseline);
   }
 
-  const emptyMessage = await page.$('.p-select-empty-message');
+  const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
   if (emptyMessage) {
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
   }
 
-  const clicked = await page.evaluate((needle: string) => {
-    const options = Array.from(document.querySelectorAll('.p-select-option'));
-    const match = options.find(el => {
-      const text = el.textContent?.trim() || '';
-      return text === needle || text.startsWith(needle);
-    });
-    if (match) {
-      (match as HTMLElement).click();
-      return true;
-    }
-    return false;
-  }, artistName);
+  const clicked = await page.evaluate(
+    (needle: string, getLastOverlay: () => Element | null) => {
+      const overlay = getLastOverlay();
+      if (!overlay) return false;
+      const options = Array.from(overlay.querySelectorAll('.p-select-option'));
+      const match = options.find(el => {
+        const text = el.textContent?.trim() || '';
+        return text === needle || text.startsWith(needle);
+      });
+      if (match) {
+        (match as HTMLElement).click();
+        return true;
+      }
+      return false;
+    },
+    artistName,
+    lastOverlay,
+  );
   if (!clicked) {
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
