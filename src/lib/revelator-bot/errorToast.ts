@@ -41,24 +41,34 @@ export async function captureErrorToast(
 // valid (confirmed from a screenshot: every field filled, no validation
 // errors, Create enabled) and surfaced as the misleading "creation did not
 // complete (dialog stayed open)".
+// Polls rather than using a single waitForFunction: a successful Create
+// makes Revelator navigate away from .../manage/create, which destroys the
+// execution context and makes waitForFunction throw — the old version
+// caught that and reported failure on what was actually a success. Leaving
+// the create URL is itself treated as success, and context-destroyed errors
+// mid-poll are ignored rather than fatal.
 export async function waitForDialogClosed(
   page: Page,
   dialogHeading: string,
   timeoutMs = 300_000,
 ): Promise<boolean> {
-  try {
-    await page.waitForFunction(
-      (heading: string) => {
-        const el = Array.from(document.querySelectorAll('h1,h2')).find(
-          h => h.textContent?.trim() === heading,
-        );
-        return !el;
-      },
-      { timeout: timeoutMs },
-      dialogHeading,
-    );
-    return true;
-  } catch {
-    return false;
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    try {
+      if (!page.url().includes('/manage/create')) return true;
+      const stillOpen = await page.evaluate(
+        (heading: string) =>
+          Array.from(document.querySelectorAll('h1,h2')).some(
+            h => h.textContent?.trim() === heading,
+          ),
+        dialogHeading,
+      );
+      if (!stillOpen) return true;
+    } catch {
+      // Execution context destroyed => the page navigated => Create landed.
+      return true;
+    }
+    await delay(1000);
   }
+  return false;
 }
