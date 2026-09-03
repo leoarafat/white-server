@@ -84,6 +84,27 @@ export async function uploadAudioAsset(
     };
   }
   await fileInput.uploadFile(audioFilePath);
+  // Attaching the file only starts the upload — a real master WAV takes far
+  // longer than the old fixed 1.5s, and the bot would fill the rest of the
+  // form and hit Create while the audio was still transferring. Revelator
+  // then rejects with "Please fill all mandatory fields" (the asset file
+  // being the missing one) while no *form control* is marked invalid, which
+  // is exactly what the diagnostics showed. Wait for the dropzone prompt to
+  // disappear, i.e. the file is actually attached.
+  onProgress('Uploading audio to Revelator');
+  const attached = await page.waitForFunction(
+    () => !document.body.innerText.includes('Select an audio file to import'),
+    { timeout: 600_000, polling: 2000 },
+  ).then(() => true).catch(() => false);
+  if (!attached) {
+    return {
+      ok: false,
+      error: {
+        message: 'Audio file upload to Revelator did not finish in time',
+        retryable: true,
+      },
+    };
+  }
   await delay(1500);
 
   if (form.hasIsrc && form.isrc) {
