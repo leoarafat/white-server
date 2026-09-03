@@ -110,7 +110,22 @@ export async function uploadAudioAsset(
   if (form.hasIsrc && form.isrc) {
     await clickNearText(page, 'Audio ISRC', 'Yes');
     await delay(300);
-    await fillByPlaceholder(page, 'e.g. 000000000000', form.isrc);
+    // The Audio ISRC input's placeholder is "ABXYZ#######" — NOT
+    // "e.g. 000000000000", which belongs to the UPC field on the release
+    // form. Filling by the wrong placeholder silently matched nothing, so
+    // answering "Yes" left the now-required ISRC box empty and Revelator
+    // rejected every Create with "Please fill all mandatory fields" while
+    // marking no form control invalid. Confirmed from a failure screenshot.
+    const isrcFilled = await fillByPlaceholder(page, 'ABXYZ#######', form.isrc);
+    if (!isrcFilled) {
+      return {
+        ok: false,
+        error: {
+          message: `Could not fill the Audio ISRC field with "${form.isrc}"`,
+          retryable: true,
+        },
+      };
+    }
   }
 
   onProgress('Filling audio metadata');
