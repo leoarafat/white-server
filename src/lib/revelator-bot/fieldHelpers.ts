@@ -254,6 +254,40 @@ export async function dumpValidationState(
 
 export type PSelectResult = { found: boolean };
 
+// "No results found" is NOT final: Revelator's Artist/Label search is
+// server-side, and the panel renders its empty state during the debounce,
+// before the response lands. Live-confirmed from a failure screenshot —
+// the bot reported Artist "Adib" missing while the screenshot showed
+// "Adib · 1846306" sitting right there in the very same open dropdown.
+// So an empty state only counts once it has *persisted* with no options
+// appearing.
+async function isGenuinelyEmpty(
+  page: Page,
+  settleMs = 3000,
+): Promise<boolean> {
+  const deadline = Date.now() + settleMs;
+  while (Date.now() < deadline) {
+    const state = await page.evaluate(() => {
+      const overlays = Array.from(
+        document.querySelectorAll('.p-select-overlay'),
+      );
+      const overlay =
+        overlays.find(el => (el as HTMLElement).offsetParent !== null) ||
+        overlays[overlays.length - 1] ||
+        null;
+      if (!overlay) return { options: 0, empty: false };
+      return {
+        options: overlay.querySelectorAll('.p-select-option').length,
+        empty: !!overlay.querySelector('.p-select-empty-message'),
+      };
+    });
+    if (state.options > 0) return false; // results arrived after all
+    if (!state.empty) return false; // no longer claiming empty
+    await delay(400);
+  }
+  return true;
+}
+
 // Revelator's p-select search (Artist/Label especially) hits a live server
 // query, not a pre-loaded local list — live-confirmed: a fixed ~600ms wait
 // after typing produced a false "does not exist" for an artist ("Adib")
@@ -389,7 +423,7 @@ async function attemptSelectPSelectOption(
   }
 
   const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
-  if (emptyMessage) {
+  if (emptyMessage && (await isGenuinelyEmpty(page))) {
     return { found: false };
   }
 
@@ -517,7 +551,7 @@ export async function addArtistViaDialog(
   }
 
   const emptyMessage = await getScopedElement(page, '.p-select-empty-message');
-  if (emptyMessage) {
+  if (emptyMessage && (await isGenuinelyEmpty(page))) {
     await dumpDebugState(page, `artist-empty-${artistName}`);
     await clickDialogButtonByText(page, 'Cancel');
     return { found: false };
