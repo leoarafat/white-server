@@ -56,14 +56,26 @@ export async function waitForDialogClosed(
   while (Date.now() - startedAt < timeoutMs) {
     try {
       if (!page.url().includes('/manage/create')) return true;
-      const stillOpen = await page.evaluate(
-        (heading: string) =>
-          Array.from(document.querySelectorAll('h1,h2')).some(
-            h => h.textContent?.trim() === heading,
-          ),
-        dialogHeading,
-      );
-      if (!stillOpen) return true;
+      const state = await page.evaluate((heading: string) => {
+        const open = Array.from(document.querySelectorAll('h1,h2')).some(
+          h => h.textContent?.trim() === heading,
+        );
+        // Revelator's rejection toast can appear well after the Create click
+        // (later than captureErrorToast's short window), and when it does the
+        // dialog simply never closes — without watching for it here the bot
+        // burns the entire timeout and then reports the uninformative
+        // "dialog stayed open" instead of Revelator's actual complaint.
+        const toast = Array.from(document.querySelectorAll('div,span,p')).find(
+          el =>
+            el.children.length === 0 &&
+            /please fill all mandatory fields|is required|invalid/i.test(
+              el.textContent || '',
+            ),
+        );
+        return { open, toast: toast?.textContent?.trim() || null };
+      }, dialogHeading);
+      if (!state.open) return true;
+      if (state.toast) return false;
     } catch {
       // Execution context destroyed => the page navigated => Create landed.
       return true;

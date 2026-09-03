@@ -219,8 +219,21 @@ export async function dumpValidationState(
     });
     const flagged = await page.evaluate(() => {
       const messages = new Set<string>();
+      // Angular names every bound control via formcontrolname, and marks
+      // invalid ones .ng-invalid (not necessarily .ng-touched — the bot
+      // never "touches" a field it skipped entirely, which is exactly the
+      // case we need to catch). Reporting those names is what turns
+      // "Please fill all mandatory fields" into something actionable.
       document
-        .querySelectorAll('.p-error, .ng-invalid.ng-touched, [class*="error-message"]')
+        .querySelectorAll('[formcontrolname].ng-invalid, [formgroupname].ng-invalid')
+        .forEach(el => {
+          const name =
+            el.getAttribute('formcontrolname') ||
+            el.getAttribute('formgroupname');
+          if (name) messages.add(`field:${name}`);
+        });
+      document
+        .querySelectorAll('.p-error, [class*="error-message"]')
         .forEach(el => {
           const text = (el as HTMLElement).innerText?.trim();
           if (text && text.length < 200) messages.add(text);
